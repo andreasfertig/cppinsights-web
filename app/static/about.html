@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>C++ Insights</title>
+    <meta name="description" content="C++ Insights - See your source code with the eyes of a compiler." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Style-Type" content="text/css"/>
+
+    <link rel="stylesheet" href="cm/codemirror.css">
+    <script src="cm/codemirror.js"></script>
+    <script src="cm/matchbrackets.js"></script>
+    <link rel="stylesheet" href="cm/show-hint.css">
+    <script src="cm/active-line.js"></script>
+    <script src="cm/show-hint.js"></script>
+    <script src="cm/clike.js"></script>
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@andreas__fertig" />
+    <meta name="twitter:creator" content="@Andreas__Fertig" />
+    <meta property="og:url" content="https://cppinsights.io/" />
+    <meta property="og:title" content="C++ Insights" />
+    <meta property="og:description" content="C++ Insights - See your source code with the eyes of a compiler." />
+    <meta property="og:image" content="https://cppinsights.io/img/twcard.png" />
+
+
+    <!--<link rel="shortcut icon" href="favicon.ico">-->
+    <link rel="icon" type="image/png" href="/32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/16.png" sizes="16x16">
+
+    <link rel="stylesheet" href="css/gh.css" type="text/css">
+    <link rel="stylesheet" href="css/s.css" type="text/css">
+
+    </style>
+  </head>
+  <body>
+    <div class="mainbody">
+      <div id="container">
+        <div id="main">
+          <div id="options header">
+            <img class="logo" src="32.png" />
+            <label class="btn btn-primary btn-lg" style="margin-bottom: 0;"><a href="/">Home</a></label>
+            <label class="btn btn-primary btn-lg" style="margin-bottom: 0;"><a href="about.html">About</a></label>
+            <div id="header">
+              Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a></br>Powered by <a target="_blank" href="http://flask.pocoo.org/">Flask</a> and <a target="_blank" href="https://codemirror.net">CodeMirror</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <h1>About</h1>
+
+    <p><a href="/">C++ Insights</a> is a <a target="_blank" href="https://clang.llvm.org/">clang</a>-based tool which does a source to source transformation. Its goal is to make things visible which normally, and intentionally, happen behind the scenes. It's about the magic the compiler does for us to make things work. Or looking through the classes of a compiler.</p>
+
+    <p>Some time ago I started looking into some new things we got with C++11, C++14 and C++17. Amazing things like
+    lambdas, range-based for-loops and structured bindings. I put it together in a talk. You can find the <a target="_blank" href="https://www.andreasfertig.info/talks_dl/afertig-ndcolo-2017-fast-and-small.pdf">slides</a> and a <a target="_blank" href="https://youtu.be/Bt7KzFxcbgc">video</a> online.</>
+
+    <p>However, all that research and some of my training and teaching got me start thinking how it would be, if we could see
+with the eyes of the compiler. Sure, there is an AST-dump at least for clang. With tools like <a target="_blank" href="https://godbolt.org/#">Compiler Explorer</a> we can see what code the compiler generates from a C++ source snippet. However, what we see is assembler. Neither the AST nor the <a target="_blank" href="https://godbolt.org/#">Compiler Explorer</a> output is in the language I write code and therefore I'm most familiar with. Plus when teaching
+students C++ showing an AST and explaining that it is all there, was not quite satisfying for me.</p>
+
+    <p>I started to write a <a target="_blank" href="https://clang.llvm.org/">clang</a>-based tool able to transform a range-based for-loop into the compiler-internal version. Then, I did the same for structured bindings and lambdas. In the end, I ended up with doing a lot more as initially planned. It shows where operators are invoked, places in which the compiler does some casting. <a href="/">C++ Insights</a> is able to deduce the type behind <code>auto</code> or <code>decltype</code>. The goal is to produce compilable code. However, this is not possible in all places.</p>
+
+    <p>Still, there is work to do.</p>
+
+    <p>I do not claim to get all the things right. This is just the initial version of <a href="/">C++ Insights</a> I consider good enough to hand
+it to the public. Also, keep in mind that it is solely based on clang and my understanding of C++ and the AST.</p>
+
+    <p>You can see, for example the transformation of a <a href="https://cppinsights.io/lnk?code=aW50IG1haW4oKQp7CiAgaW50ICgqZnApKGludCwgY2hhcikgPSBbXShpbnQgYSwgY2hhciBiKXsgcmV0dXJuIGErYjt9Owp9&rev=1.0">lamda</a>, <a href="https://cppinsights.io/lnk?code=I2luY2x1ZGUgPGNzdGRpbz4KCmludCBtYWluKCkKewogICAgY29uc3QgY2hhciBhcnJbXXsyLDQsNiw4LDEwfTsKCiAgICBmb3IoY29uc3QgY2hhciYgYyA6IGFycikKICAgIHsKICAgICAgcHJpbnRmKCJjPSVjXG4iLCBjKTsKICAgIH0KfQ==&rev=1.0">range-based for-loop</a> or <a href="https://cppinsights.io/lnk?code=Y2xhc3MgQ1Rlc3QKewogICAgYXV0byBUZXN0KCkgeyByZXR1cm4gMjI7IH0KfTsKCmF1dG8gVGVzdCgpCnsKICAgIHJldHVybiAxOwp9CgphdXRvIEJlc3QoKSAtPiBpbnQKewogICAgcmV0dXJuIDE7Cn0KCmNvbnN0ZXhwciBhdXRvIENFQmVzdCgpIC0+IGludAp7CiAgICByZXR1cm4gMTsKfQoKZGVjbHR5cGUoYXV0bykgV2VzdCgpCnsKICAgIHJldHVybiAnYyc7Cn0KCmNvbnN0ZXhwciBkZWNsdHlwZShhdXRvKSBDRVdlc3QoKQp7CiAgICByZXR1cm4gJ2MnOwp9CgpbW21heWJlX3VudXNlZF1dIGlubGluZSBjb25zdGV4cHIgZGVjbHR5cGUoYXV0bykgTVVDRVdlc3QoKQp7CiAgICByZXR1cm4gJ2MnOwp9CgoKaW50IG1haW4oKQp7CiAgaW50IHggPSAyOwogIGNvbnN0IGNoYXIqIHA7CiAgY29uc3RleHByIGF1dG8gY2VpID0gMDsKICBhdXRvIGNvbnN0ZXhwciBjZWkyID0gMDsKICBhdXRvIGkgPSAwOwogIGRlY2x0eXBlKGF1dG8pIHhYID0gKGkpOwogIGF1dG8gaWkgPSAmaTsKICBhdXRvJiBpciA9IGk7CiAgYXV0byAqIGlwID0gJmk7CiAgY29uc3QgYXV0byAqIGNpcCA9ICZpOwogIGF1dG8gKiBwcCA9IHA7CiAgY29uc3QgYXV0byAqIGNwID0gcDsKICB2b2xhdGlsZSBjb25zdCBhdXRvICogdmNwID0gcDsKICBhdXRvIGYgPSAxLjBmOwogIGF1dG8gYyA9ICdjJzsKICBhdXRvIHUgPSAwdTsKICBkZWNsdHlwZSh1KSB1dSA9IHU7CgogIFtbbWF5YmVfdW51c2VkXV0gYXV0byBtdSA9IDB1OwogIFtbbWF5YmVfdW51c2VkXV0gZGVjbHR5cGUodSkgbXV1ID0gdTsKfQ==&rev=1.0">auto</a>. Of course, you can transform any other C++ snippet.</p>
+
+    <p>You can find the <a href="">source</a> of the web front-end on github. The source of <a href="/">C++ Insights</a> will follow soon.</p>
+    <p>Contact: <a href="mailto:andy at cppinsights.io">andy at cppinsights.io</a></p>
+
+          <div id="footer">
+            Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a> &bull; Powered by <a target="_blank" href="http://flask.pocoo.org/">Flask</a> and <a target="_blank" href="https://codemirror.net">CodeMirror</a>
+          </div>
+
+    </div>
+
+    <script src="js/main.js"></script>
+
+  </body>
+</html>
+
