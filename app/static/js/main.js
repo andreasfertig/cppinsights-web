@@ -64,12 +64,6 @@ function download(filename, text) {
     }
 }
 
-function getLink() {
-    var hostname = window.location.hostname;
-    var text = 'https://' + hostname + '/lnk?code=' + btoa(cppEditor.getValue()) + '&rev=1.0';
-    alert(text);
-}
-
 function toggleConsole() {
     var element = document.getElementById('stderr-div').style
     if ('none' == element.display) {
@@ -89,3 +83,36 @@ form.addEventListener('keydown', function(e) {
 		target.form.submit();
 	}
 });
+
+function CopyClick() {
+  var textToCopy = document.getElementById("lnkurl");
+
+  textToCopy.select();
+
+  document.execCommand("copy");
+}
+
+function dropDownControl() {
+    var hostname = window.location.hostname;
+    var text = 'https://' + hostname + '/lnk?code=' + btoa(cppEditor.getValue()) + '&rev=1.0';
+
+    var lnkElement = document.getElementById("lnkurl");
+    lnkElement.value = text;
+
+    var element = document.getElementById("copyDropdown");
+    element.classList.toggle("show");
+}
+
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn') && !event.target.matches('.cpybtn') && !event.target.matches('#lnkurl')) {
+
+    var dropdowns = document.getElementsByClassName("copyDownDownContent");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}

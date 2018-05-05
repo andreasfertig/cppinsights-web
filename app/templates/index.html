@@ -31,7 +31,6 @@
 
     <link rel="stylesheet" href="css/gh.css" type="text/css">
     <link rel="stylesheet" href="css/s.css" type="text/css">
-    </style>
   </head>
   <body>
     <div class="mainbody">
@@ -44,7 +43,20 @@
             <label class="btn btn-primary btn-lg icon-save"><input type="submit" style="display: none;" role="button" onclick="dl()" value="&nbsp;"/></label>
 
             <label class="btn btn-primary btn-lg icon-load" style="margin-bottom: 0;"><input style="display: none;" type="file" id="file-input" role="button"/></label>
-            <label class="btn btn-primary btn-lg icon-link" style="margin-bottom: 0;"><input style="display: none;" onclick="getLink()" role="button"/></label>
+            <label class="btn btn-primary btn-lg icon-link" style="margin-bottom: 0;">
+                <input style="display: none;" class="dropbtn" onclick="dropDownControl()" role="button"/>
+
+                <div id="copyDropdown" class="copyDownDownContent">
+                    <div class="input-group">
+                        <input id="lnkurl" value="" type="text">
+                        <span class="input-group-button">
+                            <button class="cpybtn" type="button" onclick="CopyClick()">
+                                <img class="clip" src="img/clb.svg" alt="Copy" width="13">
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </label>
             <label class="btn btn-primary btn-lg" style="margin-bottom: 0;"><a href="about.html">About</a></label>
             <!--<label class="btn btn-primary btn-lg icon-twitter" style="margin-bottom: 0;"><a id="twitter-share-button" target="_blank" onclick="tweet()" href="https://twitter.com/share?"></a></label>-->
             <div id="header">
