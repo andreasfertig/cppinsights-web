@@ -102,31 +102,37 @@ int main()
 
 @app.route("/lnk", methods=['GET', 'POST'])
 def api():
-    code = request.args['code']
-    rev  = request.args['rev']
+    code = ''
+    rev  = ''
 
-    if not code or not rev or '1.0' != rev:
-        response = make_response(render_template('error.html'))
-        return response
+    if 'code' in request.args:
+        code = request.args['code']
 
-    try:
-        # keep this in mind if, we get a incorrect length base64 string
-        #code = code + '=' * (-len(code) % 4)
-        # XXX: somehow we get a curropt base64 string
-        code = code.replace(' ', '+')
+    if 'rev' in request.args:
+        rev  = request.args['rev']
 
-        # base 64 decode
-        code = code.decode('base64')
-    except:
-        print repr(code)
-	code = ''
+        if not rev or '1.0' != rev:
+            response = make_response(render_template('error.html'))
+            return response
+
+    if code and '' != code:
+        try:
+            # keep this in mind if, we get a incorrect length base64 string
+            #code = code + '=' * (-len(code) % 4)
+            # XXX: somehow we get a corrupt base64 string
+            code = code.replace(' ', '+')
+
+            # base 64 decode
+            code = code.decode('base64')
+        except:
+            print repr(code)
+    	code = ''
 
     next_year = datetime.datetime.now() + datetime.timedelta(days=365)
     response  = make_response(render_template('index.html', **locals()))
 
     # store the last example in a cookie
     response.set_cookie('code', code, expires=next_year)
-
 
     return response
 #------------------------------------------------------------------------------
