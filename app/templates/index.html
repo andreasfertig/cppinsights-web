@@ -10,13 +10,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="Content-Style-Type" content="text/css"/>
 
-    <link rel="stylesheet" href="cm/codemirror.css">
-    <script src="cm/codemirror.js"></script>
-    <script src="cm/matchbrackets.js"></script>
-    <link rel="stylesheet" href="cm/show-hint.css">
-    <script src="cm/active-line.js"></script>
-    <script src="cm/show-hint.js"></script>
-    <script src="cm/clike.js"></script>
+    <!-- codemirror includes --><link rel="stylesheet" href="cm/codemirror.css"><script src="cm/codemirror.js"></script><script src="cm/matchbrackets.js"></script><link rel="stylesheet" href="cm/show-hint.css"><script src="cm/active-line.js"></script><script src="cm/show-hint.js"></script><script src="cm/clike.js"></script><!-- codemirror includes end -->
 
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@andreas__fertig" />
@@ -60,7 +54,6 @@
             </label>
             <label class="btn btn-primary btn-lg" style="margin-bottom: 0;"><a href="https://github.com/andreasfertig/cppinsights/issues" target="_blank">Issues</a></label>
             <label class="btn btn-primary btn-lg" style="margin-bottom: 0;"><a href="about.html">About</a></label>
-            <!--<label class="btn btn-primary btn-lg icon-twitter" style="margin-bottom: 0;"><a id="twitter-share-button" target="_blank" onclick="tweet()" href="https://twitter.com/share?"></a></label>-->
             <div id="header">
               Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a></br>Powered by <a target="_blank" href="http://flask.pocoo.org/">Flask</a> and <a target="_blank" href="https://codemirror.net">CodeMirror</a>
             </div>
@@ -94,35 +87,5 @@
 
 
     <script src="js/main.js"></script>
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <!--    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script> -->
-
-  <script>
-
-
-function tweet()
-{
-    var element  = document.getElementById('twitter-share-button')
-    var hostname = window.location.hostname;
-    var url      = encodeURI( 'https://' + hostname + '/lnk?code=' + btoa(cppEditor.getValue()));
-    var text     = 'C++ Insight';
-
-    element.href = "https://twitter.com/intent/tweet?hashtags=CppInsight&text=" + encodeURIComponent(text) + '&url=' + url;
-}
-
-/*
-var $tweet = $('.twitter-share-button');
-
-$tweet.on ('click', function() {
-    var url = encodeURI( 'https://localhost:5000/lnk?code=' + btoa(cppEditor.getValue()));
-    var text = 'C++ Insight';
-
-  $tweet.attr('href', "https://twitter.com/intent/tweet?hashtags=CppInsight&text=" + encodeURIComponent(text) + '&url=' + url);
-});
-  */
-  </script>
   </body>
 </html>
