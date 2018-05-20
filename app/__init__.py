@@ -126,7 +126,7 @@ def api():
             code = code.decode('base64')
         except:
             print repr(code)
-    	code = ''
+            code = ''
 
     next_year = datetime.datetime.now() + datetime.timedelta(days=365)
     response  = make_response(render_template('index.html', **locals()))
