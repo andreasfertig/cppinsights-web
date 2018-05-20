@@ -1,23 +1,33 @@
 sudo: false
-
 addons:
- apt:
-   sources:
-   - ubuntu-toolchain-r-test
-
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+  ssh_known_hosts: cppinsights.io
 matrix:
-    include:
-      - os: linux
-
+  include:
+  - os: linux
 before_install:
-  - node --version
-  - npm --version
-
+- node --version
+- npm --version
 install:
-  - npm set progress=false
-  - npm install -g grunt-cli
-  - npm install
-
-script:    
-  - grunt --version
-  - grunt
+- npm set progress=false
+- npm install -g grunt-cli
+- npm install
+script:
+- grunt --version
+- grunt
+before_deploy:
+- openssl aes-256-cbc -K $encrypted_2b908d61f2a1_key -iv $encrypted_2b908d61f2a1_iv -in deploy_rsa.enc -out /tmp/deploy_rsa -d
+- eval "$(ssh-agent -s)"
+- chmod 600 /tmp/deploy_rsa
+- ssh-add /tmp/deploy_rsa
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: rsync -avcz --delete --exclude=.DS_Store --exclude='google*.html' $TRAVIS_BUILD_DIR/dist/app/ ${RSYNC_CRED}
+  on:
+    branch: master
+env:
+  global:
+    secure: PoxdX2DPykAZALmahs0YysyK7MCEItSp2ePq0u2pEyCuFs47HpDOc6Tz4jOuFz2bO5MEjRlQUj+2vrmrtJOCnyPah6ex4WSbabhCkTJDI8Mo7hudEYJgpiZKKvoAyRkl00Y+gaEPBnvfILel2CiAZkxfmrMlxwMIsXI/8CcD2F3Rl0pL8qGDIVcXUGlHFA8ef3PkSGrdej9KPhGZMKUdTj9oo6krt+mj0wR4opqsqwMKJPNRO3iSvI5T7O9Zr66jsX/HgL/zzfUpxcwIWFwaPCMNWAzOmhiTN0GOQ1bKB37dmMzBSy1sD46WD1HTOimP5Kt5wsD/nrmL4wxpt/34QDks/RQO/tN/xYXE6bwPnXOXnSIfJ1ijVQIRLA2rmgRFKIiByvrqoqze8A+ydOxCzJNguSOVj2Bj+KT8BbuQl10Hpbre9Pq1YiRb8HyVGEUjHzcE39lz2LlaJ7ld4FvvY3DKrNYLuXIUwbBwkmC3k70k0ccIqFfITsaHJ7ZfHIi70EaBprAhMemqPEYwyEkHexY6Lnll6P6yJ+aWXHX/N+QU322/928ZmxoDBx83860DZTWFGpPRBsJL89yTQNnVnK7ukbP/cEJ9n2ox7068/dWU1Zz9aIkceI/5TjTjjBIDjVR8FxEIR8z/4tCJmm6PCW5y/Fihr/VEQmchYsPaub0=
