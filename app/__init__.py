@@ -29,6 +29,8 @@ def robust_encode(data):
         return data.encode()
     except UnicodeDecodeError:
         return data
+
+    return ''
 #------------------------------------------------------------------------------
 
 def robust_decode(data):
@@ -115,15 +117,16 @@ def api():
 
         # base 64 decode
         code = code.decode('base64')
-
-        next_year = datetime.datetime.now() + datetime.timedelta(days=365)
-        response  = make_response(render_template('index.html', **locals()))
-
-        # store the last example in a cookie
-        response.set_cookie('code', code, expires=next_year)
-
     except:
         print repr(code)
+	code = ''
+
+    next_year = datetime.datetime.now() + datetime.timedelta(days=365)
+    response  = make_response(render_template('index.html', **locals()))
+
+    # store the last example in a cookie
+    response.set_cookie('code', code, expires=next_year)
+
 
     return response
 #------------------------------------------------------------------------------
