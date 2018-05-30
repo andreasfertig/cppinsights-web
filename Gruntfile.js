@@ -98,6 +98,12 @@ module.exports = function(grunt) {
               dest: 'dist/app/static/'
             },
 
+            {
+              expand: true,
+              cwd: 'app/static/',
+              src: ['*.xml', '*.xml'],
+              dest: 'dist/app/static/'
+            },
           ]
         },
     },
@@ -114,17 +120,32 @@ module.exports = function(grunt) {
               src: 
                 [
                     'app/*.py',
-                    'app/static/*.png',
-                    'app/static/img/*.png',
                     'app/static/favicon.ico',
                     'app/static/robots.txt',
-                    'app/static/sitemap.xml'
                 ],
               dest: 'dist/', 
           },
         ],
       },
     },
+
+    pngmin: {
+      compile: {
+        options: {
+          ext     : '.png',
+          quality : '80-90',
+          force   : true
+        },
+        files: [
+          {
+            expand : true,
+            src    : ['**/*.png'],
+            cwd    : 'app/static//',
+            dest   : 'dist/app/static/'
+          }
+        ]
+      }
+    }
   });    
 
   grunt.loadNpmTasks('grunt-svgmin');
@@ -133,7 +154,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-string-replace');
   grunt.loadNpmTasks('grunt-contrib-htmlmin');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-pngmin');
 
-  grunt.registerTask('default', ['svgmin', 'cssmin', 'uglify', 'string-replace', 'htmlmin', 'copy']);    
+  grunt.registerTask('default', ['svgmin', 'cssmin', 'uglify', 'string-replace', 'htmlmin', 'copy', 'pngmin']);    
 
 };
