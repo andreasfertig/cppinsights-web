@@ -13,6 +13,7 @@ import subprocess
 import base64
 import os
 import tempfile
+from threading import Timer
 #------------------------------------------------------------------------------
 
 app = Flask(__name__, static_folder='static', static_url_path='')
@@ -55,8 +56,18 @@ def runDocker(code):
         cmd = ['sudo', '-u', 'pfes', 'docker', 'run', '--net=none', '-v', '%s:/home/insights/insights.cpp' %(fileName), '--rm', '-i', 'insights-test']
         #cmd = [ 'docker', 'run', '--net=none', '-v', '/private%s:/home/insights/insights.cpp' %(fileName), '--rm', '-i', 'insights-test']
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = p.communicate()
-        returncode     = p.returncode
+
+        kill = lambda process: process.kill()
+        processTimer = Timer(20, kill, [p])
+
+        returncode = 1
+
+        try:
+            processTimer.start()
+            stdout, stderr = p.communicate()
+            returncode     = p.returncode
+        finally:
+            processTimer.cancel()
     finally:
         os.remove(fileName)
 
