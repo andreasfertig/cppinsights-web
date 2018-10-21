@@ -48,7 +48,6 @@ label {
     width: 16px;
     height: 16px;
     display: block;
-    cursor: pointer;
 }
 
 /*
@@ -86,6 +85,7 @@ label {
 .btn {
     transition: initial;
     margin-top: 5px;
+    cursor: pointer;
 }
 
 
@@ -127,11 +127,6 @@ label {
 *, ::after, ::before {
     -webkit-box-sizing: inherit;
     box-sizing: inherit;
-}
-
-
-[role="button"] {
-    cursor: pointer;
 }
 
 
