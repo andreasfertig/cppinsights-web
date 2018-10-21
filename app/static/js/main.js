@@ -106,6 +106,8 @@ document.querySelector(".button-create-link").addEventListener("click", function
   element.classList.toggle("show");
 });
 
+document.querySelector(".button-run").title = "Run C++ Insights (" + (mac ? "Cmd-Return" : "Ctrl-Enter") + ")";
+
 window.onclick = function(event) {
   if (!event.target.matches('.dropbtn') && !event.target.matches('.cpybtn') && !event.target.matches('#lnkurl')) {
 
