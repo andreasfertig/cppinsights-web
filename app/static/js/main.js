@@ -47,9 +47,10 @@ function displayContents(contents) {
 document.getElementById('file-input')
     .addEventListener('change', readSingleFile, false);
 
-function dl() {
-    download("f.txt", cppEditor.getValue());
-}
+document.querySelector('.button-download').addEventListener('click', function (event) {
+  event.preventDefault();
+  download("f.txt", cppEditor.getValue());
+});
 
 function download(filename, text) {
     var pom = document.createElement('a');
@@ -92,16 +93,18 @@ function CopyClick() {
   document.execCommand("copy");
 }
 
-function dropDownControl() {
-    var hostname = window.location.hostname;
-    var text = 'https://' + hostname + '/lnk?code=' + btoa(cppEditor.getValue()) + '&rev=1.0';
+document.querySelector(".button-create-link").addEventListener("click", function(event) {
+  event.preventDefault();
+  event.stopPropagation();
+  var hostname = window.location.hostname;
+  var text = 'https://' + hostname + '/lnk?code=' + btoa(cppEditor.getValue()) + '&rev=1.0';
 
-    var lnkElement = document.getElementById("lnkurl");
-    lnkElement.value = text;
+  var lnkElement = document.getElementById("lnkurl");
+  lnkElement.value = text;
 
-    var element = document.getElementById("copyDropdown");
-    element.classList.toggle("show");
-}
+  var element = document.getElementById("copyDropdown");
+  element.classList.toggle("show");
+});
 
 window.onclick = function(event) {
   if (!event.target.matches('.dropbtn') && !event.target.matches('.cpybtn') && !event.target.matches('#lnkurl')) {

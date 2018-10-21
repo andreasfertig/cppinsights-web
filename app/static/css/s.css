@@ -79,7 +79,10 @@ label {
 
 
 .btn-group-lg > .btn, .btn-lg {
-    padding: .5rem 1rem;
+    height: 32px;
+    line-height: 32px;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 .btn {
@@ -372,6 +375,9 @@ div.CodeMirror span.CodeMirror-matchingbracket {
     color: gray;
 }
 
+.copy-group {
+    position: relative;
+}
 
 .input-group {
     display: table;
@@ -383,10 +389,6 @@ div.CodeMirror span.CodeMirror-matchingbracket {
 }
 .input-group input, .input-group-button {
     display: table-cell;
-}
-.input-group input {
-    position: relative;
-    width: 100%;
 }
 
 .input-group input[type="text"] {
@@ -446,18 +448,17 @@ div.CodeMirror span.CodeMirror-matchingbracket {
 .copyDownDownContent {
     display: none;
     position: absolute;
+    left: 0px;
+    top: 2em;
     background-color: #f1f1f1;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+    z-index: 10;
 }
 
 .show {
     display:block;
 }
-
-
-
 
 
 @media screen and (max-width: 750px) {
@@ -486,10 +487,12 @@ div.CodeMirror span.CodeMirror-matchingbracket {
         color: gray;
     }
 
-btn-group-lg > .btn, .btn-lg {
-    padding: .25rem 0.5rem;
-    font-size: .7em;
-}
+    .btn-group-lg > .btn, .btn-lg {
+        height: 24px;
+        line-height: 24px;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
 
 }
 
