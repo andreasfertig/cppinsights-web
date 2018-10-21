@@ -6,6 +6,16 @@ var cppEditor = CodeMirror.fromTextArea(document.getElementById("cpp-code"), {
     styleActiveLine: true,
     mode: "text/x-c++src"
 });
+if (window.sessionStorage) {
+  cppEditor.focus();
+  var pos = window.sessionStorage.getItem("position");
+  if (pos) {
+    try {
+      cppEditor.setCursor(JSON.parse(pos));
+    } catch {
+    }
+  }
+}
 var mac = CodeMirror.keyMap.default == CodeMirror.keyMap.macDefault;
 CodeMirror.keyMap.default[(mac ? "Cmd" : "Ctrl") + "-Space"] = "autocomplete";
 var cppOutEditor = CodeMirror.fromTextArea(document.getElementById("cpp-code-out"), {
@@ -44,8 +54,14 @@ function displayContents(contents) {
     cppEditor.setValue(contents);
 }
 
+document.querySelector('.button-upload')
+  .addEventListener('click', function (event) {
+    event.preventDefault();
+    document.getElementById('file-input').click();
+  });
+
 document.getElementById('file-input')
-    .addEventListener('change', readSingleFile, false);
+    .addEventListener('change', readSingleFile);
 
 document.querySelector('.button-download').addEventListener('click', function (event) {
   event.preventDefault();
@@ -74,16 +90,20 @@ function toggleConsole() {
     }
 }
 
-var form = document.getElementById('form');
+//var form = document.getElementById('form');
 //document.body.addEventListener('keydown', function(e) {
 form.addEventListener('keydown', function(e) {
 	if(!((e.keyCode == 10 || e.keyCode == 13) && e.ctrlKey)) return;
-
-	var target = e.target;
-	if(target.form) {
-		target.form.submit();
-	}
+  submit();
 });
+
+function submit() {
+  if (window.sessionStorage) {
+    window.sessionStorage.setItem("position", JSON.stringify(cppEditor.getCursor()));
+  }
+
+  form.submit();
+}
 
 function CopyClick() {
   var textToCopy = document.getElementById("lnkurl");
@@ -106,8 +126,14 @@ document.querySelector(".button-create-link").addEventListener("click", function
   element.classList.toggle("show");
 });
 
-document.querySelector(".button-run").title = "Run C++ Insights (" + (mac ? "Cmd-Return" : "Ctrl-Enter") + ")";
-
+var runButton = document.querySelector(".button-run");
+if (runButton) {
+  runButton.title = "Run C++ Insights (" + (mac ? "Cmd-Return" : "Ctrl-Enter") + ")";
+  runButton.addEventListener('click', function (event) {
+    event.preventDefault();
+    submit();
+  });
+}
 window.onclick = function(event) {
   if (!event.target.matches('.dropbtn') && !event.target.matches('.cpybtn') && !event.target.matches('#lnkurl')) {
 

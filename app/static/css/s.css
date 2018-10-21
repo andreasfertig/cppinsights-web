@@ -375,6 +375,10 @@ div.CodeMirror span.CodeMirror-matchingbracket {
     color: gray;
 }
 
+#file-input {
+    display: none;
+}
+
 .copy-group {
     position: relative;
 }
