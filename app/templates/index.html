@@ -29,57 +29,58 @@
   </head>
   <body>
     <div class="mainbody">
-    <form action="/" method="post" id="form">
-      <div id="container top">
-        <div id="main">
-          <div id="options header">
-            <img class="logo" src="32.png" />
-            <label class="btn btn-primary btn-lg icon-run"> <input type="submit" style="display: none;" role="button"  value="&nbsp;"/></label>
-            <label class="btn btn-primary btn-lg icon-save"><input type="submit" style="display: none;" role="button" onclick="dl()" value="&nbsp;"/></label>
+      <form action="/" method="post" id="form">
+        <div id="container top">
+          <div id="main">
+            <div id="options header">
+              <img class="logo" src="32.png" />
+              <label class="btn btn-primary btn-lg icon-run"> <input type="submit" style="display: none;" role="button"  value="&nbsp;"/></label>
+              <label class="btn btn-primary btn-lg icon-save"><input type="submit" style="display: none;" role="button" onclick="dl()" value="&nbsp;"/></label>
 
-            <label class="btn btn-primary btn-lg icon-load" style="margin-bottom: 0;"><input style="display: none;" type="file" id="file-input" role="button"/></label>
-            <label class="btn btn-primary btn-lg icon-link" style="margin-bottom: 0;">
-                <input style="display: none;" class="dropbtn" onclick="dropDownControl()" role="button"/>
+              <label class="btn btn-primary btn-lg icon-load" style="margin-bottom: 0;"><input style="display: none;" type="file" id="file-input" role="button"/></label>
+              <label class="btn btn-primary btn-lg icon-link" style="margin-bottom: 0;">
+                  <input style="display: none;" class="dropbtn" onclick="dropDownControl()" role="button"/>
 
-                <div id="copyDropdown" class="copyDownDownContent">
-                    <div class="input-group">
-                        <input id="lnkurl" value="" type="text">
-                        <span class="input-group-button">
-                            <button class="cpybtn" type="button" onclick="CopyClick()">
-                                <img class="clip" src="img/clb.svg" alt="Copy" width="13">
-                            </button>
-                        </span>
-                    </div>
-                </div>
-            </label>
-            <a href="https://github.com/andreasfertig/cppinsights/issues" target="_blank"><label class="btn btn-primary btn-lg" style="margin-bottom: 0;">Issues</label></a>
-            <a href="about.html"><label class="btn btn-primary btn-lg" style="margin-bottom: 0;">About</label></a>
-            <div id="header">
-              Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a></br>Powered by <a target="_blank" href="http://flask.pocoo.org/">Flask</a> and <a target="_blank" href="https://codemirror.net">CodeMirror</a>
-            </div>
-          </div>
-
-          <div class="mid">
-            <div class="code left">
-              <div id="code2">
-                <h2>Source:</h2>
-                <textarea name="code" id="cpp-code" rows="20" cols="120">{{ code }}</textarea>
+                  <div id="copyDropdown" class="copyDownDownContent">
+                      <div class="input-group">
+                          <input id="lnkurl" value="" type="text">
+                          <span class="input-group-button">
+                              <button class="cpybtn" type="button" onclick="CopyClick()">
+                                  <img class="clip" src="img/clb.svg" alt="Copy" width="13">
+                              </button>
+                          </span>
+                      </div>
+                  </div>
+              </label>
+              <a href="https://github.com/andreasfertig/cppinsights/issues" target="_blank"><label class="btn btn-primary btn-lg" style="margin-bottom: 0;">Issues</label></a>
+              <a href="about.html"><label class="btn btn-primary btn-lg" style="margin-bottom: 0;">About</label></a>
+              <div id="header">
+                Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a></br>Powered by <a target="_blank" href="http://flask.pocoo.org/">Flask</a> and <a target="_blank" href="https://codemirror.net">CodeMirror</a>
               </div>
             </div>
-            <div class="html">
-                <h2>Insight:</h2>
-                <textarea name="code-out" id="cpp-code-out" rows="20" cols="120">{{ html }}</textarea>
+
+            <div class="mid">
+              <div class="code left">
+                <div id="code2">
+                  <h2>Source:</h2>
+                  <textarea name="code" id="cpp-code" rows="20" cols="120">{{ code }}</textarea>
+                </div>
+              </div>
+              <div class="html">
+                  <h2>Insight:</h2>
+                  <textarea name="code-out" id="cpp-code-out" rows="20" cols="120">{{ html }}</textarea>
+              </div>
             </div>
-          </div>
-          <div class="bottom">
-            <div class="stderr">
-                </br>
-                <h2>Console:</h2>
-                <div id="stderr-div"><textarea id="stderr-out" rows="5">{{ stderr }}</textarea></div>
+            <div class="bottom">
+              <div class="stderr">
+                  </br>
+                  <h2>Console:</h2>
+                  <div id="stderr-div"><textarea id="stderr-out" rows="5">{{ stderr }}</textarea></div>
+              </div>
             </div>
-          </div>
-          <div id="footer">
-            Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a> &bull; Powered by <a target="_blank" href="http://flask.pocoo.org/">Flask</a> and <a target="_blank" href="https://codemirror.net">CodeMirror</a>
+            <div id="footer">
+              Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a> &bull; Powered by <a target="_blank" href="http://flask.pocoo.org/">Flask</a> and <a target="_blank" href="https://codemirror.net">CodeMirror</a>
+            </div>
           </div>
         </div>
       </form>
