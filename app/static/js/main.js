@@ -12,7 +12,7 @@ if (window.sessionStorage) {
   if (pos) {
     try {
       cppEditor.setCursor(JSON.parse(pos));
-    } catch {
+    } catch(e) {
     }
   }
 }
