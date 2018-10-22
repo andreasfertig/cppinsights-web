@@ -24,14 +24,14 @@ if (window.sessionStorage) {
 
 var mac = CodeMirror.keyMap.default == CodeMirror.keyMap.macDefault;
 CodeMirror.keyMap.default[(mac ? 'Cmd' : 'Ctrl') + '-Space'] = 'autocomplete';
-var cppOutEditor = CodeMirror.fromTextArea(document.getElementById('cpp-code-out'), {
+var cppOutEditor = CodeMirror.fromTextArea(document.getElementById('cpp-code-out'), { // eslint-disable-line no-unused-vars
   lineNumbers: true,
   matchBrackets: true,
   styleActiveLine: true,
   readOnly: true,
   mode: 'text/x-c++src'
 });
-var stdErrEditor = CodeMirror.fromTextArea(document.getElementById('stderr-out'), {
+var stdErrEditor = CodeMirror.fromTextArea(document.getElementById('stderr-out'), { // eslint-disable-line no-unused-vars
   lineNumbers: false,
   readOnly: true,
   mode: 'shell'
@@ -105,7 +105,7 @@ function submit() {
   form.submit();
 }
 
-function CopyClick() {
+function CopyClick() { // eslint-disable-line no-unused-vars
   var textToCopy = document.getElementById('lnkurl');
 
   textToCopy.select();

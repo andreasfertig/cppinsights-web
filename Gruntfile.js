@@ -145,7 +145,20 @@ module.exports = function(grunt) {
           }
         ]
       }
-    }
+    },
+
+    eslint: {
+        target: ['app/static/js/*.js']
+    },
+    jsbeautifier: {
+        dist: {
+            src : ['app/static/js/*.js', 'app/static/*.html', 'app/templates/*.html', 'app/static/css/*.css'],
+            options : {
+                config: ".jsbeautifyrc",
+                mode:"VERIFY_ONLY"
+            },
+        }
+    },
   });    
 
   grunt.loadNpmTasks('grunt-svgmin');
@@ -155,7 +168,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-htmlmin');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-pngmin');
+  grunt.loadNpmTasks('grunt-eslint');
+  grunt.loadNpmTasks('grunt-jsbeautifier');
 
-  grunt.registerTask('default', ['svgmin', 'cssmin', 'uglify', 'string-replace', 'htmlmin', 'copy', 'pngmin']);    
+  grunt.registerTask('default', ['jsbeautifier', 'eslint', 'svgmin', 'cssmin', 'uglify', 'string-replace', 'htmlmin', 'copy', 'pngmin']);    
 
 };
