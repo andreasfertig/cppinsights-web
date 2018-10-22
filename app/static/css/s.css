@@ -268,7 +268,7 @@ a {
 }
 
 .codehltable, .CodeMirror {
-    overflow: auto;
+    overflow: hidden;
     width: 100%;
     /*background: #f7f7f7;
      */
