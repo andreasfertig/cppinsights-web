@@ -1,61 +1,73 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!doctype html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <head>
-    <title>C++ Insights</title>
-    <meta name="description" content="C++ Insights - See your source code with the eyes of a compiler." />
-    <meta name="author" content="Andreas Fertig" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta http-equiv="Content-Style-Type" content="text/css"/>
+<html lang="en">
 
-    <!-- codemirror includes --><link rel="stylesheet" href="cm/codemirror.css"><script src="cm/codemirror.js"></script><script src="cm/matchbrackets.js"></script><link rel="stylesheet" href="cm/show-hint.css"><script src="cm/active-line.js"></script><script src="cm/show-hint.js"></script><script src="cm/clike.js"></script><!-- codemirror includes end -->
+<head>
+  <title>C++ Insights</title>
+  <meta name="description" content="C++ Insights - See your source code with the eyes of a compiler." />
+  <meta name="author" content="Andreas Fertig" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
 
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@andreas__fertig" />
-    <meta name="twitter:creator" content="@Andreas__Fertig" />
-    <meta property="og:url" content="https://cppinsights.io/" />
-    <meta property="og:title" content="C++ Insights" />
-    <meta property="og:description" content="C++ Insights - See your source code with the eyes of a compiler." />
-    <meta property="og:image" content="https://cppinsights.io/img/twcard.png" />
+  <!-- codemirror includes -->
+  <link rel="stylesheet" href="cm/codemirror.css">
+  <script src="cm/codemirror.js"></script>
+  <script src="cm/matchbrackets.js"></script>
+  <link rel="stylesheet" href="cm/show-hint.css">
+  <script src="cm/active-line.js"></script>
+  <script src="cm/show-hint.js"></script>
+  <script src="cm/clike.js"></script><!-- codemirror includes end -->
 
-    <!--<link rel="shortcut icon" href="favicon.ico">-->
-    <link rel="icon" type="image/png" href="/32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="/16.png" sizes="16x16">
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@andreas__fertig" />
+  <meta name="twitter:creator" content="@Andreas__Fertig" />
+  <meta property="og:url" content="https://cppinsights.io/" />
+  <meta property="og:title" content="C++ Insights" />
+  <meta property="og:description" content="C++ Insights - See your source code with the eyes of a compiler." />
+  <meta property="og:image" content="https://cppinsights.io/img/twcard.png" />
 
-    <link rel="stylesheet" href="css/gh.css" type="text/css">
-    <link rel="stylesheet" href="css/s.css" type="text/css">
-  </head>
-  <body>
-    <div class="mainbody">
+  <!--<link rel="shortcut icon" href="favicon.ico">-->
+  <link rel="icon" type="image/png" href="/32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/16.png" sizes="16x16">
+
+  <link rel="stylesheet" href="css/gh.css" type="text/css">
+  <link rel="stylesheet" href="css/s.css" type="text/css">
+</head>
+
+<body>
+  <div class="mainbody">
     <form action="/" method="post" id="form">
       <div id="container top">
         <div id="main">
           <div id="options header">
             <img class="logo" src="32.png" />
-            <label class="btn btn-primary btn-lg icon-run"> <input type="submit" style="display: none;" role="button"  value="&nbsp;"/></label>
-            <label class="btn btn-primary btn-lg icon-save"><input type="submit" style="display: none;" role="button" onclick="dl()" value="&nbsp;"/></label>
-
-            <label class="btn btn-primary btn-lg icon-load" style="margin-bottom: 0;"><input style="display: none;" type="file" id="file-input" role="button"/></label>
-            <label class="btn btn-primary btn-lg icon-link" style="margin-bottom: 0;">
-                <input style="display: none;" class="dropbtn" onclick="dropDownControl()" role="button"/>
-
-                <div id="copyDropdown" class="copyDownDownContent">
-                    <div class="input-group">
-                        <input id="lnkurl" value="" type="text">
-                        <span class="input-group-button">
-                            <button class="cpybtn" type="button" onclick="CopyClick()">
-                                <img class="clip" src="img/clb.svg" alt="Copy" width="13">
-                            </button>
-                        </span>
-                    </div>
+            <button class="btn btn-primary btn-lg icon-run button-run" type="submit"></button>
+            <button class="btn btn-primary btn-lg icon-save button-download" title="Download source"></button>
+            <button class="btn btn-primary btn-lg icon-load button-upload" title="Upload source"></button>
+            <input id="file-input" type="file">
+            <span class="copy-group">
+              <button class="btn btn-primary btn-lg icon-link button-create-link" title="Create URL to source"></button>
+              <div id="copyDropdown" class="copyDownDownContent">
+                <div class="input-group">
+                  <input id="lnkurl" value="" type="text">
+                  <span class="input-group-button">
+                    <button class="cpybtn" type="button" onclick="CopyClick()">
+                      <img class="clip" src="img/clb.svg" alt="Copy" width="13">
+                    </button>
+                  </span>
                 </div>
-            </label>
-            <label class="btn btn-primary btn-lg" style="margin-bottom: 0;"><a href="https://github.com/andreasfertig/cppinsights/issues" target="_blank">Issues</a></label>
-            <label class="btn btn-primary btn-lg" style="margin-bottom: 0;"><a href="about.html">About</a></label>
+              </div>
+            </span>
+            <a class="btn btn-primary btn-lg" href="https://github.com/andreasfertig/cppinsights/issues" target="_blank"
+                title="See existing issues on GitHub">
+              Issues
+            </a>
+            <a class="btn btn-primary btn-lg" href="about.html" title="About C++ Insights">
+              About
+            </a>
             <div id="header">
-              Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a></br>Powered by <a target="_blank" href="http://flask.pocoo.org/">Flask</a> and <a target="_blank" href="https://codemirror.net">CodeMirror</a>
+              Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a><br />Powered by <a target="_blank"
+                  href="http://flask.pocoo.org/">Flask</a> and <a target="_blank" href="https://codemirror.net">CodeMirror</a>
             </div>
           </div>
 
@@ -67,25 +79,28 @@
               </div>
             </div>
             <div class="html">
-                <h2>Insight:</h2>
-                <textarea name="code-out" id="cpp-code-out" rows="20" cols="120">{{ html }}</textarea>
+              <h2>Insight:</h2>
+              <textarea name="code-out" id="cpp-code-out" rows="20" cols="120">{{ html }}</textarea>
             </div>
           </div>
           <div class="bottom">
             <div class="stderr">
-                </br>
-                <h2>Console:</h2>
-                <div id="stderr-div"><textarea id="stderr-out" rows="5">{{ stderr }}</textarea></div>
+              <br />
+              <h2>Console:</h2>
+              <div id="stderr-div"><textarea id="stderr-out" rows="5">{{ stderr }}</textarea></div>
             </div>
           </div>
           <div id="footer">
-            Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a> &bull; Powered by <a target="_blank" href="http://flask.pocoo.org/">Flask</a> and <a target="_blank" href="https://codemirror.net">CodeMirror</a>
+            Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a> &bull;
+            Powered by <a target="_blank" href="http://flask.pocoo.org/">Flask</a> and
+            <a target="_blank" href="https://codemirror.net">CodeMirror</a>
           </div>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
+  </div>
 
+  <script src="js/main.js"></script>
+</body>
 
-    <script src="js/main.js"></script>
-  </body>
 </html>
