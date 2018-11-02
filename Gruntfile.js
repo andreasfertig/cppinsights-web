@@ -80,8 +80,9 @@ module.exports = function(grunt) {
     htmlmin: {
         dist: {
           options: {
-            removeComments     : true,
-            collapseWhitespace : true
+            removeComments       : true,
+            collapseWhitespace   : true,
+            conservativeCollapse : true
           },
           files: [
             {
