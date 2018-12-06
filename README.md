@@ -8,3 +8,10 @@
 
 
 [cppinsights.io](https://cppinsights.io/) is the web front-end of C++ Insights.
+
+
+```
+virtualenv env
+source env/bin/activate
+pip3 install -r requirements.txt 
+```

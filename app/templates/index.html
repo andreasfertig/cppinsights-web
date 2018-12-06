@@ -10,13 +10,13 @@
   <meta http-equiv="Content-Style-Type" content="text/css" />
 
   <!-- codemirror includes -->
-  <link rel="stylesheet" href="cm/codemirror.css">
-  <script src="cm/codemirror.js"></script>
-  <script src="cm/matchbrackets.js"></script>
+  <link rel="stylesheet" href="/cm/codemirror.css">
+  <script src="/cm/codemirror.js"></script>
+  <script src="/cm/matchbrackets.js"></script>
   <link rel="stylesheet" href="cm/show-hint.css">
-  <script src="cm/active-line.js"></script>
-  <script src="cm/show-hint.js"></script>
-  <script src="cm/clike.js"></script><!-- codemirror includes end -->
+  <script src="/cm/active-line.js"></script>
+  <script src="/cm/show-hint.js"></script>
+  <script src="/cm/clike.js"></script><!-- codemirror includes end -->
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@andreas__fertig" />
@@ -30,8 +30,8 @@
   <link rel="icon" type="image/png" href="/32.png" sizes="32x32">
   <link rel="icon" type="image/png" href="/16.png" sizes="16x16">
 
-  <link rel="stylesheet" href="css/gh.css" type="text/css">
-  <link rel="stylesheet" href="css/s.css" type="text/css">
+  <link rel="stylesheet" href="/css/gh.css" type="text/css">
+  <link rel="stylesheet" href="/css/s.css" type="text/css">
 </head>
 
 <body>
@@ -40,7 +40,7 @@
       <div id="container top">
         <div id="main">
           <div id="options header">
-            <img class="logo" src="32.png" />
+            <img class="logo" src="/32.png" />
             <button class="btn btn-primary btn-lg icon-run button-run" type="submit"></button>
             <button class="btn btn-primary btn-lg icon-save button-download" title="Download source"></button>
             <button class="btn btn-primary btn-lg icon-load button-upload" title="Upload source"></button>
@@ -52,7 +52,7 @@
                   <input id="lnkurl" value="" type="text">
                   <span class="input-group-button">
                     <button class="cpybtn" type="button" onclick="CopyClick()">
-                      <img class="clip" src="img/clb.svg" alt="Copy" width="13">
+                      <img class="clip" src="/img/clb.svg" alt="Copy" width="13">
                     </button>
                   </span>
                 </div>
@@ -62,7 +62,7 @@
                 title="See existing issues on GitHub">
               Issues
             </a>
-            <a class="btn btn-primary btn-lg" href="about.html" title="About C++ Insights">
+            <a class="btn btn-primary btn-lg" href="/about.html" title="About C++ Insights">
               About
             </a>
             <div id="header">
@@ -80,7 +80,7 @@
             </div>
             <div class="html">
               <h2>Insight:</h2>
-              <textarea name="code-out" id="cpp-code-out" rows="20" cols="120">{{ html }}</textarea>
+              <textarea name="code-out" id="cpp-code-out" rows="20" cols="120">{{ stdout }}</textarea>
             </div>
           </div>
           <div class="bottom">

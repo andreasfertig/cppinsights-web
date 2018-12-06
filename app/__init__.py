@@ -1,44 +1,26 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # C++ Insights Web, copyright (c) by Andreas Fertig
 # Distributed under an MIT license. See /LICENSE
 
 import datetime
-from urllib import quote, unquote, unquote_plus
-
-from flask import Flask, make_response, render_template, request, send_from_directory
-
+from flask import Flask, make_response, render_template, request, send_from_directory, redirect
+from werkzeug.exceptions import HTTPException
 import subprocess
 import base64
 import os
 import tempfile
-from threading import Timer
 #------------------------------------------------------------------------------
 
 app = Flask(__name__, static_folder='static', static_url_path='')
+app.config['MAX_CONTENT_LENGTH'] = 20 * 1024
 #------------------------------------------------------------------------------
 
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'),
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
-#------------------------------------------------------------------------------
-
-def robust_encode(data):
-    try:
-        return data.encode()
-    except UnicodeDecodeError:
-        return data
-
-    return ''
-#------------------------------------------------------------------------------
-
-def robust_decode(data):
-    try:
-        return data.decode('utf8')
-    except UnicodeDecodeError:
-        return data.decode('latin1')
 #------------------------------------------------------------------------------
 
 def runDocker(code):
@@ -48,35 +30,26 @@ def runDocker(code):
             # write the data into the file
             tmp.write(code)
 
-        # FIXME (jim 2018-04-28): workaround as docker pfes user cannot read file without this
+        # FIXME (2018-04-28): workaround as docker user cannot read file without this
         os.chmod(fileName, 436)
 
         # on mac for docker file must be under /private where we also find var
         # For Mac: '/private%s:/home/insights/insights.cpp' %(fileName)
-        cmd = ['sudo', '-u', 'pfes', 'docker', 'run', '--net=none', '-v', '%s:/home/insights/insights.cpp' %(fileName), '--rm', '-i', 'insights-test']
-        #cmd = [ 'docker', 'run', '--net=none', '-v', '/private%s:/home/insights/insights.cpp' %(fileName), '--rm', '-i', 'insights-test']
+        #cmd = ['sudo', '-u', 'pfes', 'docker', 'run', '--net=none', '-v', '%s:/home/insights/insights.cpp' %(fileName), '--rm', '-i', 'insights-test']
+        cmd = [ 'docker', 'run', '--net=none', '-v', '/private%s:/home/insights/insights.cpp' %(fileName), '--rm', '-i', 'insights-test']
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-        kill = lambda process: process.kill()
-        processTimer = Timer(20, kill, [p])
+        stdout, stderr = p.communicate(timeout=20)
+        returncode     = p.returncode
 
-        returncode = 1
-
-        try:
-            processTimer.start()
-            stdout, stderr = p.communicate()
-            returncode     = p.returncode
-        finally:
-            processTimer.cancel()
     finally:
         os.remove(fileName)
 
-    return stdout, stderr, returncode
+    return stdout.decode('utf-8'), stderr.decode('utf-8'), returncode
 #------------------------------------------------------------------------------
 
-@app.route("/", methods=['GET', 'POST'])
-def index():
-        code = request.form.get('code', request.cookies.get('code', """#include <cstdio>
+def getDefaultCodeExample():
+    return """#include <cstdio>
 #include <vector>
 
 int main()
@@ -87,28 +60,39 @@ int main()
     {
       printf("c=%c\\n", c);
     }
-}"""))
-        code = robust_encode(code)
-        stdout, stderr, returncode = runDocker(code)
+}"""
+#------------------------------------------------------------------------------
 
-        if (None == stderr) or ('' == stderr):
-            stderr = 'Insights exited with result code: %d' %(returncode)
+def buildResponse(code, stdout, stderr, errCode):
+    next_year = datetime.datetime.now() + datetime.timedelta(days=365)
+    response  = make_response(render_template('index.html', **locals()))
+    # store the last example in a cookie
+    response.set_cookie('code', code, expires=next_year)
+
+    return response, errCode
+#------------------------------------------------------------------------------
+
+def error_handler(errCode, code):
+    stderr = 'Failed'
+    stdout = '// Sorry, but your request failed due to a server error:\n// %s\n\n// Sorry for the inconvenience.\n// Please feel free to report this error.' %(errCode)
+
+    return buildResponse(code, stdout, stderr, errCode)
+#------------------------------------------------------------------------------
+
+@app.route("/", methods=['GET', 'POST'])
+def index():
+    code = request.form.get('code', request.cookies.get('code', getDefaultCodeExample()))
+    stdout, stderr, returncode = runDocker(code)
+
+    if not stderr:
+        stderr = 'Insights exited with result code: %d' %(returncode)
 
 #        repr(stdout)
 
-        stderr = robust_decode(stderr)
-        html   = robust_decode(stdout)
+    if returncode:
+        stdout = "Compilation failed!"
 
-        if returncode:
-            html = "Compilation failed!"
-
-        next_year = datetime.datetime.now() + datetime.timedelta(days=365)
-
-        response = make_response(render_template('index.html', **locals()))
-        # store the last example in a cookie
-        response.set_cookie('code', code, expires=next_year)
-
-        return response
+    return buildResponse(code, stdout, stderr, '200')
 #------------------------------------------------------------------------------
 
 @app.route("/lnk", methods=['GET', 'POST'])
@@ -123,10 +107,9 @@ def api():
         rev  = request.args['rev']
 
         if not rev or '1.0' != rev:
-            response = make_response(render_template('error.html'))
-            return response
+            return error_handler('The revision of the link is invalid.', '')
 
-    if code and '' != code:
+    if code:
         try:
             # keep this in mind if, we get a incorrect length base64 string
             #code = code + '=' * (-len(code) % 4)
@@ -134,25 +117,38 @@ def api():
             code = code.replace(' ', '+')
 
             # base 64 decode
-            code = code.decode('base64')
+            code = base64.b64decode(code).decode('utf-8')
         except:
-            print repr(code)
+            print(repr(code))
             code = ''
 
-    next_year = datetime.datetime.now() + datetime.timedelta(days=365)
-    response  = make_response(render_template('index.html', **locals()))
-
-    # store the last example in a cookie
-    response.set_cookie('code', code, expires=next_year)
-
-    return response
+    return buildResponse(code, stdout, stderr, errCode)
 #------------------------------------------------------------------------------
 
 
 @app.errorhandler(404)
 def page_not_found(e):
+#    print(request.path)
+#    return redirect("/", code=302)
     return render_template('404.html'), 404
 #------------------------------------------------------------------------------
+
+@app.errorhandler(413)
+def request_to_large(e):
+        return error_handler('413', '')
+#------------------------------------------------------------------------------
+
+@app.errorhandler(Exception)
+def other_errors(e):
+    code  = request.form.get('code', request.cookies.get('code', getDefaultCodeExample()))
+    ecode = 500
+
+    if isinstance(e, HTTPException):
+        ecode = e.code
+
+    return error_handler(str(ecode), code)
+#------------------------------------------------------------------------------
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')

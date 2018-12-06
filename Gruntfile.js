@@ -58,7 +58,7 @@ module.exports = function(grunt) {
           replacements: [
             {
               pattern: /<!-- codemirror includes -->([\s\S]*?)<!-- codemirror includes end -->/g,
-              replacement: '<link rel="stylesheet" href="cm/cm.min.css"><script src="cm/cm.min.js"></script>'
+              replacement: '<link rel="stylesheet" href="/cm/cm.min.css"><script src="/cm/cm.min.js"></script>'
             },
             {
               pattern: /s\.css/ig,
