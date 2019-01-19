@@ -4,8 +4,7 @@
 # C++ Insights Web, copyright (c) by Andreas Fertig
 # Distributed under an MIT license. See /LICENSE
 
-import datetime
-from flask import Flask, make_response, render_template, request, send_from_directory, redirect
+from flask import Flask, make_response, render_template, request, send_from_directory #, redirect
 from werkzeug.exceptions import HTTPException
 import subprocess
 import base64
@@ -14,7 +13,7 @@ import tempfile
 #------------------------------------------------------------------------------
 
 app = Flask(__name__, static_folder='static', static_url_path='')
-app.config['MAX_CONTENT_LENGTH'] = 20 * 1024
+app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 # 50 kB
 #------------------------------------------------------------------------------
 
 @app.route('/favicon.ico')
@@ -48,26 +47,8 @@ def runDocker(code):
     return stdout.decode('utf-8'), stderr.decode('utf-8'), returncode
 #------------------------------------------------------------------------------
 
-def getDefaultCodeExample():
-    return """#include <cstdio>
-#include <vector>
-
-int main()
-{
-    const char arr[10]{2,4,6,8};
-
-    for(const char& c : arr)
-    {
-      printf("c=%c\\n", c);
-    }
-}"""
-#------------------------------------------------------------------------------
-
 def buildResponse(code, stdout, stderr, errCode):
-    next_year = datetime.datetime.now() + datetime.timedelta(days=365)
     response  = make_response(render_template('index.html', **locals()))
-    # store the last example in a cookie
-    response.set_cookie('code', code, expires=next_year)
 
     return response, errCode
 #------------------------------------------------------------------------------
@@ -81,7 +62,7 @@ def error_handler(errCode, code):
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
-    code = request.form.get('code', request.cookies.get('code', getDefaultCodeExample()))
+    code = request.form.get('code', '')
     stdout, stderr, returncode = runDocker(code)
 
     if not stderr:
@@ -140,7 +121,7 @@ def request_to_large(e):
 
 @app.errorhandler(Exception)
 def other_errors(e):
-    code  = request.form.get('code', request.cookies.get('code', getDefaultCodeExample()))
+    code  = request.form.get('code', '')
     ecode = 500
 
     if isinstance(e, HTTPException):
