@@ -16,9 +16,7 @@ body {
 }
 
 
-input {
-  /*margin: .5em 0;*/
-}
+input {}
 
 label {
   margin: 0;
@@ -64,12 +62,6 @@ label {
   display: block;
 }
 
-/*
-.btn-group-lg > .btn, .btn-lg {
-    font-size: 1rem;
-}
-*/
-
 .btn-group-lg>.btn,
 .btn-lg {
   font-size: .8em;
@@ -79,8 +71,6 @@ label {
 .btn-primary:hover {
   color: black;
   background-color: #e6ebf1;
-  /*background-image: linear-gradient(-180deg, #f0f3f6 0%, #e6ebf1 90%);
-    background-position: 0 -0.5em;*/
   border-color: rgba(27, 31, 35, 0.35);
 }
 
@@ -99,6 +89,10 @@ label {
   line-height: 32px;
   padding-left: 1rem;
   padding-right: 1rem;
+}
+
+#cppStd {
+  padding-left: 0.5rem;
 }
 
 .btn {
@@ -140,6 +134,84 @@ label {
   transition: all .2s ease-in-out;
 }
 
+
+/* remove standard-styles */
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  border-radius: 0;
+  font-size: 1em;
+  /*width: 100%*/
+}
+
+.selectpicker::before {
+  content: "\e259";
+}
+
+/*
+@-moz-document url-prefix() {
+    select, select:-moz-focusring, select::-moz-focus-inner {
+       color: transparent !important;
+       text-shadow: 0 0 0 #000 !important;
+       background-image: none !important;
+       border:0;
+    }
+}
+*/
+
+label {
+  position: relative;
+  height: 32px;
+  line-height: 32px;
+}
+
+label::after {
+  content: '<>';
+  font: 11px "Consolas", monospace;
+  color: #aaa;
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+  right: 8px;
+  top: 9px;
+  padding: 0 0 2px;
+  /*border-bottom:1px solid #ddd;*/
+  position: absolute;
+  vertical-align: middle;
+  pointer-events: none;
+}
+
+label::before {
+  content: '';
+  right: 6px;
+  top: 0px;
+  width: 20px;
+  /*height:20px;*/
+  /*background:#f8f8f8;*/
+  position: absolute;
+  pointer-events: none;
+  vertical-align: middle;
+  display: block;
+}
+
+
+/* remove standard-styles */
+/*
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border:none;
+  border-radius: 0;
+  font-size: 1em;
+  width: 100%;
+  display: inline-block;
+   overflow: hidden;
+}
+*/
 
 [role="button"],
 a,
@@ -261,20 +333,6 @@ a {
   color: #7F7F7F;
 }
 
-/*
-.icon {
-    background-position: center center;
-    background-repeat: no-repeat;
-    vertical-align: middle;
-}
-*/
-
-/*
-.icon-load {
-    background-image: url(../img/upload.png);
-}
-*/
-
 .icon-run:before,
 .icon-run:hover:before {
   background-position: 0px 0;
@@ -311,12 +369,8 @@ a {
 .CodeMirror {
   overflow: hidden;
   width: 100%;
-  /*background: #f7f7f7;
-     */
   border: solid #c5c5c5;
   border-width: .1em;
-  /*padding:.2em .6em;
-    */
 }
 
 .CodeMirror-gutters {
@@ -345,8 +399,6 @@ a {
 
 div.CodeMirror span.CodeMirror-matchingbracket {
   color: inherit;
-  /*font-weight: bold;
-    */
   border: gray;
   border-width: thin;
   border-style: solid;
@@ -398,8 +450,6 @@ div.CodeMirror span.CodeMirror-matchingbracket {
   height: 100%;
   margin-left: 10px;
   margin-right: 10px;
-  /*padding-top: 3em;
-    */
 }
 
 .logo {
@@ -518,6 +568,10 @@ h2 {
     width: 100%;
   }
 
+  .logo {
+    margin-right: 0;
+  }
+
   .html {
     float: none;
     width: 100%;
@@ -546,4 +600,7 @@ h2 {
     padding-right: 0.5rem;
   }
 
+  #cppStd {
+    padding-left: 0;
+  }
 }

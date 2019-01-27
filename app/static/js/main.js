@@ -3,6 +3,8 @@
 
 /* global form, CodeMirror */
 
+var DEFAULT_CPP_STD = 'cpp17';
+
 var cppEditor = CodeMirror.fromTextArea(document.getElementById('cpp-code'), {
   lineNumbers: true,
   matchBrackets: true,
@@ -24,22 +26,32 @@ if (window.sessionStorage) {
 
 if (window.localStorage) {
   if (!cppEditor.getValue()) {
+    var cppStd = window.localStorage.getItem('cppStd');
+
+    if (cppStd) {
+      cppStd = JSON.parse(cppStd);
+    } else {
+      cppStd = DEFAULT_CPP_STD;
+    }
 
     var code = window.localStorage.getItem('code');
 
-    if (!code) {
-      code =
-        "#include <cstdio>\n#include <vector>\n\nint main()\n{\n    const char arr[10]{2,4,6,8};\n\n    for(const char& c : arr)\n    {\n      printf(\"c=%c\\n\", c);\n    }\n}";
-    } else {
+    if (code) {
       code = JSON.parse(code);
+    } else {
+      cppStd = DEFAULT_CPP_STD;
+      code =
+        '#include <cstdio>\n\nint main()\n{\n    const char arr[10]{2,4,6,8};\n\n    for(const char& c : arr)\n    {\n      printf("c=%c\\n", c);\n    }\n}';
+
     }
 
     try {
-      console.log("restore");
+      var element = document.getElementById('cppStd');
+      element.value = cppStd;
+
       displayContents(code);
     } catch (e) {
       // hm
-      console.log('failed');
     }
   }
 }
@@ -114,6 +126,13 @@ function toggleConsole() {
 }
 */
 
+function getCppStd() {
+  var e = document.getElementById('cppStd');
+  var cppStd = e.options[e.selectedIndex].value;
+
+  return cppStd;
+}
+
 form.addEventListener('keydown', function(e) {
   if (!((e.keyCode == 10 || e.keyCode == 13) && e.ctrlKey)) return;
   submit();
@@ -126,6 +145,7 @@ function submit() {
 
   if (window.localStorage) {
     window.localStorage.setItem('code', JSON.stringify(cppEditor.getValue()));
+    window.localStorage.setItem('cppStd', JSON.stringify(getCppStd()));
   }
 
   form.submit();
@@ -142,15 +162,17 @@ function CopyClick() { // eslint-disable-line no-unused-vars
 // at least FireFox has a problem with just btoa with UTF-8 characters
 function b64UTFEncode(str) {
   return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, v) {
-    return String.fromCharCode(parseInt(v, 16))
-  }))
+    return String.fromCharCode(parseInt(v, 16));
+  }));
 }
 
 document.querySelector('.button-create-link').addEventListener('click', function(event) {
   event.preventDefault();
   event.stopPropagation();
   var hostname = window.location.hostname;
-  var text = 'https://' + hostname + '/lnk?code=' + b64UTFEncode(cppEditor.getValue()) + '&rev=1.0';
+  var cppStd = getCppStd();
+  var text = 'https://' + hostname + '/lnk?code=' + b64UTFEncode(cppEditor.getValue()) + '&std=' + cppStd +
+    '&rev=1.0';
 
   var lnkElement = document.getElementById('lnkurl');
   lnkElement.value = text;
