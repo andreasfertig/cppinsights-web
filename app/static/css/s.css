@@ -112,6 +112,7 @@ label {
 .btn:focus,
 .btn:hover {
   text-decoration: none;
+  outline: none;
 }
 
 .btn-group-lg>.btn,
