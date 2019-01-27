@@ -25,17 +25,17 @@ def favicon():
 def runDocker(code):
     fd, fileName = tempfile.mkstemp(suffix='.cpp')
     try:
-        with os.fdopen(fd, 'w') as tmp:
+        with os.fdopen(fd, 'wb') as tmp:
             # write the data into the file
-            tmp.write(code)
+            tmp.write(code.encode('utf-8'))
 
         # FIXME (2018-04-28): workaround as docker user cannot read file without this
         os.chmod(fileName, 436)
 
         # on mac for docker file must be under /private where we also find var
         # For Mac: '/private%s:/home/insights/insights.cpp' %(fileName)
-        #cmd = ['sudo', '-u', 'pfes', 'docker', 'run', '--net=none', '-v', '%s:/home/insights/insights.cpp' %(fileName), '--rm', '-i', 'insights-test']
-        cmd = [ 'docker', 'run', '--net=none', '-v', '/private%s:/home/insights/insights.cpp' %(fileName), '--rm', '-i', 'insights-test']
+        cmd = ['sudo', '-u', 'pfes', 'docker', 'run', '--net=none', '-v', '%s:/home/insights/insights.cpp' %(fileName), '--rm', '-i', 'insights-test']
+        #cmd = [ 'docker', 'run', '--net=none', '-v', '/private%s:/home/insights/insights.cpp' %(fileName), '--rm', '-i', 'insights-test']
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         stdout, stderr = p.communicate(timeout=20)
@@ -71,13 +71,14 @@ def index():
 #        repr(stdout)
 
     if returncode:
-        stdout = "Compilation failed!"
+        stdout = 'Compilation failed!'
+        stdout = ''
 
-    return buildResponse(code, stdout, stderr, '200')
+    return buildResponse(code, stdout, stderr, 200)
 #------------------------------------------------------------------------------
 
 @app.route("/lnk", methods=['GET', 'POST'])
-def api():
+def lnk():
     code = ''
     rev  = ''
 
@@ -103,7 +104,7 @@ def api():
             print(repr(code))
             code = ''
 
-    return buildResponse(code, stdout, stderr, errCode)
+    return buildResponse(code, '', '', 200)
 #------------------------------------------------------------------------------
 
 
@@ -123,6 +124,8 @@ def request_to_large(e):
 def other_errors(e):
     code  = request.form.get('code', '')
     ecode = 500
+
+    print(e)
 
     if isinstance(e, HTTPException):
         ecode = e.code

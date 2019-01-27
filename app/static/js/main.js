@@ -139,11 +139,18 @@ function CopyClick() { // eslint-disable-line no-unused-vars
   document.execCommand('copy');
 }
 
+// at least FireFox has a problem with just btoa with UTF-8 characters
+function b64UTFEncode(str) {
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, v) {
+    return String.fromCharCode(parseInt(v, 16))
+  }))
+}
+
 document.querySelector('.button-create-link').addEventListener('click', function(event) {
   event.preventDefault();
   event.stopPropagation();
   var hostname = window.location.hostname;
-  var text = 'https://' + hostname + '/lnk?code=' + btoa(cppEditor.getValue()) + '&rev=1.0';
+  var text = 'https://' + hostname + '/lnk?code=' + b64UTFEncode(cppEditor.getValue()) + '&rev=1.0';
 
   var lnkElement = document.getElementById('lnkurl');
   lnkElement.value = text;
