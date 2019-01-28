@@ -35,79 +35,77 @@
 </head>
 
 <body>
-  <div class="mainbody">
-    <form action="/" method="post" id="form">
-      <div id="container top">
-        <div id="main">
-          <div id="options header">
-            <img class="logo" src="/32.png" />
-            <button class="btn btn-primary btn-lg icon-run button-run" type="submit"></button>
-            <button class="btn btn-primary btn-lg icon-save button-download" title="Download source"></button>
-            <button class="btn btn-primary btn-lg icon-load button-upload" title="Upload source"></button>
-            <input id="file-input" type="file">
-            <span class="copy-group">
-              <button class="btn btn-primary btn-lg icon-link button-create-link" title="Create URL to source"></button>
-              <div id="copyDropdown" class="copyDownDownContent">
-                <div class="input-group">
-                  <input id="lnkurl" value="" type="text">
-                  <span class="input-group-button">
-                    <button class="cpybtn" type="button" onclick="CopyClick()">
-                      <img class="clip" src="/img/clb.svg" alt="Copy" width="13">
-                    </button>
-                  </span>
-                </div>
-              </div>
-            </span>
-            <a class="btn btn-primary btn-lg" id="button-ce" href="https://godbolt.org/" target="_blank" title="Open in Compiler Explorer">
-              <img class="cebutton" src="/img/ce32.png" alt="Compiler Explorer" width="20">
-            </a>
-            <label>
-              <select id="cppStd" name="cppStd" title="Select the C++ Standard" class="selectpicker btn btn-primary btn-lg">
-                {% for key, value in stdSelections.items() %}
-                <option value="{{ key }}" {% if value.selected %} selected="selected" {% endif %}>{{ value.name }}</option>
-                {% endfor %}
-              </select>
-            </label>
-            <a class="btn btn-primary btn-lg" href="https://github.com/andreasfertig/cppinsights/issues" target="_blank"
-                title="See existing issues on GitHub">
-              Issues
-            </a>
-            <a class="btn btn-primary btn-lg" href="/about.html" title="About C++ Insights">
-              About
-            </a>
-            <div id="header">
-              Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a><br />Powered by <a target="_blank"
-                  href="http://flask.pocoo.org/">Flask</a> and <a target="_blank" href="https://codemirror.net">CodeMirror</a>
-            </div>
-          </div>
-
-          <div class="mid">
-            <div class="code left">
-              <div id="code2">
-                <h2>Source:</h2>
-                <textarea name="code" id="cpp-code" rows="20" cols="120">{{ code }}</textarea>
+  <div class="mainbody" id="main">
+    <div id="container">
+      <div id="main">
+        <div id="options">
+          <img class="logo" src="/32.png" />
+          <button class="btn btn-primary btn-lg icon-run button-run"></button>
+          <button class="btn btn-primary btn-lg icon-save button-download" title="Download source"></button>
+          <button class="btn btn-primary btn-lg icon-load button-upload" title="Upload source"></button>
+          <input id="file-input" type="file">
+          <span class="copy-group">
+            <button class="btn btn-primary btn-lg icon-link button-create-link" title="Create URL to source"></button>
+            <div id="copyDropdown" class="copyDownDownContent">
+              <div class="input-group">
+                <input id="lnkurl" value="" type="text">
+                <span class="input-group-button">
+                  <button class="cpybtn" type="button" onclick="CopyClick()">
+                    <img class="clip" src="/img/clb.svg" alt="Copy" width="13">
+                  </button>
+                </span>
               </div>
             </div>
-            <div class="html">
-              <h2>Insight:</h2>
-              <textarea name="code-out" id="cpp-code-out" rows="20" cols="120">{{ stdout }}</textarea>
-            </div>
-          </div>
-          <div class="bottom">
-            <div class="stderr">
-              <br />
-              <h2>Console:</h2>
-              <div id="stderr-div"><textarea id="stderr-out" rows="5">{{ stderr }}</textarea></div>
-            </div>
-          </div>
-          <div id="footer">
-            Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a> &bull;
-            Powered by <a target="_blank" href="http://flask.pocoo.org/">Flask</a> and
-            <a target="_blank" href="https://codemirror.net">CodeMirror</a>
+          </span>
+          <a class="btn btn-primary btn-lg" id="button-ce" href="https://godbolt.org/" target="_blank" title="Open in Compiler Explorer">
+            <img class="cebutton" src="/img/ce32.png" alt="Compiler Explorer" width="20">
+          </a>
+          <label>
+            <select id="cppStd" name="cppStd" title="Select the C++ Standard" class="selectpicker btn btn-primary btn-lg">
+              {% for key, value in stdSelections.items() %}
+              <option value="{{ key }}" {% if value.selected %} selected="selected" {% endif %}>{{ value.name }}</option>
+              {% endfor %}
+            </select>
+          </label>
+          <a class="btn btn-primary btn-lg" href="https://github.com/andreasfertig/cppinsights/issues" target="_blank"
+              title="See existing issues on GitHub">
+            Issues
+          </a>
+          <a class="btn btn-primary btn-lg" href="/about.html" title="About C++ Insights">
+            About
+          </a>
+          <div id="header">
+            Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a><br />Powered by <a target="_blank"
+                href="http://flask.pocoo.org/">Flask</a> and <a target="_blank" href="https://codemirror.net">CodeMirror</a>
           </div>
         </div>
+
+        <div class="mid">
+          <div class="code left">
+            <div id="code2">
+              <h2>Source:</h2>
+              <textarea name="code" id="cpp-code" rows="20" cols="120">{{ code }}</textarea>
+            </div>
+          </div>
+          <div class="html">
+            <h2>Insight:</h2>
+            <textarea name="code-out" id="cpp-code-out" rows="20" cols="120">{{ stdout }}</textarea>
+          </div>
+        </div>
+        <div class="bottom">
+          <div class="stderr">
+            <br />
+            <h2>Console:</h2>
+            <div id="stderr-div"><textarea id="stderr-out" rows="5">{{ stderr }}</textarea></div>
+          </div>
+        </div>
+        <div id="footer">
+          Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a> &bull;
+          Powered by <a target="_blank" href="http://flask.pocoo.org/">Flask</a> and
+          <a target="_blank" href="https://codemirror.net">CodeMirror</a>
+        </div>
       </div>
-    </form>
+    </div>
   </div>
 
   <script src="/js/main.js"></script>

@@ -4,7 +4,7 @@
 # C++ Insights Web, copyright (c) by Andreas Fertig
 # Distributed under an MIT license. See /LICENSE
 
-from flask import Flask, make_response, render_template, request, send_from_directory #, redirect
+from flask import Flask, make_response, render_template, request, send_from_directory, jsonify #, redirect
 from werkzeug.exceptions import HTTPException
 import subprocess
 import base64
@@ -100,29 +100,42 @@ def getSelections(selected):
 #------------------------------------------------------------------------------
 
 def render(cppStdSelection, code, run=False):
-    if run:
-        cppStd = mapSelectValueToOption(cppStdSelection)
-        stdout, stderr, returncode = runDocker(code, cppStd)
-
-        if (None == stderr) or ('' == stderr):
-            stderr = 'Insights exited with result code: %d' %(returncode)
-
-        if returncode:
-            stdout = 'Compilation failed!'
-    else:
-        stdout = ''
-        stderr = ''
+    stdout = ''
+    stderr = ''
 
     return buildResponse(code, stdout, stderr, cppStdSelection, 200)
 #------------------------------------------------------------------------------
 
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/api/v1/transform", methods=['POST'])
+def api():
+    content = request.json
+
+    cppStd  = content['cppStd']
+    code    = content['code']
+    cppStd = mapSelectValueToOption(cppStd)
+    stdout, stderr, returncode = runDocker(code, cppStd)
+
+    if (None == stderr) or ('' == stderr):
+        stderr = 'Insights exited with result code: %d' %(returncode)
+
+    if returncode:
+        stdout = 'Compilation failed!'
+
+    resp = {}
+    resp['returncode'] = returncode
+    resp['stdout']     = stdout
+    resp['stderr']     = stderr
+
+
+    return jsonify(resp)
+#------------------------------------------------------------------------------
+
+@app.route("/", methods=['GET'])
 def index():
     cppStd  = request.form.get('cppStd', '')
-    code    = request.form.get('code',   '')
-    bIsPost = ('POST' == request.method)
+    code    = ''
 
-    return render(cppStd, code, bIsPost)
+    return render(cppStd, code)
 #------------------------------------------------------------------------------
 
 @app.route("/lnk", methods=['GET', 'POST'])
@@ -147,7 +160,7 @@ def lnk():
             print(repr(code))
             code = ''
 
-    return render(cppStd, code, False)
+    return render(cppStd, code)
 #------------------------------------------------------------------------------
 
 
