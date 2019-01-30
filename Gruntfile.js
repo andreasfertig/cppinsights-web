@@ -58,7 +58,7 @@ module.exports = function(grunt) {
           replacements: [
             {
               pattern: /<!-- codemirror includes -->([\s\S]*?)<!-- codemirror includes end -->/g,
-              replacement: '<link rel="stylesheet" href="cm/cm.min.css"><script src="cm/cm.min.js"></script>'
+              replacement: '<link rel="stylesheet" href="/cm/cm.min.css"><script src="/cm/cm.min.js"></script>'
             },
             {
               pattern: /s\.css/ig,
@@ -158,7 +158,15 @@ module.exports = function(grunt) {
                 config: ".jsbeautifyrc",
                 mode:"VERIFY_ONLY"
             },
-        }
+        },
+
+        format: {
+            src : ['app/static/js/*.js', 'app/static/*.html', 'app/templates/*.html', 'app/static/css/*.css'],
+            options : {
+                config: ".jsbeautifyrc",
+                mode:"VERIFY_AND_WRITE"
+            },
+        },
     },
   });    
 
@@ -172,6 +180,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-jsbeautifier');
 
-  grunt.registerTask('default', ['jsbeautifier', 'eslint', 'svgmin', 'cssmin', 'uglify', 'string-replace', 'htmlmin', 'copy', 'pngmin']);    
+  grunt.registerTask('default', ['jsbeautifier', 'svgmin', 'cssmin', 'uglify', 'string-replace', 'htmlmin', 'copy', 'pngmin']);
+  grunt.registerTask('format', ['jsbeautifier:format']);
 
 };

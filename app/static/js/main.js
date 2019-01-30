@@ -22,6 +22,28 @@ if (window.sessionStorage) {
   }
 }
 
+if (window.localStorage) {
+  if (!cppEditor.getValue()) {
+
+    var code = window.localStorage.getItem('code');
+
+    if (!code) {
+      code =
+        "#include <cstdio>\n#include <vector>\n\nint main()\n{\n    const char arr[10]{2,4,6,8};\n\n    for(const char& c : arr)\n    {\n      printf(\"c=%c\\n\", c);\n    }\n}";
+    } else {
+      code = JSON.parse(code);
+    }
+
+    try {
+      console.log("restore");
+      displayContents(code);
+    } catch (e) {
+      // hm
+      console.log('failed');
+    }
+  }
+}
+
 var mac = CodeMirror.keyMap.default == CodeMirror.keyMap.macDefault;
 CodeMirror.keyMap.default[(mac ? 'Cmd' : 'Ctrl') + '-Space'] = 'autocomplete';
 var cppOutEditor = CodeMirror.fromTextArea(document.getElementById('cpp-code-out'), { // eslint-disable-line no-unused-vars
@@ -65,7 +87,7 @@ document.getElementById('file-input')
 
 document.querySelector('.button-download').addEventListener('click', function(event) {
   event.preventDefault();
-  download('f.txt', cppEditor.getValue());
+  download('cppinsights.txt', cppEditor.getValue());
 });
 
 function download(filename, text) {
@@ -102,6 +124,10 @@ function submit() {
     window.sessionStorage.setItem('position', JSON.stringify(cppEditor.getCursor()));
   }
 
+  if (window.localStorage) {
+    window.localStorage.setItem('code', JSON.stringify(cppEditor.getValue()));
+  }
+
   form.submit();
 }
 
@@ -113,11 +139,18 @@ function CopyClick() { // eslint-disable-line no-unused-vars
   document.execCommand('copy');
 }
 
+// at least FireFox has a problem with just btoa with UTF-8 characters
+function b64UTFEncode(str) {
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, v) {
+    return String.fromCharCode(parseInt(v, 16))
+  }))
+}
+
 document.querySelector('.button-create-link').addEventListener('click', function(event) {
   event.preventDefault();
   event.stopPropagation();
   var hostname = window.location.hostname;
-  var text = 'https://' + hostname + '/lnk?code=' + btoa(cppEditor.getValue()) + '&rev=1.0';
+  var text = 'https://' + hostname + '/lnk?code=' + b64UTFEncode(cppEditor.getValue()) + '&rev=1.0';
 
   var lnkElement = document.getElementById('lnkurl');
   lnkElement.value = text;
