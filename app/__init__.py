@@ -117,7 +117,7 @@ def page_not_found(e):
 
 @app.errorhandler(413)
 def request_to_large(e):
-        return error_handler('413', '')
+        return error_handler(413, '')
 #------------------------------------------------------------------------------
 
 @app.errorhandler(Exception)
@@ -130,7 +130,7 @@ def other_errors(e):
     if isinstance(e, HTTPException):
         ecode = e.code
 
-    return error_handler(str(ecode), code)
+    return error_handler(ecode, code)
 #------------------------------------------------------------------------------
 
 
