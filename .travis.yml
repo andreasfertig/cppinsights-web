@@ -25,7 +25,7 @@ before_deploy:
 deploy:
   provider: script
   skip_cleanup: true
-  script: rsync -avcz --delete --exclude=.DS_Store --exclude='google*.html' $TRAVIS_BUILD_DIR/dist/app/ ${RSYNC_CRED}
+  script: rsync -avcz --delete --exclude=.DS_Store --exclude=__pycache__ --exclude='google*.html' $TRAVIS_BUILD_DIR/dist/app/ ${RSYNC_CRED}
   on:
     branch: master
 env:
