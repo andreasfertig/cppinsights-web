@@ -58,6 +58,13 @@
                 </div>
               </div>
             </span>
+            <label>
+              <select id="cppStd" name="cppStd" title="Select the C++ Standard" class="selectpicker btn btn-primary btn-lg">
+                {% for key, value in stdSelections.items() %}
+                <option value="{{ key }}" {% if value.selected %} selected="selected" {% endif %}>{{ value.name }}</option>
+                {% endfor %}
+              </select>
+            </label>
             <a class="btn btn-primary btn-lg" href="https://github.com/andreasfertig/cppinsights/issues" target="_blank"
                 title="See existing issues on GitHub">
               Issues

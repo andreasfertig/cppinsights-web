@@ -180,7 +180,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-jsbeautifier');
 
-  grunt.registerTask('default', ['jsbeautifier', 'svgmin', 'cssmin', 'uglify', 'string-replace', 'htmlmin', 'copy', 'pngmin']);
+  grunt.registerTask('default', ['jsbeautifier:dist', 'eslint', 'svgmin', 'cssmin', 'uglify', 'string-replace', 'htmlmin', 'copy', 'pngmin']);
   grunt.registerTask('format', ['jsbeautifier:format']);
 
 };

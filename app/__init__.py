@@ -22,7 +22,11 @@ def favicon():
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
 #------------------------------------------------------------------------------
 
-def runDocker(code):
+def getDefaultStandard():
+    return 'cpp17'
+#------------------------------------------------------------------------------
+
+def runDocker(code, cppStd):
     fd, fileName = tempfile.mkstemp(suffix='.cpp')
     try:
         with os.fdopen(fd, 'wb') as tmp:
@@ -34,8 +38,8 @@ def runDocker(code):
 
         # on mac for docker file must be under /private where we also find var
         # For Mac: '/private%s:/home/insights/insights.cpp' %(fileName)
-        cmd = ['sudo', '-u', 'pfes', 'docker', 'run', '--net=none', '-v', '%s:/home/insights/insights.cpp' %(fileName), '--rm', '-i', 'insights-test']
-        #cmd = [ 'docker', 'run', '--net=none', '-v', '/private%s:/home/insights/insights.cpp' %(fileName), '--rm', '-i', 'insights-test']
+        cmd = ['sudo', '-u', 'pfes', 'docker', 'run', '--net=none', '-v', '%s:/home/insights/insights.cpp' %(fileName), '--rm', '-i', 'insights-test', cppStd]
+        #cmd = [ 'docker', 'run', '--net=none', '-v', '/private%s:/home/insights/insights.cpp' %(fileName), '--rm', '-i', 'insights-test', cppStd]
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         stdout, stderr = p.communicate(timeout=20)
@@ -47,7 +51,9 @@ def runDocker(code):
     return stdout.decode('utf-8'), stderr.decode('utf-8'), returncode
 #------------------------------------------------------------------------------
 
-def buildResponse(code, stdout, stderr, errCode):
+def buildResponse(code, stdout, stderr, cppStdSelection, errCode):
+    stdSelections = getSelections(cppStdSelection)
+
     response  = make_response(render_template('index.html', **locals()))
 
     return response, errCode
@@ -57,39 +63,76 @@ def error_handler(errCode, code):
     stderr = 'Failed'
     stdout = '// Sorry, but your request failed due to a server error:\n// %s\n\n// Sorry for the inconvenience.\n// Please feel free to report this error.' %(errCode)
 
-    return buildResponse(code, stdout, stderr, errCode)
+    return buildResponse(code, stdout, stderr, getDefaultStandard(), errCode)
+#------------------------------------------------------------------------------
+
+def getSupportedStandards():
+    stds = { 'cpp98' : {'flag' : 'c++98', 'name' : 'C++ 98', 'selected' : False},
+             'cpp11' : {'flag' : 'c++11', 'name' : 'C++ 11', 'selected' : False},
+             'cpp14' : {'flag' : 'c++14', 'name' : 'C++ 14', 'selected' : False},
+             'cpp17' : {'flag' : 'c++17', 'name' : 'C++ 17', 'selected' : False},
+             'cpp2a' : {'flag' : 'c++2a', 'name' : 'C++ 2a', 'selected' : False},
+           }
+
+    return stds
+#------------------------------------------------------------------------------
+
+def mapSelectValueToOption(value):
+    stdSelections = getSupportedStandards()
+
+    std = stdSelections.get(value)
+    if None != std:
+        std = std['flag']
+    else:
+        std = getDefaultStandard()
+
+    return '-std=%s' %(std)
+#------------------------------------------------------------------------------
+
+def getSelections(selected):
+    stdSelections = getSupportedStandards()
+
+    item = stdSelections.get(selected)
+    if None != item:
+        item['selected'] = True
+
+    return stdSelections
+#------------------------------------------------------------------------------
+
+def render(cppStdSelection, code, run=False):
+    if run:
+        cppStd = mapSelectValueToOption(cppStdSelection)
+        stdout, stderr, returncode = runDocker(code, cppStd)
+
+        if (None == stderr) or ('' == stderr):
+            stderr = 'Insights exited with result code: %d' %(returncode)
+
+        if returncode:
+            stdout = 'Compilation failed!'
+    else:
+        stdout = ''
+        stderr = ''
+
+    return buildResponse(code, stdout, stderr, cppStdSelection, 200)
 #------------------------------------------------------------------------------
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
-    code = request.form.get('code', '')
-    stdout, stderr, returncode = runDocker(code)
+    cppStd  = request.form.get('cppStd', '')
+    code    = request.form.get('code',   '')
+    bIsPost = ('POST' == request.method)
 
-    if not stderr:
-        stderr = 'Insights exited with result code: %d' %(returncode)
-
-#        repr(stdout)
-
-    if returncode:
-        stdout = 'Compilation failed!'
-        stdout = ''
-
-    return buildResponse(code, stdout, stderr, 200)
+    return render(cppStd, code, bIsPost)
 #------------------------------------------------------------------------------
 
 @app.route("/lnk", methods=['GET', 'POST'])
 def lnk():
-    code = ''
-    rev  = ''
+    code    = request.args.get('code', '')
+    rev     = request.args.get('rev',  '')
+    cppStd  = request.args.get('std',  getDefaultStandard())
 
-    if 'code' in request.args:
-        code = request.args['code']
-
-    if 'rev' in request.args:
-        rev  = request.args['rev']
-
-        if not rev or '1.0' != rev:
-            return error_handler('The revision of the link is invalid.', '')
+    if not rev or '1.0' != rev:
+        return error_handler('The revision of the link is invalid.', '')
 
     if code:
         try:
@@ -104,7 +147,7 @@ def lnk():
             print(repr(code))
             code = ''
 
-    return buildResponse(code, '', '', 200)
+    return render(cppStd, code, False)
 #------------------------------------------------------------------------------
 
 
