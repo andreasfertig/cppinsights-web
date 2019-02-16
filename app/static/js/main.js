@@ -169,19 +169,15 @@ function b64UTFEncode(str) {
 function updateLinkToCompilerExplorer() {
   var cppstdparam = '-std=' + getCppStd().replace('cpp', 'c++');
   var clientstate = {
-    sessions: [
-      {
-        id: 1,
-        language: 'c++',
-        source: cppEditor.getValue(),
-        compilers: [
-          {
-            id: 'gsnapshot',
-            options: cppstdparam
-          }
-        ]
-      }
-    ]
+    sessions: [{
+      id: 1,
+      language: 'c++',
+      source: cppEditor.getValue(),
+      compilers: [{
+        id: 'gsnapshot',
+        options: cppstdparam
+      }]
+    }]
   };
 
   var link = 'https://godbolt.org/clientstate/' + b64UTFEncode(JSON.stringify(clientstate));
