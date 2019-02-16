@@ -189,7 +189,7 @@ function updateLinkToCompilerExplorer() {
   ceButton.href = link;
 }
 
-document.querySelector('#button-ce').addEventListener('mousedown', function(event) {
+document.querySelector('#button-ce').addEventListener('mousedown', function() {
   updateLinkToCompilerExplorer();
 });
 
