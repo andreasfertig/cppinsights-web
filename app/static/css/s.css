@@ -547,6 +547,11 @@ h2 {
   top: 3px;
 }
 
+.cebutton {
+  position: relative;
+  top: -2px;
+}
+
 .copyDownDownContent {
   display: none;
   position: absolute;

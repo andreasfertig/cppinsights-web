@@ -166,6 +166,29 @@ function b64UTFEncode(str) {
   }));
 }
 
+function updateLinkToCompilerExplorer() {
+  var cppstdparam = '-std=' + getCppStd().replace('cpp', 'c++');
+  var clientstate = {
+    sessions: [{
+      id: 1,
+      language: 'c++',
+      source: cppEditor.getValue(),
+      compilers: [{
+        id: 'gsnapshot',
+        options: cppstdparam
+      }]
+    }]
+  };
+
+  var link = 'https://godbolt.org/clientstate/' + b64UTFEncode(JSON.stringify(clientstate));
+  var ceButton = document.getElementById('button-ce');
+  ceButton.href = link;
+}
+
+document.querySelector('#button-ce').addEventListener('mousedown', function() {
+  updateLinkToCompilerExplorer();
+});
+
 document.querySelector('.button-create-link').addEventListener('click', function(event) {
   event.preventDefault();
   event.stopPropagation();
