@@ -1,7 +1,7 @@
 /* C++ Insights Web, copyright (c) by Andreas Fertig
    Distributed under an MIT license. See /LICENSE */
 
-/* global form, CodeMirror */
+/* global CodeMirror */
 
 var DEFAULT_CPP_STD = 'cpp17';
 
@@ -12,17 +12,7 @@ var cppEditor = CodeMirror.fromTextArea(document.getElementById('cpp-code'), {
   mode: 'text/x-c++src'
 });
 
-if (window.sessionStorage) {
-  cppEditor.focus();
-  var pos = window.sessionStorage.getItem('position');
-  if (pos) {
-    try {
-      cppEditor.setCursor(JSON.parse(pos));
-    } catch (e) {
-      // continue, error does not matter here
-    }
-  }
-}
+cppEditor.focus();
 
 if (window.localStorage) {
   if (!cppEditor.getValue()) {
@@ -133,22 +123,48 @@ function getCppStd() {
   return cppStd;
 }
 
-form.addEventListener('keydown', function(e) {
+function OnRunKeyDown(e) {
   if (!((e.keyCode == 10 || e.keyCode == 13) && e.ctrlKey)) return;
-  submit();
-});
+  Transform();
+}
 
-function submit() {
-  if (window.sessionStorage) {
-    window.sessionStorage.setItem('position', JSON.stringify(cppEditor.getCursor()));
+function OnRunClicked(e) {
+  e.preventDefault();
+  Transform();
+  cppEditor.focus();
+}
+
+function OnWaitForResultKeyDown(e) {
+  if (!((e.keyCode == 10 || e.keyCode == 13) && e.ctrlKey)) return;
+  stdErrEditor.setValue('A request is already in the air...');
+}
+
+function OnWaitForResultRunClicked(e) {
+  e.preventDefault();
+  stdErrEditor.setValue('A request is already in the air...');
+}
+
+function RunListenersSetup(addKeyDown, removeRunBtn, addRunBtn) {
+  window.onkeyup = addKeyDown;
+
+  var runButton = document.querySelector('.button-run');
+  if (runButton) {
+    runButton.title = 'Run C++ Insights (' + (mac ? 'Cmd-Return' : 'Ctrl-Enter') + ')';
+    runButton.removeEventListener('click', removeRunBtn);
+    runButton.addEventListener('click', addRunBtn);
   }
+  cppEditor.focus();
+}
 
-  if (window.localStorage) {
-    window.localStorage.setItem('code', JSON.stringify(cppEditor.getValue()));
-    window.localStorage.setItem('cppStd', JSON.stringify(getCppStd()));
-  }
+function SetRunListeners() {
+  RunListenersSetup(OnRunKeyDown, OnWaitForResultRunClicked, OnRunClicked);
+}
 
-  form.submit();
+// set them initially
+SetRunListeners();
+
+function SetWaitForResultListeners() {
+  RunListenersSetup(OnWaitForResultKeyDown, OnRunClicked, OnWaitForResultRunClicked);
 }
 
 function CopyClick() { // eslint-disable-line no-unused-vars
@@ -192,9 +208,8 @@ document.querySelector('#button-ce').addEventListener('mousedown', function() {
 document.querySelector('.button-create-link').addEventListener('click', function(event) {
   event.preventDefault();
   event.stopPropagation();
-  var hostname = window.location.hostname;
   var cppStd = getCppStd();
-  var text = 'https://' + hostname + '/lnk?code=' + b64UTFEncode(cppEditor.getValue()) + '&std=' + cppStd +
+  var text = getURLBase() + '/lnk?code=' + b64UTFEncode(cppEditor.getValue()) + '&std=' + cppStd +
     '&rev=1.0';
 
   var lnkElement = document.getElementById('lnkurl');
@@ -203,15 +218,6 @@ document.querySelector('.button-create-link').addEventListener('click', function
   var element = document.getElementById('copyDropdown');
   element.classList.toggle('show');
 });
-
-var runButton = document.querySelector('.button-run');
-if (runButton) {
-  runButton.title = 'Run C++ Insights (' + (mac ? 'Cmd-Return' : 'Ctrl-Enter') + ')';
-  runButton.addEventListener('click', function(event) {
-    event.preventDefault();
-    submit();
-  });
-}
 
 window.onclick = function(event) {
   if (!event.target.matches('.dropbtn') && !event.target.matches('.cpybtn') && !event.target.matches('#lnkurl')) {
@@ -226,3 +232,46 @@ window.onclick = function(event) {
     }
   }
 };
+
+// without trailing '/'
+function getURLBase() {
+  return location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
+}
+
+// Send a transformation request to the server
+function Transform() { // eslint-disable-line no-unused-vars
+
+  var request = new XMLHttpRequest();
+
+  if (window.localStorage) {
+    window.localStorage.setItem('code', JSON.stringify(cppEditor.getValue()));
+    window.localStorage.setItem('cppStd', JSON.stringify(getCppStd()));
+  }
+
+  request.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      var response = JSON.parse(this.responseText);
+      cppOutEditor.setValue(response.stdout);
+      stdErrEditor.setValue(response.stderr);
+      SetRunListeners();
+    } else if (this.readyState == 4 && this.status != 200) {
+      stdErrEditor.setValue('Sorry, your request failed');
+      SetRunListeners();
+    }
+  };
+
+  stdErrEditor.setValue('Waiting for response...');
+
+  var url = getURLBase() + '/api/v1/transform';
+
+  request.open('POST', url, true);
+  request.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+
+  var data = {};
+
+  data.cppStd = getCppStd();
+  data.code = cppEditor.getValue();
+
+  SetWaitForResultListeners();
+  request.send(JSON.stringify(data));
+}
