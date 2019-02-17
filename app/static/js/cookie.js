@@ -48,7 +48,7 @@ function cookieAccept(b) { // eslint-disable-line no-unused-vars
 }
 
 function storageAllowed() {
-  return (null != checkCookie(cookieName));
+  return ('true' == checkCookie(cookieName));
 }
 
 window.onload = function() {
