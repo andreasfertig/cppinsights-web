@@ -15,7 +15,6 @@ install:
 - npm install -g grunt-cli
 - npm install
 script:
-- npm test
 - grunt --version
 - grunt
 before_deploy:
