@@ -1,7 +1,7 @@
 /* C++ Insights Web, copyright (c) by Andreas Fertig
    Distributed under an MIT license. See /LICENSE */
 
-/* global CodeMirror */
+/* global CodeMirror, storageAllowed */
 
 var DEFAULT_CPP_STD = 'cpp17';
 
@@ -14,36 +14,36 @@ var cppEditor = CodeMirror.fromTextArea(document.getElementById('cpp-code'), {
 
 cppEditor.focus();
 
-if (window.localStorage) {
+var cppStd = DEFAULT_CPP_STD;
+var code = null;
+
+if (window.localStorage && storageAllowed()) {
   if (!cppEditor.getValue()) {
-    var cppStd = window.localStorage.getItem('cppStd');
+    cppStd = window.localStorage.getItem('cppStd');
 
     if (cppStd) {
       cppStd = JSON.parse(cppStd);
-    } else {
-      cppStd = DEFAULT_CPP_STD;
     }
 
-    var code = window.localStorage.getItem('code');
-
-    if (code) {
-      code = JSON.parse(code);
-    } else {
-      cppStd = DEFAULT_CPP_STD;
-      code =
-        '#include <cstdio>\n\nint main()\n{\n    const char arr[10]{2,4,6,8};\n\n    for(const char& c : arr)\n    {\n      printf("c=%c\\n", c);\n    }\n}';
-
-    }
-
-    try {
-      var element = document.getElementById('cppStd');
-      element.value = cppStd;
-
-      displayContents(code);
-    } catch (e) {
-      // hm
-    }
+    code = window.localStorage.getItem('code');
   }
+}
+
+if (code) {
+  code = JSON.parse(code);
+} else {
+  cppStd = DEFAULT_CPP_STD;
+  code =
+    '#include <cstdio>\n\nint main()\n{\n    const char arr[10]{2,4,6,8};\n\n    for(const char& c : arr)\n    {\n      printf("c=%c\\n", c);\n    }\n}';
+}
+
+try {
+  var element = document.getElementById('cppStd');
+  element.value = cppStd;
+
+  displayContents(code);
+} catch (e) {
+  // hm
 }
 
 var mac = CodeMirror.keyMap.default == CodeMirror.keyMap.macDefault;
@@ -243,7 +243,7 @@ function Transform() { // eslint-disable-line no-unused-vars
 
   var request = new XMLHttpRequest();
 
-  if (window.localStorage) {
+  if (window.localStorage && storageAllowed()) {
     window.localStorage.setItem('code', JSON.stringify(cppEditor.getValue()));
     window.localStorage.setItem('cppStd', JSON.stringify(getCppStd()));
   }
