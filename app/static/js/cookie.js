@@ -47,12 +47,12 @@ function cookieAccept(b) { // eslint-disable-line no-unused-vars
   element.parentNode.removeChild(element);
 }
 
-function storageAllowed() {
+function storageAllowed() { // eslint-disable-line no-unused-vars
   return ('true' == checkCookie(cookieName));
 }
 
 window.onload = function() {
-  if (!storageAllowed()) {
+  if (!checkCookie(cookieName)) {
     createBanner();
   }
 };
