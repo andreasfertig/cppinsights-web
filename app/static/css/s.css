@@ -241,6 +241,39 @@ img {
 }
 
 
+#cookie-law {
+  background-color: lightcyan;
+  height: 60px;
+  vertical-align: middle;
+  margin: 0;
+  font-size: 0.9em;
+  line-height: 60px;
+  padding-left: 10px;
+}
+
+.accept-decline {
+  width: 20%;
+  display: inline-block;
+  float: right;
+}
+
+.btn-decline,
+.btn-accept {
+  width: 50%;
+  display: block;
+  height: 60px;
+  text-align: center;
+}
+
+.btn-accept {
+  float: right;
+  background-color: darkturquoise;
+}
+
+.btn-decline {
+  float: left;
+}
+
 
 a:focus,
 a:hover {
@@ -256,6 +289,29 @@ a:hover {
 a {
   background-color: transparent;
   color: #0275d8;
+  text-decoration: none;
+}
+
+a.close-cookie-banner,
+a.decline-cookie-banner {
+  display: block;
+  background-color: turquoise;
+  height: 60px;
+  text-align: center;
+  color: white;
+}
+
+a.decline-cookie-banner {
+  background-color: lightcyan;
+  color: black;
+}
+
+a.decline-cookie-banner:focus,
+a.decline-cookie-banner:hover,
+a.close-cookie-banner:focus,
+a.close-cookie-banner:hover {
+  background-color: darkturquoise;
+  color: white;
   text-decoration: none;
 }
 

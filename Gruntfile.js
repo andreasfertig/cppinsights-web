@@ -42,7 +42,8 @@ module.exports = function(grunt) {
         cmjs: {
           files: {
             'dist/app/static/cm/cm.min.js'   : ['app/static/cm/codemirror.js', 'app/static/cm/active-line.js', 'app/static/cm/clike.js', 'app/static/cm/matchbrackets.js', 'app/static/cm/show-hint.js'],
-            'dist/app/static/js/main.min.js' : ['app/static/js/main.js']
+            'dist/app/static/js/main.min.js' : ['app/static/js/main.js'],
+            'dist/app/static/js/cookie.min.js' : ['app/static/js/cookie.js']
           }
         }
     },
@@ -72,6 +73,10 @@ module.exports = function(grunt) {
               pattern: /main\.js/ig,
               replacement: 'main.min.js'
             },              
+            {
+              pattern: /cookie\.js/ig,
+              replacement: 'cookie.min.js'
+            },
           ]
         }
       }
