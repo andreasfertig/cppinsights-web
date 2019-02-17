@@ -1,9 +1,12 @@
 /* C++ Insights Web, copyright (c) by Andreas Fertig
    Distributed under an MIT license. See /LICENSE */
 
-/* global CodeMirror, storageAllowed */
+/* global CodeMirror, storageAllowed, onLoad */
 
 var DEFAULT_CPP_STD = 'cpp17';
+
+// load cookies
+onLoad();
 
 var cppEditor = CodeMirror.fromTextArea(document.getElementById('cpp-code'), {
   lineNumbers: true,
