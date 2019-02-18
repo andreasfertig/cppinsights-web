@@ -40,25 +40,26 @@ function checkCookie(name) {
   return null;
 }
 
-function cookieAccept(b) {
+function cookieAccept(b) { // eslint-disable-line no-unused-vars
   createCookie(cookieName, b);
 
   var element = document.getElementById('cookie-law');
   element.parentNode.removeChild(element);
 }
 
-function storageAllowed() {
+function storageAllowed() { // eslint-disable-line no-unused-vars
   return ('true' == checkCookie(cookieName));
 }
 
-function onLoad() {
+function onLoad() { // eslint-disable-line no-unused-vars
   if (!checkCookie(cookieName)) {
     createBanner();
   }
 }
 
+/*
 module.exports = {
   storageAllowed,
   onLoad,
   cookieAccept
-};
+};*/
