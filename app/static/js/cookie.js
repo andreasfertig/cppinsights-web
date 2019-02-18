@@ -40,14 +40,14 @@ function checkCookie(name) {
   return null;
 }
 
-function cookieAccept(b) { // eslint-disable-line no-unused-vars
+function cookieAccept(b) {
   createCookie(cookieName, b);
 
   var element = document.getElementById('cookie-law');
   element.parentNode.removeChild(element);
 }
 
-function storageAllowed() { // eslint-disable-line no-unused-vars
+function storageAllowed() {
   return ('true' == checkCookie(cookieName));
 }
 
