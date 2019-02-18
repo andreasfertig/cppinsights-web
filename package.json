@@ -4,7 +4,8 @@
   "description": "C++ Insights - Web Front-End",
   "main": "index.js",
   "scripts": {
-    "test": "nyc mocha"
+    "test": "nyc mocha",
+    "report-coverage": "nyc --reporter=lcov npm test"
   },
   "repository": {
     "type": "git",

@@ -84,7 +84,7 @@ def mapSelectValueToOption(value):
     if None != std:
         std = std['flag']
     else:
-        std = getDefaultStandard()
+        std = stdSelections.get(getDefaultStandard())['flag']
 
     return '-std=%s' %(std)
 #------------------------------------------------------------------------------
@@ -132,8 +132,8 @@ def api():
 
 @app.route("/", methods=['GET'])
 def index():
-    cppStd  = request.form.get('cppStd', '')
-    code    = ''
+    cppStd = ''
+    code   = ''
 
     return render(cppStd, code)
 #------------------------------------------------------------------------------
@@ -145,7 +145,7 @@ def lnk():
     cppStd  = request.args.get('std',  getDefaultStandard())
 
     if not rev or '1.0' != rev:
-        return error_handler('The revision of the link is invalid.', '')
+        return error_handler(404, 'The revision of the link is invalid.')
 
     if code:
         try:
