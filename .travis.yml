@@ -1,8 +1,7 @@
 sudo: false
+language: python
+python: 3.6
 addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
   ssh_known_hosts: cppinsights.io
 matrix:
   include:
@@ -14,9 +13,12 @@ install:
 - npm set progress=false
 - npm install -g grunt-cli
 - npm install
+- pip install -r requirements_travis.txt
 script:
 - grunt --version
 - grunt
+- coverage run test.py
+- bash <(curl -s https://codecov.io/bash) -cF python
 before_deploy:
 - openssl aes-256-cbc -K $encrypted_2b908d61f2a1_key -iv $encrypted_2b908d61f2a1_iv -in deploy_rsa.enc -out /tmp/deploy_rsa -d
 - eval "$(ssh-agent -s)"
