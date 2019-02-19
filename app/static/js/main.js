@@ -4,7 +4,6 @@
 /* global CodeMirror, storageAllowed, onLoad */
 
 var DEFAULT_CPP_STD = 'cpp17';
-
 // load cookies
 onLoad();
 
@@ -16,9 +15,8 @@ var cppEditor = CodeMirror.fromTextArea(document.getElementById('cpp-code'), {
 });
 
 cppEditor.focus();
-
 var cppStd = DEFAULT_CPP_STD;
-var code = null;
+var code = cppEditor.getValue();
 
 if (window.localStorage && storageAllowed()) {
   if (!cppEditor.getValue()) {
@@ -29,15 +27,17 @@ if (window.localStorage && storageAllowed()) {
     }
 
     code = window.localStorage.getItem('code');
+    if (code) {
+      code = JSON.parse(code);
+    }
   }
 }
 
-if (code) {
-  code = JSON.parse(code);
-} else {
+if (!code) {
   cppStd = DEFAULT_CPP_STD;
   code =
     '#include <cstdio>\n\nint main()\n{\n    const char arr[10]{2,4,6,8};\n\n    for(const char& c : arr)\n    {\n      printf("c=%c\\n", c);\n    }\n}';
+
 }
 
 try {
