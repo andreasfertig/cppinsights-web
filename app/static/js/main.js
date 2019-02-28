@@ -18,7 +18,23 @@ cppEditor.focus();
 var cppStd = DEFAULT_CPP_STD;
 var code = cppEditor.getValue();
 
-if (window.localStorage && storageAllowed()) {
+// check if the current url contains '/lnk' which means that we opened a link. In that case do not load the values from
+// local storage.
+function isLink() {
+  return (window.location.href.indexOf('/lnk') > -1);
+}
+
+// If this is a link add a keydown listener to the cppEditor and remove the link, if the code is changed.
+if (isLink()) {
+  cppEditor.on('keydown', function(instance, event) { // eslint-disable-line no-unused-vars
+    if (isLink()) {
+      history.pushState(null, null, '/');
+    }
+
+  });
+}
+
+if (window.localStorage && storageAllowed() && !isLink()) {
   if (!cppEditor.getValue()) {
     cppStd = window.localStorage.getItem('cppStd');
 
@@ -41,8 +57,10 @@ if (!code) {
 }
 
 try {
-  var element = document.getElementById('cppStd');
-  element.value = cppStd;
+  if (!isLink()) {
+    var element = document.getElementById('cppStd');
+    element.value = cppStd;
+  }
 
   displayContents(code);
 } catch (e) {
@@ -199,7 +217,7 @@ function updateLinkToCompilerExplorer() {
     }]
   };
 
-  var link = 'https://godbolt.org/clientstate/' + b64UTFEncode(JSON.stringify(clientstate));
+  var link = location.protocol + '//godbolt.org/clientstate/' + b64UTFEncode(JSON.stringify(clientstate));
   var ceButton = document.getElementById('button-ce');
   ceButton.href = link;
 }
