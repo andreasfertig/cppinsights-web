@@ -195,7 +195,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-jsbeautifier');
   grunt.loadNpmTasks('grunt-shell');
 
-  grunt.registerTask('default', ['jsbeautifier:dist', 'eslint', /*'shell:npm_test_mocha',*/ 'svgmin', 'cssmin',
+  grunt.registerTask('default', [/*'jsbeautifier:dist',*/ 'eslint', /*'shell:npm_test_mocha',*/ 'svgmin', 'cssmin',
     'uglify',
     'string-replace', 'htmlmin', 'copy', 'pngmin'
   ]);
