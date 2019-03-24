@@ -26,20 +26,32 @@ def getDefaultStandard():
     return 'cpp17'
 #------------------------------------------------------------------------------
 
-def runDocker(code, cppStd):
+def runDocker(code, cppStd, versionOnly=False):
     fd, fileName = tempfile.mkstemp(suffix='.cpp')
     try:
-        with os.fdopen(fd, 'wb') as tmp:
-            # write the data into the file
-            tmp.write(code.encode('utf-8'))
+        if not versionOnly:
+            with os.fdopen(fd, 'wb') as tmp:
+                # write the data into the file
+                tmp.write(code.encode('utf-8'))
 
-        # FIXME (2018-04-28): workaround as docker user cannot read file without this
-        os.chmod(fileName, 436)
+            # FIXME (2018-04-28): workaround as docker user cannot read file without this
+            os.chmod(fileName, 436)
 
-        # on mac for docker file must be under /private where we also find var
-        # For Mac: '/private%s:/home/insights/insights.cpp' %(fileName)
-        cmd = ['sudo', '-u', 'pfes', 'docker', 'run', '--net=none', '-v', '%s:/home/insights/insights.cpp' %(fileName), '--rm', '-i', 'insights-test', cppStd]
-        #cmd = [ 'docker', 'run', '--net=none', '-v', '/private%s:/home/insights/insights.cpp' %(fileName), '--rm', '-i', 'insights-test', cppStd]
+        fileParam = []
+        if not versionOnly:
+            # on mac for docker file must be under /private where we also find var
+            # For Mac: '/private%s:/home/insights/insights.cpp' %(fileName)
+            #fileParam = [ '-v', '/private%s:/home/insights/insights.cpp' %(fileName) ]
+            fileParam = [ '-v', '%s:/home/insights/insights.cpp' %(fileName) ]
+
+        #cmd = [ 'docker', 'run', '--net=none' ]
+        cmd = [ 'sudo', '-u', 'pfes', 'docker', 'run', '--net=none' ]
+        cmd.extend(fileParam)
+        cmd.extend(['--rm', '-i', 'insights-test'])
+
+        if None != cppStd:
+            cmd.append(cppStd)
+
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         stdout, stderr = p.communicate(timeout=20)
@@ -128,6 +140,42 @@ def api():
 
 
     return jsonify(resp)
+#------------------------------------------------------------------------------
+
+def getVersionInfo():
+    stdout, stderr, returncode = runDocker('', None, True)
+
+    if (None == stderr) or ('' == stderr):
+        stderr = 'Insights exited with result code: %d' %(returncode)
+
+    if returncode:
+        stdout = 'Compilation failed!'
+
+    resp = {}
+    resp['returncode'] = returncode
+    resp['stdout']     = stdout
+    resp['stderr']     = stderr
+
+    return resp
+#------------------------------------------------------------------------------
+
+@app.route("/api/v1/version", methods=['GET'])
+def apiversion():
+    resp = getVersionInfo()
+
+    return jsonify(resp)
+#------------------------------------------------------------------------------
+
+@app.route("/version", methods=['GET'])
+def version():
+    resp = getVersionInfo()
+
+    version = resp['stdout']
+    version = version.replace('\n', '</br>')
+
+    response  = make_response(render_template('version.html', **locals()))
+
+    return response
 #------------------------------------------------------------------------------
 
 @app.route("/", methods=['GET'])
