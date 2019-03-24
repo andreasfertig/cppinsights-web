@@ -10,6 +10,9 @@ before_install:
 - node --version
 - npm --version
 install:
+- nvm install node
+- node --version
+- npm --version
 - npm set progress=false
 - npm install -g grunt-cli
 - npm install
