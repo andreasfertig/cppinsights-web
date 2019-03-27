@@ -15,8 +15,35 @@ var cppEditor = CodeMirror.fromTextArea(document.getElementById('cpp-code'), {
 });
 
 cppEditor.focus();
-var cppStd = DEFAULT_CPP_STD;
+var insightsOptions = [DEFAULT_CPP_STD];
 var code = cppEditor.getValue();
+
+function setStandard(std) {
+  var selected = $('#insightsOptions').multipleSelect('getSelects', 'value');
+
+  var filtered = selected.filter(function(value, index, arr) { // eslint-disable-line no-unused-vars
+    return !value.startsWith('cpp');
+  });
+
+  filtered.push(std);
+
+  $('#insightsOptions').multipleSelect('setSelects', filtered);
+}
+
+$('#insightsOptions').multipleSelect({
+  placeholder: 'C++ Insights Options',
+  selectAll: false,
+  onClick: function(opt) {
+    if (opt.value.startsWith('cpp')) {
+      setStandard(opt.value);
+    }
+  },
+  onOptgroupClick: function(group) {
+    if ('C++ Standard' == group.label) {
+      setStandard(DEFAULT_CPP_STD);
+    }
+  },
+});
 
 // check if the current url contains '/lnk' which means that we opened a link. In that case do not load the values from
 // local storage.
@@ -36,10 +63,10 @@ if (isLink()) {
 
 if (window.localStorage && storageAllowed() && !isLink()) {
   if (!cppEditor.getValue()) {
-    cppStd = window.localStorage.getItem('cppStd');
+    insightsOptions = window.localStorage.getItem('insightsOptions');
 
-    if (cppStd) {
-      cppStd = JSON.parse(cppStd);
+    if (insightsOptions) {
+      insightsOptions = JSON.parse(insightsOptions);
     }
 
     code = window.localStorage.getItem('code');
@@ -50,22 +77,21 @@ if (window.localStorage && storageAllowed() && !isLink()) {
 }
 
 if (!code) {
-  cppStd = DEFAULT_CPP_STD;
+  insightsOptions = [DEFAULT_CPP_STD];
   code =
     '#include <cstdio>\n\nint main()\n{\n    const char arr[10]{2,4,6,8};\n\n    for(const char& c : arr)\n    {\n      printf("c=%c\\n", c);\n    }\n}';
 
 }
 
-try {
-  if (!isLink()) {
-    var element = document.getElementById('cppStd');
-    element.value = cppStd;
-  }
-
-  displayContents(code);
-} catch (e) {
-  // hm
+//try {
+if (!isLink()) {
+  $('#insightsOptions').multipleSelect('setSelects', insightsOptions);
 }
+
+displayContents(code);
+//} catch (e) {
+// hm
+//}
 
 var mac = CodeMirror.keyMap.default == CodeMirror.keyMap.macDefault;
 CodeMirror.keyMap.default[(mac ? 'Cmd' : 'Ctrl') + '-Space'] = 'autocomplete';
@@ -137,11 +163,16 @@ function toggleConsole() {
 }
 */
 
-function getCppStd() {
-  var e = document.getElementById('cppStd');
-  var cppStd = e.options[e.selectedIndex].value;
+function getInsightsOptions() {
+  return $('#insightsOptions').multipleSelect('getSelects', 'value');
+}
 
-  return cppStd;
+function getCppStd() {
+  var filtered = getInsightsOptions().filter(function(value, index, arr) { // eslint-disable-line no-unused-vars
+    return value.startsWith('cpp');
+  });
+
+  return filtered[0];
 }
 
 function OnRunKeyDown(e) {
@@ -230,7 +261,9 @@ document.querySelector('.button-create-link').addEventListener('click', function
   event.preventDefault();
   event.stopPropagation();
   var cppStd = getCppStd();
-  var text = getURLBase() + '/lnk?code=' + b64UTFEncode(cppEditor.getValue()) + '&std=' + cppStd +
+  var insightsOptions = getInsightsOptions();
+  var text = getURLBase() + '/lnk?code=' + b64UTFEncode(cppEditor.getValue()) + '&insightsOptions=' +
+    insightsOptions + '&std=' + cppStd +
     '&rev=1.0';
 
   var lnkElement = document.getElementById('lnkurl');
@@ -266,7 +299,7 @@ function Transform() { // eslint-disable-line no-unused-vars
 
   if (window.localStorage && storageAllowed()) {
     window.localStorage.setItem('code', JSON.stringify(cppEditor.getValue()));
-    window.localStorage.setItem('cppStd', JSON.stringify(getCppStd()));
+    window.localStorage.setItem('insightsOptions', JSON.stringify(getInsightsOptions()));
   }
 
   request.onreadystatechange = function() {
@@ -290,7 +323,7 @@ function Transform() { // eslint-disable-line no-unused-vars
 
   var data = {};
 
-  data.cppStd = getCppStd();
+  data.insightsOptions = getInsightsOptions();
   data.code = cppEditor.getValue();
 
   SetWaitForResultListeners();

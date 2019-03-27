@@ -3,7 +3,8 @@
         "browser": true,
         "node": true,
         "commonjs": true,
-        "es6": true
+        "es6": true,
+        "jquery": true
     },
     "extends": "eslint:recommended",
     "parserOptions": {
