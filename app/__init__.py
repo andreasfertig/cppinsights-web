@@ -84,19 +84,19 @@ def error_handler(errCode, code):
 #------------------------------------------------------------------------------
 
 def getSupportedOptions():
-    opts = { 'C++ Standard'             : {'flag' : '',                         'name' : 'C++ Standard',             'selected' : False, 'label' : True,  'single' : False , 'ccopt' : False, 'cppStd' : False },
-             'cpp98'                    : {'flag' : '-std=c++98',               'name' : 'C++ 98',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
-             'cpp11'                    : {'flag' : '-std=c++11',               'name' : 'C++ 11',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
-             'cpp14'                    : {'flag' : '-std=c++14',               'name' : 'C++ 14',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
-             'cpp17'                    : {'flag' : '-std=c++17',               'name' : 'C++ 17',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
-             'cpp2a'                    : {'flag' : '-std=c++2a',               'name' : 'C++ 2a',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
-             'Alternative Styles'       : {'flag' : '',                         'name' : 'Alternative Styles',       'selected' : False, 'label' : True,  'single' : False , 'ccopt' : False, 'cppStd' : False },
-             'alt-syntax-for'           : {'flag' : '-alt-syntax-for',          'name' : 'for-loops as while-loops', 'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
-             'alt-syntax-subscription'  : {'flag' : '-alt-syntax-subscription', 'name' : 'array subscription',       'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
-#             'More Transformations'     : {'flag' : '',                         'name' : 'More Transformations',     'selected' : False, 'label' : True,  'single' : False , 'ccopt' : False, 'cppStd' : False },
-#             'stdinitlist'              : {'flag' : '-show-initlist',           'name' : 'std::initializer_list',    'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
-#             'all-implicit-casts'       : {'flag' : '-show-all-implicit-casts', 'name' : 'show all implicit casts',  'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
-           }
+    opts = [ {'desc': 'C++ Standard'     , 'flag' : '',                         'name' : 'C++ Standard',             'selected' : False, 'label' : True,  'single' : False , 'ccopt' : False, 'cppStd' : False },
+             {'desc': 'cpp98'                    , 'flag' : '-std=c++98',               'name' : 'C++ 98',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
+             {'desc': 'cpp11'                    , 'flag' : '-std=c++11',               'name' : 'C++ 11',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
+             {'desc': 'cpp14'                    , 'flag' : '-std=c++14',               'name' : 'C++ 14',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
+             {'desc': 'cpp17'                    , 'flag' : '-std=c++17',               'name' : 'C++ 17',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
+             {'desc': 'cpp2a'                    , 'flag' : '-std=c++2a',               'name' : 'C++ 2a',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
+             {'desc': 'Alternative Styles'       , 'flag' : '',                         'name' : 'Alternative Styles',       'selected' : False, 'label' : True,  'single' : False , 'ccopt' : False, 'cppStd' : False },
+             {'desc': 'alt-syntax-for'           , 'flag' : '-alt-syntax-for',          'name' : 'for-loops as while-loops', 'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
+             {'desc': 'alt-syntax-subscription'  , 'flag' : '-alt-syntax-subscription', 'name' : 'array subscription',       'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
+#             {'desc': 'More Transformations'     , 'flag' : '',                         'name' : 'More Transformations',     'selected' : False, 'label' : True,  'single' : False , 'ccopt' : False, 'cppStd' : False },
+#             {'desc': 'stdinitlist'              , 'flag' : '-show-initlist',           'name' : 'std::initializer_list',    'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
+#             {'desc': 'all-implicit-casts'       , 'flag' : '-show-all-implicit-casts', 'name' : 'show all implicit casts',  'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
+           ]
 
     return opts
 #------------------------------------------------------------------------------
@@ -106,16 +106,18 @@ def getInsightsSelections(selected):
     bHaveCppStd   = False
 
     for opt in selected:
-        item = stdSelections.get(opt)
-        if None != item:
-            item['selected'] = True
+        for e in stdSelections:
+            if opt == e['desc']:
+                e['selected'] = True
 
-            if True == item['cppStd']:
-                bHaveCppStd = True
+                if True == e['cppStd']:
+                    bHaveCppStd = True
 
     # check that at least one C++ standard is selected, if not insert the default.
     if not bHaveCppStd:
-        stdSelections[ getDefaultStandard() ]['selected'] = True
+        for e in stdSelections:
+            if e['desc'] == getDefaultStandard():
+                e['selected'] = True
 
     return stdSelections
 #------------------------------------------------------------------------------
@@ -132,8 +134,9 @@ def getValidInsightsOptions(options):
     opts      = []
 
     for opt in options:
-        if opt in validOpts:
-            opts.append(validOpts.get(opt))
+        for e in validOpts:
+            if e['desc'] == opt:
+                opts.append(e)
 
     return opts
 #------------------------------------------------------------------------------
@@ -207,7 +210,7 @@ def version():
 def index():
     code = ''
 
-    return render(getDefaultStandard(), code)
+    return render([getDefaultStandard()], code)
 #------------------------------------------------------------------------------
 
 @app.route("/lnk", methods=['GET', 'POST'])

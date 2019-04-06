@@ -62,18 +62,18 @@
           </a>
 
           <select id="insightsOptions" title="C++ Insights Options" multiple="multiple" data-toggle="select">
-            {% for key, value in selectedInsightsOptions.items() %}
-            {% if value.label %}
-            <optgroup label="{{ value.name }}">
+            {% for value in selectedInsightsOptions %}
 
-              {% elif value.single %}
-              <option value="{{ key }}" class="single" {% if value.selected %} selected="selected" {% endif %}>{{ value.name }}</option>
+                {% if value.label %}
+                    <optgroup label="{{ value.name }}">
 
-              {% else %}
-              <option value="{{ key }}" {% if value.selected %} selected="selected" {% endif %}>{{ value.name }}</option>
-              {% endif %}
+                  {% elif value.single %}
+                      <option value="{{ value.desc }}" class="single" {% if value.selected %} selected="selected" {% endif %}>{{ value.name }}</option>
 
-              {% endfor %}
+                  {% else %}
+                      <option value="{{ value.desc }}" {% if value.selected %} selected="selected" {% endif %}>{{ value.name }}</option>
+                  {% endif %}
+           {% endfor %}
           </select>
 
 
