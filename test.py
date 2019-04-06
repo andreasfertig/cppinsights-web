@@ -8,6 +8,7 @@ import os
 from app import app
 import unittest
 import tempfile
+import re
 import json
 from testfixtures.mock import call
 from testfixtures import Replacer, ShouldRaise, compare
@@ -37,6 +38,40 @@ class CppInsightsTestCase(unittest.TestCase):
 
     def test_access_root(self):
         rv = self.app.get('/')
+        assert 200 == rv.status_code
+    #------------------------------------------------------------------------------
+
+    def test_cpp_options_order_root(self):
+        rv = self.app.get('/')
+        data = rv.data.decode("utf-8").splitlines()
+        opts = [ 'C++ Standard',
+                 'cpp98',
+                 'cpp11',
+                 'cpp14',
+                 'cpp17',
+                 'cpp2a',
+                 'Alternative Styles',
+                 'alt-syntax-for',
+                 'alt-syntax-subscription',
+#                 'More Transformations',
+#                 'stdinitlist',
+#                 'all-implicit-casts',
+                ]
+
+        regEx = re.compile(r'[value|label]="(.*?)"' )
+        regExGroup = re.compile(r'label="(.*?)"' ) # optgroup label=
+        options = []
+        for line in data:
+            line = line.strip()
+            if not line.startswith('<option') and not line.startswith('<optgroup'):
+                continue
+
+            m = regEx.search(line)
+            if None != m:
+                options.append(m.group(1))
+
+
+        assert opts == options
         assert 200 == rv.status_code
     #------------------------------------------------------------------------------
 
