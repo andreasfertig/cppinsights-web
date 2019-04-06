@@ -147,10 +147,6 @@ select {
   /*width: 100%*/
 }
 
-.selectpicker::before {
-  content: "\e259";
-}
-
 /*
 @-moz-document url-prefix() {
     select, select:-moz-focusring, select::-moz-focus-inner {
@@ -161,43 +157,6 @@ select {
     }
 }
 */
-
-label {
-  position: relative;
-  height: 32px;
-  line-height: 32px;
-}
-
-label::after {
-  content: '<>';
-  font: 11px "Consolas", monospace;
-  color: #aaa;
-  -webkit-transform: rotate(90deg);
-  -moz-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  transform: rotate(90deg);
-  right: 8px;
-  top: 9px;
-  padding: 0 0 2px;
-  /*border-bottom:1px solid #ddd;*/
-  position: absolute;
-  vertical-align: middle;
-  pointer-events: none;
-}
-
-label::before {
-  content: '';
-  right: 6px;
-  top: 0px;
-  width: 20px;
-  /*height:20px;*/
-  /*background:#f8f8f8;*/
-  position: absolute;
-  pointer-events: none;
-  vertical-align: middle;
-  display: block;
-}
-
 
 /* remove standard-styles */
 /*
@@ -623,6 +582,158 @@ h2 {
   display: block;
 }
 
+.ms-parent {
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  margin-top: 5px;
+}
+
+.ms-choice {
+  display: block;
+  width: 100%;
+  height: 32px;
+  line-height: 32px;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: left;
+  white-space: nowrap;
+  text-decoration: none;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  color: #24292e;
+  background-color: #eff3f6;
+  background-image: linear-gradient(-180deg, #fafbfc 0%, #eff3f6 90%);
+  border-color: initial;
+  border: 1px solid rgba(27, 31, 35, 0.2);
+}
+
+.ms-choice>span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  padding-left: 8px;
+}
+
+.ms-choice>span.placeholder {}
+
+.ms-choice>div {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+}
+
+.ms-choice>div:after {
+  content: '▼';
+  color: gray;
+}
+
+.ms-choice>div.open:after {
+  content: '▲';
+  color: gray;
+}
+
+.ms-choice>div.open {}
+
+.ms-drop {
+  width: 100%;
+  overflow: hidden;
+  display: none;
+  margin-top: -1px;
+  padding: 0;
+  position: absolute;
+  z-index: 1000;
+  background: #fff;
+  color: #000;
+  border: 1px solid #aaa;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  font-size: .8em;
+}
+
+.ms-drop.bottom {
+  top: 100%;
+  -webkit-box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
+  -moz-box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
+  box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
+}
+
+.ms-drop.top {
+  bottom: 100%;
+  -webkit-box-shadow: 0 -4px 5px rgba(0, 0, 0, .15);
+  -moz-box-shadow: 0 -4px 5px rgba(0, 0, 0, .15);
+  box-shadow: 0 -4px 5px rgba(0, 0, 0, .15);
+}
+
+.ms-drop ul {
+  overflow: auto;
+  margin: 0;
+  padding: 5px 8px;
+}
+
+.ms-drop ul>li {
+  list-style: none;
+  display: list-item;
+  background-image: none;
+  position: static;
+}
+
+.ms-drop ul>li.multiple {
+  display: block;
+  float: left;
+}
+
+.ms-drop ul>li.group {
+  clear: both;
+}
+
+.ms-drop ul>li.multiple label {
+  width: 100%;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ms-drop ul>li label {
+  font-weight: normal;
+  display: block;
+  white-space: nowrap;
+}
+
+.ms-drop ul>li label.optgroup {
+  font-weight: bold;
+  color: #545353;
+}
+
+.ms-drop input[type="checkbox"] {
+  vertical-align: middle;
+  margin: 5px;
+}
+
+.optgroup input[type="checkbox"] {
+  display: none;
+}
+
+.single input[type="checkbox"] {
+  -webkit-appearance: radio;
+  /* Chrome, Safari, Opera */
+  -moz-appearance: radio;
+  /* Firefox */
+  -ms-appearance: radio;
+  /* not currently supported */
+}
+
 
 @media screen and (max-width: 750px) {
   .code {
@@ -664,5 +775,16 @@ h2 {
 
   #cppStd {
     padding-left: 0;
+  }
+
+  .ms-choice {
+    height: 24px;
+    line-height: 24px;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .ms-choice>div {
+    width: 10px;
   }
 }

@@ -26,7 +26,7 @@ def getDefaultStandard():
     return 'cpp17'
 #------------------------------------------------------------------------------
 
-def runDocker(code, cppStd, versionOnly=False):
+def runDocker(code, insightsOptions, cppStd, versionOnly=False):
     fd, fileName = tempfile.mkstemp(suffix='.cpp')
     try:
         if not versionOnly:
@@ -49,6 +49,12 @@ def runDocker(code, cppStd, versionOnly=False):
         cmd.extend(fileParam)
         cmd.extend(['--rm', '-i', 'insights-test'])
 
+        if None != insightsOptions:
+            cmd.extend(insightsOptions)
+
+        if None != insightsOptions or None != cppStd:
+            cmd.append('--')
+
         if None != cppStd:
             cmd.append(cppStd)
 
@@ -63,10 +69,9 @@ def runDocker(code, cppStd, versionOnly=False):
     return stdout.decode('utf-8'), stderr.decode('utf-8'), returncode
 #------------------------------------------------------------------------------
 
-def buildResponse(code, stdout, stderr, cppStdSelection, errCode):
-    stdSelections = getSelections(cppStdSelection)
-
-    response  = make_response(render_template('index.html', **locals()))
+def buildResponse(code, stdout, stderr, insightsOptions, errCode):
+    selectedInsightsOptions = getInsightsSelections(insightsOptions)
+    response                = make_response(render_template('index.html', **locals()))
 
     return response, errCode
 #------------------------------------------------------------------------------
@@ -75,57 +80,77 @@ def error_handler(errCode, code):
     stderr = 'Failed'
     stdout = '// Sorry, but your request failed due to a server error:\n// %s\n\n// Sorry for the inconvenience.\n// Please feel free to report this error.' %(errCode)
 
-    return buildResponse(code, stdout, stderr, getDefaultStandard(), errCode)
+    return buildResponse(code, stdout, stderr, [] , errCode)
 #------------------------------------------------------------------------------
 
-def getSupportedStandards():
-    stds = { 'cpp98' : {'flag' : 'c++98', 'name' : 'C++ 98', 'selected' : False},
-             'cpp11' : {'flag' : 'c++11', 'name' : 'C++ 11', 'selected' : False},
-             'cpp14' : {'flag' : 'c++14', 'name' : 'C++ 14', 'selected' : False},
-             'cpp17' : {'flag' : 'c++17', 'name' : 'C++ 17', 'selected' : False},
-             'cpp2a' : {'flag' : 'c++2a', 'name' : 'C++ 2a', 'selected' : False},
+def getSupportedOptions():
+    opts = { 'C++ Standard'             : {'flag' : '',                         'name' : 'C++ Standard',             'selected' : False, 'label' : True,  'single' : False , 'ccopt' : False, 'cppStd' : False },
+             'cpp98'                    : {'flag' : '-std=c++98',               'name' : 'C++ 98',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
+             'cpp11'                    : {'flag' : '-std=c++11',               'name' : 'C++ 11',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
+             'cpp14'                    : {'flag' : '-std=c++14',               'name' : 'C++ 14',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
+             'cpp17'                    : {'flag' : '-std=c++17',               'name' : 'C++ 17',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
+             'cpp2a'                    : {'flag' : '-std=c++2a',               'name' : 'C++ 2a',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
+             'Alternative Styles'       : {'flag' : '',                         'name' : 'Alternative Styles',       'selected' : False, 'label' : True,  'single' : False , 'ccopt' : False, 'cppStd' : False },
+             'alt-syntax-for'           : {'flag' : '-alt-syntax-for',          'name' : 'for-loops as while-loops', 'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
+             'alt-syntax-subscription'  : {'flag' : '-alt-syntax-subscription', 'name' : 'array subscription',       'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
+#             'More Transformations'     : {'flag' : '',                         'name' : 'More Transformations',     'selected' : False, 'label' : True,  'single' : False , 'ccopt' : False, 'cppStd' : False },
+#             'stdinitlist'              : {'flag' : '-show-initlist',           'name' : 'std::initializer_list',    'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
+#             'all-implicit-casts'       : {'flag' : '-show-all-implicit-casts', 'name' : 'show all implicit casts',  'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
            }
 
-    return stds
+    return opts
 #------------------------------------------------------------------------------
 
-def mapSelectValueToOption(value):
-    stdSelections = getSupportedStandards()
+def getInsightsSelections(selected):
+    stdSelections = getSupportedOptions()
+    bHaveCppStd   = False
 
-    std = stdSelections.get(value)
-    if None != std:
-        std = std['flag']
-    else:
-        std = stdSelections.get(getDefaultStandard())['flag']
+    for opt in selected:
+        item = stdSelections.get(opt)
+        if None != item:
+            item['selected'] = True
 
-    return '-std=%s' %(std)
-#------------------------------------------------------------------------------
+            if True == item['cppStd']:
+                bHaveCppStd = True
 
-def getSelections(selected):
-    stdSelections = getSupportedStandards()
-
-    item = stdSelections.get(selected)
-    if None != item:
-        item['selected'] = True
+    # check that at least one C++ standard is selected, if not insert the default.
+    if not bHaveCppStd:
+        stdSelections[ getDefaultStandard() ]['selected'] = True
 
     return stdSelections
 #------------------------------------------------------------------------------
 
-def render(cppStdSelection, code, run=False):
+def render(insightsOptions, code, run=False):
     stdout = ''
     stderr = ''
 
-    return buildResponse(code, stdout, stderr, cppStdSelection, 200)
+    return buildResponse(code, stdout, stderr, insightsOptions, 200)
+#------------------------------------------------------------------------------
+
+def getValidInsightsOptions(options):
+    validOpts = getSupportedOptions()
+    opts      = []
+
+    for opt in options:
+        if opt in validOpts:
+            opts.append(validOpts.get(opt))
+
+    return opts
 #------------------------------------------------------------------------------
 
 @app.route("/api/v1/transform", methods=['POST'])
 def api():
     content = request.json
-
-    cppStd  = content['cppStd']
     code    = content['code']
-    cppStd = mapSelectValueToOption(cppStd)
-    stdout, stderr, returncode = runDocker(code, cppStd)
+    options = getValidInsightsOptions(content['insightsOptions'])
+
+    insightsOptions = [opt['flag'] for opt in options if not opt['ccopt']]
+    cppStd = [opt['flag'] for opt in options if opt['ccopt']]
+
+    if 0 == len(cppStd):
+        cppStd = [ getValidInsightsOptions([getDefaultStandard()])[0]['flag'] ]
+
+    stdout, stderr, returncode = runDocker(code, insightsOptions, cppStd[0])
 
     if (None == stderr) or ('' == stderr):
         stderr = 'Insights exited with result code: %d' %(returncode)
@@ -143,7 +168,7 @@ def api():
 #------------------------------------------------------------------------------
 
 def getVersionInfo():
-    stdout, stderr, returncode = runDocker('', None, True)
+    stdout, stderr, returncode = runDocker('', None, None, True)
 
     if (None == stderr) or ('' == stderr):
         stderr = 'Insights exited with result code: %d' %(returncode)
@@ -180,17 +205,23 @@ def version():
 
 @app.route("/", methods=['GET'])
 def index():
-    cppStd = ''
-    code   = ''
+    code = ''
 
-    return render(cppStd, code)
+    return render(getDefaultStandard(), code)
 #------------------------------------------------------------------------------
 
 @app.route("/lnk", methods=['GET', 'POST'])
 def lnk():
     code    = request.args.get('code', '')
     rev     = request.args.get('rev',  '')
-    cppStd  = request.args.get('std',  getDefaultStandard())
+    cppStd  = request.args.get('std',  None)
+
+    rawInsightsOptions = request.args.get('insightsOptions', '')
+    insightsOptions    = rawInsightsOptions.split(',')
+
+    # If this is an old link it has 'std' set. In this case use it.
+    if None != cppStd:
+        insightsOptions.append(cppStd)
 
     if not rev or '1.0' != rev:
         return error_handler(404, 'The revision of the link is invalid.')
@@ -208,7 +239,7 @@ def lnk():
             print(repr(code))
             code = ''
 
-    return render(cppStd, code)
+    return render(insightsOptions, code)
 #------------------------------------------------------------------------------
 
 

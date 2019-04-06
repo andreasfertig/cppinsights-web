@@ -48,7 +48,9 @@ module.exports = function(grunt) {
             'app/static/cm/clike.js', 'app/static/cm/matchbrackets.js', 'app/static/cm/show-hint.js'
           ],
           'dist/app/static/js/main.min.js': ['app/static/js/main.js'],
-          'dist/app/static/js/cookie.min.js': ['app/static/js/cookie.js']
+          'dist/app/static/js/cookie.min.js': ['app/static/js/cookie.js'],
+          'dist/app/static/ms/jquery-3.3.1.min.js': ['app/static/ms/jquery-3.3.1.js'],
+          'dist/app/static/ms/multiple-select.min.js': ['app/static/ms/multiple-select.js']
         }
       }
     },
@@ -82,6 +84,14 @@ module.exports = function(grunt) {
             {
               pattern: /cookie\.js/ig,
               replacement: 'cookie.min.js'
+            },
+            {
+              pattern: /jquery-3.3.1\.js/ig,
+              replacement: 'jquery-3.3.1.min.js'
+            },
+            {
+              pattern: /multiple-select\.js/ig,
+              replacement: 'multiple-select.min.js'
             },
           ]
         }
@@ -195,7 +205,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-jsbeautifier');
   grunt.loadNpmTasks('grunt-shell');
 
-  grunt.registerTask('default', [/*'jsbeautifier:dist',*/ 'eslint', /*'shell:npm_test_mocha',*/ 'svgmin', 'cssmin',
+  grunt.registerTask('default', [ /*'jsbeautifier:dist',*/ 'eslint', /*'shell:npm_test_mocha',*/ 'svgmin', 'cssmin',
     'uglify',
     'string-replace', 'htmlmin', 'copy', 'pngmin'
   ]);

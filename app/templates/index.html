@@ -60,13 +60,23 @@
           <a class="btn btn-primary btn-lg" id="button-ce" href="https://godbolt.org/" target="_blank" title="Open in Compiler Explorer">
             <img class="cebutton" src="/img/ce32.png" alt="Compiler Explorer" width="20">
           </a>
-          <label>
-            <select id="cppStd" name="cppStd" title="Select the C++ Standard" class="selectpicker btn btn-primary btn-lg">
-              {% for key, value in stdSelections.items() %}
+
+          <select id="insightsOptions" title="C++ Insights Options" multiple="multiple" data-toggle="select">
+            {% for key, value in selectedInsightsOptions.items() %}
+            {% if value.label %}
+            <optgroup label="{{ value.name }}">
+
+              {% elif value.single %}
+              <option value="{{ key }}" class="single" {% if value.selected %} selected="selected" {% endif %}>{{ value.name }}</option>
+
+              {% else %}
               <option value="{{ key }}" {% if value.selected %} selected="selected" {% endif %}>{{ value.name }}</option>
+              {% endif %}
+
               {% endfor %}
-            </select>
-          </label>
+          </select>
+
+
           <a class="btn btn-primary btn-lg" href="https://github.com/andreasfertig/cppinsights/issues" target="_blank"
               title="See existing issues on GitHub">
             Issues
@@ -111,8 +121,11 @@
     </div>
   </div>
 
+  <script src="/ms/jquery-3.3.1.js"></script>
+  <script src="/ms/multiple-select.js"></script>
   <script src="/js/cookie.js"></script>
   <script src="/js/main.js"></script>
+
 </body>
 
 </html>
