@@ -93,9 +93,9 @@ def getSupportedOptions():
              {'desc': 'Alternative Styles'       , 'flag' : '',                         'name' : 'Alternative Styles',       'selected' : False, 'label' : True,  'single' : False , 'ccopt' : False, 'cppStd' : False },
              {'desc': 'alt-syntax-for'           , 'flag' : '-alt-syntax-for',          'name' : 'for-loops as while-loops', 'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
              {'desc': 'alt-syntax-subscription'  , 'flag' : '-alt-syntax-subscription', 'name' : 'array subscription',       'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
-#             {'desc': 'More Transformations'     , 'flag' : '',                         'name' : 'More Transformations',     'selected' : False, 'label' : True,  'single' : False , 'ccopt' : False, 'cppStd' : False },
+             {'desc': 'More Transformations'     , 'flag' : '',                         'name' : 'More Transformations',     'selected' : False, 'label' : True,  'single' : False , 'ccopt' : False, 'cppStd' : False },
 #             {'desc': 'stdinitlist'              , 'flag' : '-show-initlist',           'name' : 'std::initializer_list',    'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
-#             {'desc': 'all-implicit-casts'       , 'flag' : '-show-all-implicit-casts', 'name' : 'show all implicit casts',  'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
+             {'desc': 'all-implicit-casts'       , 'flag' : '-show-all-implicit-casts', 'name' : 'show all implicit casts',  'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
            ]
 
     return opts
