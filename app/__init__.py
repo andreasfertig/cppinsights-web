@@ -10,10 +10,13 @@ import subprocess
 import base64
 import os
 import tempfile
+import sys
 #------------------------------------------------------------------------------
 
 app = Flask(__name__, static_folder='static', static_url_path='')
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 # 50 kB
+app.config['USE_DOCKER']         = True # Set to False to use a local binary.
+app.config['USE_SUDO']           = True
 #------------------------------------------------------------------------------
 
 @app.route('/favicon.ico')
@@ -39,15 +42,27 @@ def runDocker(code, insightsOptions, cppStd, versionOnly=False):
 
         fileParam = []
         if not versionOnly:
-            # on mac for docker file must be under /private where we also find var
-            # For Mac: '/private%s:/home/insights/insights.cpp' %(fileName)
-            #fileParam = [ '-v', '/private%s:/home/insights/insights.cpp' %(fileName) ]
-            fileParam = [ '-v', '%s:/home/insights/insights.cpp' %(fileName) ]
+            basePath = ''
 
-        #cmd = [ 'docker', 'run', '--net=none' ]
-        cmd = [ 'sudo', '-u', 'pfes', 'docker', 'run', '--net=none' ]
-        cmd.extend(fileParam)
-        cmd.extend(['--rm', '-i', 'insights-test'])
+            # on mac for docker file must be under /private where we also find var
+            #if sys.platform.startswith('darwin'):
+            #    basePath = '/private'
+
+            fileParam = [ '-v', '%s%s:/home/insights/insights.cpp' %(basePath, fileName) ]
+
+        if app.config['USE_DOCKER']:
+            # Prepend the command line with sudo
+            if app.config['USE_SUDO']:
+                cmd = [ 'sudo', '-u', 'pfes' ]
+            else:
+                cmd = []
+
+            cmd.extend([ 'docker', 'run', '--net=none' ])
+            cmd.extend(fileParam)
+            cmd.extend(['--rm', '-i', 'insights-test'])
+        else:
+            cmd = ['insights', fileName]
+
 
         if None != insightsOptions:
             cmd.extend(insightsOptions)
@@ -269,6 +284,10 @@ def other_errors(e):
         ecode = e.code
 
     return error_handler(ecode, code)
+#------------------------------------------------------------------------------
+
+def getApp():
+    return app
 #------------------------------------------------------------------------------
 
 
