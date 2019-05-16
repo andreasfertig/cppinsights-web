@@ -57,25 +57,36 @@
               </div>
             </div>
           </span>
-          <a class="btn btn-primary btn-lg" id="button-ce" href="https://godbolt.org/" target="_blank" title="Open in Compiler Explorer">
+          <a class="btn btn-primary btn-lg" id="button-ce" href="https://godbolt.org/" target="_blank"
+              title="Open in Compiler Explorer">
             <img class="cebutton" src="/img/ce32.png" alt="Compiler Explorer" width="20">
           </a>
 
           <select id="insightsOptions" title="C++ Insights Options" multiple="multiple" data-toggle="select">
             {% for value in selectedInsightsOptions %}
 
-                {% if value.label %}
-                    <optgroup label="{{ value.name }}">
+            {% if value.label %}
+            <optgroup label="{{ value.name }}">
 
-                  {% elif value.single %}
-                      <option value="{{ value.desc }}" class="single" {% if value.selected %} selected="selected" {% endif %}>{{ value.name }}</option>
+              {% elif value.single %}
+              <option value="{{ value.desc }}" class="single" {% if value.selected %} selected="selected" {% endif %}>
+                {{ value.name }}</option>
 
-                  {% else %}
-                      <option value="{{ value.desc }}" {% if value.selected %} selected="selected" {% endif %}>{{ value.name }}</option>
-                  {% endif %}
-           {% endfor %}
+              {% else %}
+              <option value="{{ value.desc }}" {% if value.selected %} selected="selected" {% endif %}>{{ value.name }}
+              </option>
+              {% endif %}
+              {% endfor %}
           </select>
 
+          <select id="fontSizer" title="Font size" multiple="multiple" data-toggle="select">
+            <option value="initial" class="fonts">Default</option>
+            <option value="15px" class="fonts">15</option>
+            <option value="18px" class="fonts">18</option>
+            <option value="20px" class="fonts">20</option>
+            <option value="22px" class="fonts">22</option>
+            <option value="26px" class="fonts">26</option>
+          </select>
 
           <a class="btn btn-primary btn-lg" href="https://github.com/andreasfertig/cppinsights/issues" target="_blank"
               title="See existing issues on GitHub">
@@ -88,8 +99,9 @@
             Policies
           </a>
           <div id="header">
-            Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a><br />Powered by <a target="_blank"
-                href="http://flask.pocoo.org/">Flask</a> and <a target="_blank" href="https://codemirror.net">CodeMirror</a>
+            Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a><br />Powered by <a
+                target="_blank" href="http://flask.pocoo.org/">Flask</a> and <a target="_blank"
+                href="https://codemirror.net">CodeMirror</a>
           </div>
         </div>
 
@@ -100,13 +112,13 @@
               <textarea name="code" id="cpp-code" rows="20" cols="120">{{ code }}</textarea>
             </div>
           </div>
-          <div class="html">
+          <div class="html" id="stdout">
             <h2>Insight:</h2>
             <textarea name="code-out" id="cpp-code-out" rows="20" cols="120">{{ stdout }}</textarea>
           </div>
         </div>
         <div class="bottom">
-          <div class="stderr">
+          <div class="stderr" id="stderr">
             <br />
             <h2>Console:</h2>
             <div id="stderr-div"><textarea id="stderr-out" rows="5">{{ stderr }}</textarea></div>

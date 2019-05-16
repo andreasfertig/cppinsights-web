@@ -45,6 +45,30 @@ $('#insightsOptions').multipleSelect({
   },
 });
 
+function changeFontSize(value) {
+  var el = document.getElementById('code2');
+  el.style.fontSize = value;
+  var el = document.getElementById('stdout');
+  el.style.fontSize = value;
+  var el = document.getElementById('stderr');
+  el.style.fontSize = value;
+}
+
+$('#fontSizer').multipleSelect({
+  placeholder: 'A+',
+  selectAll: false,
+  single: true,
+  onClick: function(opt) {
+
+    changeFontSize(opt.value);
+
+    $('#fontSizer').multipleSelect('setSelects', opt);
+
+    if (window.localStorage && storageAllowed()) {
+      window.localStorage.setItem('fontSize', JSON.stringify(opt.value));
+    }
+  },
+});
 // check if the current url contains '/lnk' which means that we opened a link. In that case do not load the values from
 // local storage.
 function isLink() {
@@ -88,6 +112,18 @@ if (!isLink()) {
   $('#insightsOptions').multipleSelect('setSelects', insightsOptions);
 }
 
+var DEFAULT_FONT_SIZE = 'initial';
+
+if (window.localStorage && storageAllowed()) {
+  var fontSize = window.localStorage.getItem('fontSize');
+  if (fontSize) {
+    DEFAULT_FONT_SIZE = JSON.parse(fontSize);
+  }
+}
+
+$('#fontSizer').multipleSelect('setSelects', [DEFAULT_FONT_SIZE]);
+changeFontSize(DEFAULT_FONT_SIZE);
+
 displayContents(code);
 //} catch (e) {
 // hm
@@ -95,14 +131,16 @@ displayContents(code);
 
 var mac = CodeMirror.keyMap.default == CodeMirror.keyMap.macDefault;
 CodeMirror.keyMap.default[(mac ? 'Cmd' : 'Ctrl') + '-Space'] = 'autocomplete';
-var cppOutEditor = CodeMirror.fromTextArea(document.getElementById('cpp-code-out'), { // eslint-disable-line no-unused-vars
+var cppOutEditor = CodeMirror.fromTextArea(document.getElementById(
+  'cpp-code-out'), { // eslint-disable-line no-unused-vars
   lineNumbers: true,
   matchBrackets: true,
   styleActiveLine: true,
   readOnly: true,
   mode: 'text/x-c++src'
 });
-var stdErrEditor = CodeMirror.fromTextArea(document.getElementById('stderr-out'), { // eslint-disable-line no-unused-vars
+var stdErrEditor = CodeMirror.fromTextArea(document.getElementById(
+  'stderr-out'), { // eslint-disable-line no-unused-vars
   lineNumbers: false,
   readOnly: true,
   mode: 'shell'
