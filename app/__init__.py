@@ -4,19 +4,22 @@
 # C++ Insights Web, copyright (c) by Andreas Fertig
 # Distributed under an MIT license. See /LICENSE
 
-from flask import Flask, make_response, render_template, request, send_from_directory, jsonify #, redirect
+from flask import Flask, make_response, render_template, request, send_from_directory, jsonify, url_for, redirect
 from werkzeug.exceptions import HTTPException
 import subprocess
 import base64
 import os
 import tempfile
-import sys
+import sqlite3
+import hashlib
+from datetime import date, datetime
 #------------------------------------------------------------------------------
 
 app = Flask(__name__, static_folder='static', static_url_path='')
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 # 50 kB
 app.config['USE_DOCKER']         = True # Set to False to use a local binary.
 app.config['USE_SUDO']           = True
+app.config['USE_MAC']            = False
 #------------------------------------------------------------------------------
 
 @app.route('/favicon.ico')
@@ -45,8 +48,8 @@ def runDocker(code, insightsOptions, cppStd, versionOnly=False):
             basePath = ''
 
             # on mac for docker file must be under /private where we also find var
-            #if sys.platform.startswith('darwin'):
-            #    basePath = '/private'
+            if app.config['USE_MAC']:
+                basePath = '/private'
 
             fileParam = [ '-v', '%s%s:/home/insights/insights.cpp' %(basePath, fileName) ]
 
@@ -67,7 +70,7 @@ def runDocker(code, insightsOptions, cppStd, versionOnly=False):
         if None != insightsOptions:
             cmd.extend(insightsOptions)
 
-        if None != insightsOptions or None != cppStd:
+        if (None != insightsOptions or None != cppStd) or versionOnly:
             cmd.append('--')
 
         if None != cppStd:
@@ -84,7 +87,13 @@ def runDocker(code, insightsOptions, cppStd, versionOnly=False):
     return stdout.decode('utf-8'), stderr.decode('utf-8'), returncode
 #------------------------------------------------------------------------------
 
-def buildResponse(code, stdout, stderr, insightsOptions, errCode):
+def buildResponse(code, stdout, stderr, insightsOptions, errCode, twcard=False, desc=''):
+    if twcard:
+        twdesc = code[: 100]
+
+    if desc:
+        desc = ' - ' + desc
+
     selectedInsightsOptions = getInsightsSelections(insightsOptions)
     response                = make_response(render_template('index.html', **locals()))
 
@@ -95,7 +104,7 @@ def error_handler(errCode, code):
     stderr = 'Failed'
     stdout = '// Sorry, but your request failed due to a server error:\n// %s\n\n// Sorry for the inconvenience.\n// Please feel free to report this error.' %(errCode)
 
-    return buildResponse(code, stdout, stderr, [] , errCode)
+    return buildResponse('// ' + code, stdout, stderr, [] , errCode)
 #------------------------------------------------------------------------------
 
 def getSupportedOptions():
@@ -137,11 +146,11 @@ def getInsightsSelections(selected):
     return stdSelections
 #------------------------------------------------------------------------------
 
-def render(insightsOptions, code, run=False):
+def render(insightsOptions, code, twcard=False, desc=''):
     stdout = ''
     stderr = ''
 
-    return buildResponse(code, stdout, stderr, insightsOptions, 200)
+    return buildResponse(code, stdout, stderr, insightsOptions, 200, twcard, desc)
 #------------------------------------------------------------------------------
 
 def getValidInsightsOptions(options):
@@ -185,6 +194,73 @@ def api():
     return jsonify(resp)
 #------------------------------------------------------------------------------
 
+@app.route("/api/v1/getshortlink", methods=['POST'])
+def getShortLink():
+    content = request.json
+    code    = content['code']
+    desc    = content['desc']
+    rev     = content['rev']
+    cppStd  = content['std']
+    options = '|'.join(content['options'])
+    toolId  = 1 # reserved in case we will have a windows container later.
+
+    code = decodeCode(code)
+    desc = decodeCode(desc)
+
+    # check for missing code
+    if None == code:
+        resp = {}
+        resp['returncode'] = 2
+        resp['shortlink']  = 'No source'
+
+        return jsonify(resp)
+
+    # limit content length
+    elif len(code) > 1000000: # 1 MB
+        resp = {}
+        resp['returncode'] = 1
+        resp['shortlink']  = 'Source too long'
+
+        return jsonify(resp)
+
+    conn = sqlite3.connect(getDbName())
+
+    c = conn.cursor()
+
+    # Create the structure if it does not exist
+    c.execute('''CREATE TABLE IF NOT EXISTS shortened (id INTEGER primary key autoincrement, toolid INTEGER, code TEXT NOT NULL, desc TEXT NOT NULL, rev text NOT NULL, cppStd TEXT NOT NULL, options TEXT NOT NULL, short TEXT NOT NULL, create_at TIMESTAMP)''')
+
+    # Check if there is already an entry for this combination
+    cur = c.execute('SELECT short FROM shortened WHERE code=? AND rev=? AND cppStd=? AND options=?', (code, rev, cppStd, options,))
+
+    rv = cur.fetchone()
+
+    # Pack all together for the unique hash
+    full = code + rev + cppStd + options
+    hash_object = hashlib.sha1(full.encode('utf-8'))
+    hex_dig = hash_object.hexdigest()
+    surl = hex_dig[ : 8]
+    retVal = 0
+
+    if None == rv:
+        now = datetime.now()
+        c.execute('INSERT INTO shortened (toolid, code, desc, rev, cppStd, options, short, create_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (toolId, code, desc, rev, cppStd, options, surl, now,))
+    else:
+        retVal = 1
+        surl = rv[0]
+
+
+    # Commit and close
+    conn.commit()
+    conn.close()
+
+    resp = {}
+    resp['returncode'] = retVal
+    resp['shortlink']  = '/s/%s' %(surl)
+
+    return jsonify(resp)
+#------------------------------------------------------------------------------
+
 def getVersionInfo():
     stdout, stderr, returncode = runDocker('', None, None, True)
 
@@ -221,11 +297,38 @@ def version():
     return response
 #------------------------------------------------------------------------------
 
+def getDbName():
+    return 'urls.db'
+#------------------------------------------------------------------------------
+
+def decodeCode(code):
+    try:
+        # keep this in mind if, we get a incorrect length base64 string
+        #code = code + '=' * (-len(code) % 4)
+        # XXX: somehow we get a corrupt base64 string
+        code = code.replace(' ', '+')
+
+        # base 64 decode
+        return base64.b64decode(code).decode('utf-8')
+
+    except:
+        print(repr(code))
+
+    return None
+#------------------------------------------------------------------------------
+
 @app.route("/", methods=['GET'])
 def index():
     code = ''
 
     return render([getDefaultStandard()], code)
+#------------------------------------------------------------------------------
+
+def proccessLink(code, desc, cppStd, insightsOptions, rev):
+    if not rev or '1.0' != rev:
+        return error_handler(404, 'The revision of the link is invalid.')
+
+    return render(insightsOptions, code, twcard=True, desc=desc)
 #------------------------------------------------------------------------------
 
 @app.route("/lnk", methods=['GET', 'POST'])
@@ -241,23 +344,37 @@ def lnk():
     if None != cppStd:
         insightsOptions.append(cppStd)
 
-    if not rev or '1.0' != rev:
-        return error_handler(404, 'The revision of the link is invalid.')
-
     if code:
-        try:
-            # keep this in mind if, we get a incorrect length base64 string
-            #code = code + '=' * (-len(code) % 4)
-            # XXX: somehow we get a corrupt base64 string
-            code = code.replace(' ', '+')
+        code = decodeCode(code)
 
-            # base 64 decode
-            code = base64.b64decode(code).decode('utf-8')
-        except:
-            print(repr(code))
+        if None == code:
             code = ''
 
-    return render(insightsOptions, code)
+    return proccessLink(code, '', cppStd, insightsOptions, rev)
+#------------------------------------------------------------------------------
+
+@app.route("/s/<link>")
+def slnk(link):
+    conn = sqlite3.connect(getDbName())
+    c = conn.cursor()
+
+    cur = c.execute('SELECT code, desc, rev, cppStd, options FROM shortened WHERE short = ?', (link,))
+
+    rv = cur.fetchone()
+
+    conn.close()
+
+    if None == rv:
+        return error_handler(404, 'There is no such link.')
+
+    code               = rv[0]
+    desc               = rv[1]
+    rev                = rv[2]
+    cppStd             = rv[3]
+    rawInsightsOptions = rv[4]
+    insightsOptions    = rawInsightsOptions.split('|')
+
+    return proccessLink(code, desc, cppStd, insightsOptions, rev)
 #------------------------------------------------------------------------------
 
 

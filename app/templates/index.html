@@ -3,8 +3,8 @@
 <html lang="en">
 
 <head>
-  <title>C++ Insights</title>
-  <meta name="description" content="C++ Insights - See your source code with the eyes of a compiler." />
+  <title>C++ Insights{{ desc }}</title>
+  <meta name="description" content="C++ Insights{{ desc or ' - See your source code with the eyes of a compiler.' }}" />
   <meta name="author" content="Andreas Fertig" />
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
@@ -22,8 +22,8 @@
   <meta name="twitter:site" content="@andreas__fertig" />
   <meta name="twitter:creator" content="@Andreas__Fertig" />
   <meta property="og:url" content="https://cppinsights.io/" />
-  <meta property="og:title" content="C++ Insights" />
-  <meta property="og:description" content="C++ Insights - See your source code with the eyes of a compiler." />
+  <meta property="og:title" content="C++ Insights{{ desc }}" />
+  <meta property="og:description" content="{{ twdesc or 'C++ Insights - See your source code with the eyes of a compiler.' }}" />
   <meta property="og:image" content="https://cppinsights.io/img/twcard.png" />
 
   <!--<link rel="shortcut icon" href="favicon.ico">-->
@@ -47,18 +47,31 @@
           <span class="copy-group">
             <button class="btn btn-primary btn-lg icon-link button-create-link" title="Create URL to source"></button>
             <div id="copyDropdown" class="copyDownDownContent">
-              <div class="input-group">
-                <input id="lnkurl" value="" type="text">
-                <span class="input-group-button">
-                  <button class="cpybtn" type="button" onclick="CopyClick()">
-                    <img class="clip" src="/img/clb.svg" alt="Copy" width="13">
+              <div class="dropdown-table">
+                <div class="input-group input-group-url-row">
+                  <div>
+                    <div class="cell-left"><input id="lnkurl" value="" type="text" readonly></div>
+                    <div class="cell-right"><span class="input-group2-button">
+                        <button class="cpybtn" type="button" onclick="CopyClick()">
+                          <img class="clip" src="/img/clb.svg" alt="Copy" width="13">
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="sldesc"><input id="lnkdesc" placeholder="Enter your description..." value="" type="text">
+                  </div>
+                </div>
+                <div>
+                  <button id="rqslbtn" class="reqslbtn" type="button">
+                    Request Short Link
                   </button>
-                </span>
+                </div>
               </div>
             </div>
           </span>
-          <a class="btn btn-primary btn-lg" id="button-ce" href="https://godbolt.org/" target="_blank"
-              title="Open in Compiler Explorer">
+          <a class="btn btn-primary btn-lg" id="button-ce" href="https://godbolt.org/" target="_blank" title="Open in Compiler Explorer">
             <img class="cebutton" src="/img/ce32.png" alt="Compiler Explorer" width="20">
           </a>
 
@@ -88,20 +101,60 @@
             <option value="26px" class="fonts">26</option>
           </select>
 
-          <a class="btn btn-primary btn-lg" href="https://github.com/andreasfertig/cppinsights/issues" target="_blank"
-              title="See existing issues on GitHub">
-            Issues
-          </a>
-          <a class="btn btn-primary btn-lg" href="/about.html" title="About C++ Insights">
-            About
-          </a>
-          <a class="btn btn-primary btn-lg" href="/privacy-policy.html" title="Policies">
-            Policies
-          </a>
+          <span class="copy-group">
+            <div class="btn-parent">
+              <button class="btn btn-primary btn-lg button-more" title="More..."><span>More</span>
+                <div></div>
+              </button>
+            </div>
+            <div id="moreDropdown" class="moreDownDownContent">
+              <div class="input-group">
+                <span class="input-group-button">
+                  <button class="morebtn" type="button">
+                    <a href="https://github.com/andreasfertig/cppinsights" target="_blank" title="C++ Insights on GitHub">
+                      GitHub
+                    </a> </button>
+                </span>
+              </div>
+              <div class="input-group">
+                <span class="input-group-button">
+                  <button class="morebtn" type="button">
+                    <a href="https://www.patreon.com/cppinsights" target="_blank" title="Become a patron">
+                      Patreon
+                    </a> </button>
+                </span>
+              </div>
+              <div class="input-group">
+                <span class="input-group-button">
+                  <button class="morebtn" type="button">
+                    <a href="https://github.com/andreasfertig/cppinsights/issues" target="_blank" title="See existing issues on GitHub">
+                      Issues
+                    </a> </button>
+                </span>
+              </div>
+              <div class="input-group">
+                <span class="input-group-button">
+                  <button class="morebtn" type="button">
+                    <a href="/about.html" title="About C++ Insights">
+                      About
+                    </a>
+                  </button>
+                </span>
+              </div>
+              <div class="input-group">
+                <span class="input-group-button">
+                  <button class="morebtn" type="button">
+                    <a href="/privacy-policy.html" title="Policies">
+                      Policies
+                    </a>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </span>
           <div id="header">
-            Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a><br />Powered by <a
-                target="_blank" href="http://flask.pocoo.org/">Flask</a> and <a target="_blank"
-                href="https://codemirror.net">CodeMirror</a>
+            Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a><br />Powered by <a target="_blank"
+                href="http://flask.pocoo.org/">Flask</a> and <a target="_blank" href="https://codemirror.net">CodeMirror</a>
           </div>
         </div>
 

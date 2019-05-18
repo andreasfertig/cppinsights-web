@@ -4,8 +4,31 @@
 /* global CodeMirror, storageAllowed, onLoad */
 
 var DEFAULT_CPP_STD = 'cpp17';
+var DEFAULT_REV = '1.0';
+
 // load cookies
 onLoad();
+
+function canUseLocalStorage() {
+  return window.localStorage && storageAllowed();
+}
+
+function setLocalStorageItem(key, data) {
+  if (canUseLocalStorage()) {
+    window.localStorage.setItem(key, JSON.stringify(data));
+  }
+}
+
+function getLocalStorageItem(key, deflt) {
+  if (canUseLocalStorage()) {
+    var data = window.localStorage.getItem(key);
+    if (data) {
+      return JSON.parse(data);
+    }
+  }
+
+  return deflt;
+}
 
 var cppEditor = CodeMirror.fromTextArea(document.getElementById('cpp-code'), {
   lineNumbers: true,
@@ -46,12 +69,12 @@ $('#insightsOptions').multipleSelect({
 });
 
 function changeFontSize(value) {
-  var el = document.getElementById('code2');
-  el.style.fontSize = value;
-  var el = document.getElementById('stdout');
-  el.style.fontSize = value;
-  var el = document.getElementById('stderr');
-  el.style.fontSize = value;
+  var elCode = document.getElementById('code2');
+  elCode.style.fontSize = value;
+  var elStdOut = document.getElementById('stdout');
+  elStdOut.style.fontSize = value;
+  var elStdErr = document.getElementById('stderr');
+  elStdErr.style.fontSize = value;
 }
 
 $('#fontSizer').multipleSelect({
@@ -64,15 +87,13 @@ $('#fontSizer').multipleSelect({
 
     $('#fontSizer').multipleSelect('setSelects', opt);
 
-    if (window.localStorage && storageAllowed()) {
-      window.localStorage.setItem('fontSize', JSON.stringify(opt.value));
-    }
+    setLocalStorageItem('fontSize', opt.value);
   },
 });
 // check if the current url contains '/lnk' which means that we opened a link. In that case do not load the values from
 // local storage.
 function isLink() {
-  return (window.location.href.indexOf('/lnk') > -1);
+  return (window.location.href.indexOf('/lnk') > -1) || (window.location.href.indexOf('/s') > -1);
 }
 
 // If this is a link add a keydown listener to the cppEditor and remove the link, if the code is changed.
@@ -85,7 +106,7 @@ if (isLink()) {
   });
 }
 
-if (window.localStorage && storageAllowed() && !isLink()) {
+if (canUseLocalStorage() && !isLink()) {
   if (!cppEditor.getValue()) {
     insightsOptions = window.localStorage.getItem('insightsOptions');
 
@@ -112,14 +133,7 @@ if (!isLink()) {
   $('#insightsOptions').multipleSelect('setSelects', insightsOptions);
 }
 
-var DEFAULT_FONT_SIZE = 'initial';
-
-if (window.localStorage && storageAllowed()) {
-  var fontSize = window.localStorage.getItem('fontSize');
-  if (fontSize) {
-    DEFAULT_FONT_SIZE = JSON.parse(fontSize);
-  }
-}
+var DEFAULT_FONT_SIZE = getLocalStorageItem('fontSize', 'initial');
 
 $('#fontSizer').multipleSelect('setSelects', [DEFAULT_FONT_SIZE]);
 changeFontSize(DEFAULT_FONT_SIZE);
@@ -253,6 +267,23 @@ function SetRunListeners() {
 // set them initially
 SetRunListeners();
 
+function SetupRequestShortLinkListener() {
+  var requestShortLinkButton = document.querySelector('#rqslbtn');
+  if (requestShortLinkButton) {
+    requestShortLinkButton.title = 'Request short link';
+    requestShortLinkButton.addEventListener('click', RequestShortLink);
+  }
+}
+
+SetupRequestShortLinkListener();
+
+function RemoveRequestShortLinkListener() {
+  var requestShortLinkButton = document.querySelector('#rqslbtn');
+  if (requestShortLinkButton) {
+    requestShortLinkButton.removeEventListener('click', RequestShortLink);
+  }
+}
+
 function SetWaitForResultListeners() {
   RunListenersSetup(OnWaitForResultKeyDown, OnRunClicked, OnWaitForResultRunClicked);
 }
@@ -263,6 +294,10 @@ function CopyClick() { // eslint-disable-line no-unused-vars
   textToCopy.select();
 
   document.execCommand('copy');
+}
+
+function RequestShortLinkClick() { // eslint-disable-line no-unused-vars
+  RequestShortLink();
 }
 
 // at least FireFox has a problem with just btoa with UTF-8 characters
@@ -295,24 +330,41 @@ document.querySelector('#button-ce').addEventListener('mousedown', function() {
   updateLinkToCompilerExplorer();
 });
 
+function getLongLinkBase() {
+  var cppStd = getCppStd();
+  var insightsOptions = getInsightsOptions();
+  var text = 'lnk?code=' + b64UTFEncode(cppEditor.getValue()) + '&insightsOptions=' +
+    insightsOptions + '&std=' + cppStd + '&rev=' + DEFAULT_REV;
+
+  return text;
+}
+
 document.querySelector('.button-create-link').addEventListener('click', function(event) {
   event.preventDefault();
   event.stopPropagation();
-  var cppStd = getCppStd();
-  var insightsOptions = getInsightsOptions();
-  var text = getURLBase() + '/lnk?code=' + b64UTFEncode(cppEditor.getValue()) + '&insightsOptions=' +
-    insightsOptions + '&std=' + cppStd +
-    '&rev=1.0';
+  var text = buildURL('/' + getLongLinkBase());
 
   var lnkElement = document.getElementById('lnkurl');
   lnkElement.value = text;
+
+  var lnkDescElement = document.getElementById('lnkdesc');
+  lnkDescElement.value = '';
 
   var element = document.getElementById('copyDropdown');
   element.classList.toggle('show');
 });
 
+document.querySelector('.button-more').addEventListener('click', function(event) {
+  event.preventDefault();
+  event.stopPropagation();
+
+  var element = document.getElementById('moreDropdown');
+  element.classList.toggle('show');
+});
+
 window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn') && !event.target.matches('.cpybtn') && !event.target.matches('#lnkurl')) {
+  if (!event.target.matches('.dropbtn') && !event.target.matches('.cpybtn') && !event.target.matches('#lnkurl') &&
+    !event.target.matches('#lnkdesc') && !event.target.matches('#rqslbtn')) {
 
     var dropdowns = document.getElementsByClassName('copyDownDownContent');
     var i;
@@ -330,15 +382,17 @@ function getURLBase() {
   return location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
 }
 
+function buildURL(url) {
+  return getURLBase() + url;
+}
+
 // Send a transformation request to the server
 function Transform() { // eslint-disable-line no-unused-vars
 
   var request = new XMLHttpRequest();
 
-  if (window.localStorage && storageAllowed()) {
-    window.localStorage.setItem('code', JSON.stringify(cppEditor.getValue()));
-    window.localStorage.setItem('insightsOptions', JSON.stringify(getInsightsOptions()));
-  }
+  setLocalStorageItem('code', cppEditor.getValue());
+  setLocalStorageItem('insightsOptions', getInsightsOptions());
 
   request.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -354,7 +408,7 @@ function Transform() { // eslint-disable-line no-unused-vars
 
   stdErrEditor.setValue('Waiting for response...');
 
-  var url = getURLBase() + '/api/v1/transform';
+  var url = buildURL('/api/v1/transform');
 
   request.open('POST', url, true);
   request.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
@@ -365,5 +419,51 @@ function Transform() { // eslint-disable-line no-unused-vars
   data.code = cppEditor.getValue();
 
   SetWaitForResultListeners();
+  request.send(JSON.stringify(data));
+}
+
+// Send a short link request to the server
+function RequestShortLink() { // eslint-disable-line no-unused-vars
+
+  var request = new XMLHttpRequest();
+
+  request.onreadystatechange = function() {
+    var linkField = document.getElementById('lnkurl');
+
+    if (this.readyState == 4 && this.status == 200) {
+      var response = JSON.parse(this.responseText);
+
+      linkField.value = buildURL(response.shortlink);
+    } else if (this.readyState == 4 && this.status != 200) {
+      linkField.value = 'Sorry, your request failed';
+    }
+
+    SetupRequestShortLinkListener();
+  };
+
+  var linkField = document.getElementById('lnkurl');
+  var linkDescField = document.getElementById('lnkdesc');
+  var longLink = getLongLinkBase();
+
+  // trim spaces and empty newlines from begin and end?
+
+  linkField.value = 'Please wait...';
+
+  var url = buildURL('/api/v1/getshortlink');
+
+  request.open('POST', url, true);
+  request.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+
+  var data = {};
+
+  data.longurl = longLink;
+  data.code = b64UTFEncode(cppEditor.getValue());
+  data.desc = b64UTFEncode(linkDescField.value);
+  data.rev = DEFAULT_REV;
+  data.std = getCppStd();
+  data.options = getInsightsOptions();
+
+  RemoveRequestShortLinkListener();
+
   request.send(JSON.stringify(data));
 }

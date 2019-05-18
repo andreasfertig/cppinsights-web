@@ -1,4 +1,5 @@
 flask
+pysqlite3
 coverage
 testfixtures
 mock
