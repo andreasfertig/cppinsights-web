@@ -433,6 +433,10 @@ div.CodeMirror span.CodeMirror-matchingbracket {
   border-style: solid;
 }
 
+/**
+ * GitHub Gist Theme from https://github.com/LouisBarranqueiro
+ */
+
 .cm-s-default .cm-comment,
 .c1,
 .cm {
