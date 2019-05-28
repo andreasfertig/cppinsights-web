@@ -1,0 +1,124 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <title>C++ Insights</title>
+  <meta name="description" content="C++ Insights - Examples" />
+  <meta name="author" content="Andreas Fertig" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@andreas__fertig" />
+  <meta name="twitter:creator" content="@Andreas__Fertig" />
+  <meta property="og:url" content="https://cppinsights.io/" />
+  <meta property="og:title" content="C++ Insights" />
+  <meta property="og:description" content="C++ Insights - Examples" />
+  <meta property="og:image" content="https://cppinsights.io/img/twcard.png" />
+
+  <!--<link rel="shortcut icon" href="favicon.ico">-->
+  <link rel="icon" type="image/png" href="/32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/16.png" sizes="16x16">
+
+  <link rel="stylesheet" href="/css/s.css" type="text/css">
+</head>
+
+<body>
+  <div class="mainbody">
+    <div id="container">
+      <div id="main">
+        <div id="options header">
+          <img class="logo" src="32.png" />
+          <a class="btn btn-primary btn-lg" href="/">Home</a>
+          <a class="btn btn-primary btn-lg" href="/about.html">About</a>
+          <a class="btn btn-primary btn-lg" href="/privacy-policy.html" title="Policies">
+            Policies
+          </a>
+          <div id="header">
+            Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a></br>Powered by <a target="_blank"
+                href="http://flask.pocoo.org/">Flask</a> and <a target="_blank" href="https://codemirror.net">CodeMirror</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h1>C++ Insights Examples</h1>
+
+    <p>Here are some examples to give you an impression what C++ Insights can show you:</p>
+
+    <p>C++11:</p>
+    <ul>
+      <li>
+        <a href="/lnk?code=aW50IG1haW4oKQp7CiAgLy8gVGhlIGNvbXBpbGVyIGF1dG9tYXRpY2FsbHkgZmlsbHMgdGhlIHJlbWFpbmluZwogIC8vIGZpZWxkcyB3aXRoIDAgdGhhbmtzIHRvIGJyYWNlZCBpbml0aWFsaXphdGlvbi4KICBpbnQgYXJyWzVdezIsMyw0fTsKfQ==&insightsOptions=cpp17&std=cpp17&rev=1.0">Braced
+          array initialization</a>
+      </li>
+      <li>
+        <a href="/lnk?code=c3RydWN0IEEgCnsKICAvLyB1c2VyIHByb3ZpZGVkIGNvbnN0cnVjdG9yIF9taXNzaW5nXyBpbml0aWFsemF0aW9uIG9mIGBqYAogIEEoKQogIDogaXszfQogIHt9CiAgCiAgaW50IGk7CiAgaW50IGo7Cn07CgpzdHJ1Y3QgQgp7CiAgLy8gdXNlcyB0aGUgZGVmYXVsdCBjb25zdHJ1Y3RvcgogIGludCBpOwogIGludCBqOwp9OwoKaW50IG1haW4oKQp7CiAgQSBhOwogIEEgYTJ7fTsgLy8gb25seSBpIGdldHMgaW5pdGlhbGl6ZWQuCiAgCiAgQiBiOwogIEIgYjJ7fTsgIC8vIGJvdGggaSBhbmQgaiBnZXQgaW5pdGlhbGl6ZWQuCn0=&std=cpp17&rev=1.0">Braced
+          (uniform) Initialization</a>
+      </li>
+      <li>
+        <a href="/lnk?code=Y2xhc3MgQ1Rlc3QKewogICAgYXV0byBUZXN0KCkgeyByZXR1cm4gMjI7IH0KfTsKCmF1dG8gVGVzdCgpCnsKICAgIHJldHVybiAxOwp9CgphdXRvIEJlc3QoKSAtPiBpbnQKewogICAgcmV0dXJuIDE7Cn0KCmNvbnN0ZXhwciBhdXRvIENFQmVzdCgpIC0+IGludAp7CiAgICByZXR1cm4gMTsKfQoKZGVjbHR5cGUoYXV0bykgV2VzdCgpCnsKICAgIHJldHVybiAnYyc7Cn0KCmNvbnN0ZXhwciBkZWNsdHlwZShhdXRvKSBDRVdlc3QoKQp7CiAgICByZXR1cm4gJ2MnOwp9CgpbW21heWJlX3VudXNlZF1dIGlubGluZSBjb25zdGV4cHIgZGVjbHR5cGUoYXV0bykgTVVDRVdlc3QoKQp7CiAgICByZXR1cm4gJ2MnOwp9CgoKaW50IG1haW4oKQp7CiAgaW50IHggPSAyOwogIGNvbnN0IGNoYXIqIHA7CiAgY29uc3RleHByIGF1dG8gY2VpID0gMDsKICBhdXRvIGNvbnN0ZXhwciBjZWkyID0gMDsKICBhdXRvIGkgPSAwOwogIGRlY2x0eXBlKGF1dG8pIHhYID0gKGkpOwogIGF1dG8gaWkgPSAmaTsKICBhdXRvJiBpciA9IGk7CiAgYXV0byAqIGlwID0gJmk7CiAgY29uc3QgYXV0byAqIGNpcCA9ICZpOwogIGF1dG8gKiBwcCA9IHA7CiAgY29uc3QgYXV0byAqIGNwID0gcDsKICB2b2xhdGlsZSBjb25zdCBhdXRvICogdmNwID0gcDsKICBhdXRvIGYgPSAxLjBmOwogIGF1dG8gYyA9ICdjJzsKICBhdXRvIHUgPSAwdTsKICBkZWNsdHlwZSh1KSB1dSA9IHU7CgogIFtbbWF5YmVfdW51c2VkXV0gYXV0byBtdSA9IDB1OwogIFtbbWF5YmVfdW51c2VkXV0gZGVjbHR5cGUodSkgbXV1ID0gdTsKfQ==&std=cpp17&rev=1.0">auto</a>
+      </li>
+      <li>
+        <a href="/lnk?code=I2luY2x1ZGUgPGNzdGRpbz4KCmludCBtYWluKCkKewogICAgY29uc3QgY2hhciBhcnJbXXsyLDQsNiw4LDEwfTsKCiAgICBmb3IoY29uc3QgY2hhciYgYyA6IGFycikKICAgIHsKICAgICAgcHJpbnRmKCJjPSVjXG4iLCBjKTsKICAgIH0KfQ==&std=cpp17&rev=1.0">range
+          based for loop</a>
+      </li>
+      <li>
+        <a href="/lnk?code=aW50IG1haW4oKQp7CiAgaW50ICgqZnApKGludCwgY2hhcikgPSBbXShpbnQgYSwgY2hhciBiKXsgcmV0dXJuIGErYjt9Owp9&std=cpp17&rev=1.0">Lambda
+          with static invoker</a>
+      </li>
+
+      <li>
+        <a href="/lnk?code=I2luY2x1ZGUgPGNzdGRpbz4KdGVtcGxhdGU8dHlwZW5hbWUgVT4KY2xhc3MgWAp7CnB1YmxpYzoKICAgIFgoKSAgICAgICAgICAgPSBkZWZhdWx0OwogICAgWChjb25zdCBYJiB4KSA9IGRlZmF1bHQ7CgogICAgdGVtcGxhdGU8dHlwZW5hbWUgVD4KICAgIFgoVCYmIHgpCiAgICA6IG1Ye30KICAgIHsgfQoKcHJpdmF0ZToKICAgIFUgbVg7Cn07CgppbnQgbWFpbigpCnsKICAgIFg8aW50PiBhcnJbMl17fTsKCiAgCS8vIFdlIHVzZSBYPGNvbnN0IGludD4gaW5zdGVhZCBvZiBYPGludD4gaGVyZS4gVGhpcyByZXN1bHRzCiAgICAvLyBpbiBhIGNvbnN0cnVjdG9yIGNhbGwgdG8gY3JlYXRlIGEgWDxjb25zdCBpbnQ+IG9iamVjdCBhcyAKICAgIC8vIHlvdSBjYW4gc2VlIGluIHRoZSB0cmFuc2Zvcm1hdGlvbi4KICAgIGZvcihjb25zdCBYPGNvbnN0IGludD4mIHggOiBhcnIpIHsgfQp9&std=cpp11&rev=1.0">Implicit
+          conversions</a>
+      </li>
+
+      <li>
+        <a href="/lnk?code=I2luY2x1ZGUgPGluaXRpYWxpemVyX2xpc3Q+CgppbnQgbWFpbigpCnsKICBhdXRvIGkgPSAzOyAgICAgICAvLyBpbnQKICBhdXRvIGEgPSB7NDJ9OyAgICAvLyBpbml0aWFsaXplciBsaXN0CiAgYXV0byBiezQyfTsgICAgICAgLy8gaW50CiAgYXV0byBjID0gezEsIDJ9OyAgLy8gaW5pdGlhbGl6ZXIgbGlzdAp9Cg==&std=cpp11&rev=1.0">auto,
+          uniform initialization and the equal sign</a>
+      </li>
+
+      <li>
+        <a href="/lnk?code=I2luY2x1ZGUgPGNzdGRpbz4KI2luY2x1ZGUgPHZlY3Rvcj4KCnRlbXBsYXRlPGludCBuPgpzdHJ1Y3QgQQp7CiAgc3RhdGljIGNvbnN0IGF1dG8gdmFsdWUgPSBBPG4tMT46OnZhbHVlK247Cn07Cgp0ZW1wbGF0ZTw+CnN0cnVjdCBBPDE+CnsKCXN0YXRpYyBjb25zdCBhdXRvIHZhbHVlID0gMTsKfTsKCgppbnQgbWFpbigpCnsKICAgICAgcHJpbnRmKCJjPSVjXG4iLCBBPDU+Ojp2YWx1ZSk7Cn0=&insightsOptions=cpp11&std=cpp11&rev=1.0">Recursive
+          template</a>
+      </li>
+    </ul>
+
+    <p>C++14:</p>
+    <ul>
+      <li>
+        <a href="/lnk?code=ZGVjbHR5cGUoYXV0bykgQmFyKCkKewogIGludCB4ID0gMjI7CiAgLy8gZG8gc29tZSBmYW5jeSBjYWxjdWxhdGlvbiB3aXRoIHgKICByZXR1cm4gKHgpOwp9&std=cpp17&rev=1.0">Braced
+          return value and decltype(auto)
+        </a>
+      </li>
+      <li>
+        <a href="/lnk?code=aW50IG1haW4oKQp7CiAgLy8gR2VuZXJpYyBsYW1iZGFzIGhhdmUgYSBtZXRob2QgdGVtcGxhdGUgY2FsbCBvcGVyYXRvci4KICBhdXRvIHggPSBbXShhdXRvIHgpIHsgcmV0dXJuIHggKiB4OyB9OwogIAogIHgoMik7ICAgLy8gaW50CiAgeCgzLjApOyAvLyBkb3VibGUKfQ==&insightsOptions=cpp17&std=cpp17&rev=1.0">Generic
+          lambda</a>
+      </li>
+    </ul>
+
+    <p>C++17:</p>
+    <ul>
+      <li>
+        <a href="/lnk?code=c3RydWN0IFBvaW50CnsKICBpbnQgeDsKICBpbnQgeTsKfTsKClBvaW50IHB0ezEsMn07Ci8vIEhlcmUgd2UgZ2V0IGFuIGFkZGl0aW9uYWwgb2JqZWN0IGluamVjdGVkIHRvIHdoaWNoIGF4IGFuZCBheSByZWZlci4KYXV0byBbYXgsIGF5XSA9IHB0OwoKLy8gSW4gY2FzZSBvZiBhbiByZWZlcmVuY2UgdGhlIGluamVjdGVkIG9iamVjdCBpcyBqdXN0IGEgcmVmZXJlbmNlIHRvCi8vIHRoZSBvcmlnaW5hbCBvbmUuCmF1dG8mIFthMngsIGEyeV0gPSBwdDs=&std=cpp17&rev=1.0">Structured
+          bindings</a>
+      </li>
+    </ul>
+
+    <p>In case, you're missing an important example, feel free to open a <a href="https://github.com/andreasfertig/cppinsights-web/pulls">pull
+        request</a> with a modified
+      <a href="https://github.com/andreasfertig/cppinsights-web/tree/master/app/static/examples.html">examples.html</a>.
+
+      <div id="footer">
+        Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a> &bull; Powered by <a target="_blank"
+            href="http://flask.pocoo.org/">Flask</a> and <a target="_blank" href="https://codemirror.net">CodeMirror</a>
+      </div>
+
+  </div>
+
+  <script src="js/main.js"></script>
+
+</body>
+
+</html>
