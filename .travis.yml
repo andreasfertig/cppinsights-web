@@ -35,9 +35,10 @@ deploy:
   on:
     branch: master
 after_deploy:
+- cd ${TRAVIS_BUILD_DIR}/
 - git config --local user.name "Andreas Fertig"
 - git config --local user.email "andy@cppinsights.io"
-- cd ${TRAVIS_BUILD_DIR}/
+- git remote set-url origin https://andreasfertig:${GITHUB_TOKEN}@github.com/andreasfertig/cppinsights-web.git
 - wget -c https://raw.githubusercontent.com/andreasfertig/travisci-trigger-build/master/trigger_travisci_build.sh
 - |
   if [[ "${TRAVIS_BRANCH}" = "master" ]] && [[ "${TRAVIS_PULL_REQUEST}" == "false" ]]; then
