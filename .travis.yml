@@ -34,6 +34,18 @@ deploy:
   script: rsync -avcz --delete --exclude=.DS_Store --exclude=__pycache__ --exclude='google*.html' --exclude='urls.db' $TRAVIS_BUILD_DIR/dist/app/ ${RSYNC_CRED}
   on:
     branch: master
+after_deploy:
+- git config --local user.name "Andreas Fertig"
+- git config --local user.email "andy@cppinsights.io"
+- cd ${TRAVIS_BUILD_DIR}/
+- wget -c https://raw.githubusercontent.com/andreasfertig/travisci-trigger-build/master/trigger_travisci_build.sh
+- |
+  if [[ "${TRAVIS_BRANCH}" = "master" ]] && [[ "${TRAVIS_PULL_REQUEST}" == "false" ]]; then
+    git tag -f latest
+    git push --tags -f origin
+    bash trigger_travisci_build.sh > /dev/null
+  fi  
+    
 env:
   global:
     secure: PoxdX2DPykAZALmahs0YysyK7MCEItSp2ePq0u2pEyCuFs47HpDOc6Tz4jOuFz2bO5MEjRlQUj+2vrmrtJOCnyPah6ex4WSbabhCkTJDI8Mo7hudEYJgpiZKKvoAyRkl00Y+gaEPBnvfILel2CiAZkxfmrMlxwMIsXI/8CcD2F3Rl0pL8qGDIVcXUGlHFA8ef3PkSGrdej9KPhGZMKUdTj9oo6krt+mj0wR4opqsqwMKJPNRO3iSvI5T7O9Zr66jsX/HgL/zzfUpxcwIWFwaPCMNWAzOmhiTN0GOQ1bKB37dmMzBSy1sD46WD1HTOimP5Kt5wsD/nrmL4wxpt/34QDks/RQO/tN/xYXE6bwPnXOXnSIfJ1ijVQIRLA2rmgRFKIiByvrqoqze8A+ydOxCzJNguSOVj2Bj+KT8BbuQl10Hpbre9Pq1YiRb8HyVGEUjHzcE39lz2LlaJ7ld4FvvY3DKrNYLuXIUwbBwkmC3k70k0ccIqFfITsaHJ7ZfHIi70EaBprAhMemqPEYwyEkHexY6Lnll6P6yJ+aWXHX/N+QU322/928ZmxoDBx83860DZTWFGpPRBsJL89yTQNnVnK7ukbP/cEJ9n2ox7068/dWU1Zz9aIkceI/5TjTjjBIDjVR8FxEIR8z/4tCJmm6PCW5y/Fihr/VEQmchYsPaub0=
