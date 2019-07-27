@@ -1,4 +1,5 @@
 sudo: false
+dist: xenial
 language: python
 python: 3.6
 addons:
@@ -30,7 +31,7 @@ before_deploy:
 deploy:
   provider: script
   skip_cleanup: true
-  script: rsync -avcz --delete --exclude=.DS_Store --exclude=__pycache__ --exclude='google*.html' $TRAVIS_BUILD_DIR/dist/app/ ${RSYNC_CRED}
+  script: rsync -avcz --delete --exclude=.DS_Store --exclude=__pycache__ --exclude='google*.html' --exclude='urls.db' $TRAVIS_BUILD_DIR/dist/app/ ${RSYNC_CRED}
   on:
     branch: master
 env:
