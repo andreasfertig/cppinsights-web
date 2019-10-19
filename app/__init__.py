@@ -276,6 +276,18 @@ def getVersionInfo():
     resp['stdout']     = stdout
     resp['stderr']     = stderr
 
+    dockerImage = 'insights-test'
+    if app.config['USE_DOCKER']:
+        p = subprocess.Popen(['docker', 'images', '--filter=reference=%s' %(dockerImage), '--format', '{{.ID}} {{.CreatedAt}}'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        stdout, stderr = p.communicate(timeout=20)
+        stdout         = stdout.decode('utf-8')
+        returncode     = p.returncode
+    else:
+        stdout = 'Docker not used'
+
+    resp['stdout'] += '\nDocker image "%s" info: ' %(dockerImage) + stdout + '\n'
+
     return resp
 #------------------------------------------------------------------------------
 
