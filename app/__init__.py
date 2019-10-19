@@ -120,6 +120,7 @@ def getSupportedOptions():
              {'desc': 'More Transformations'     , 'flag' : '',                         'name' : 'More Transformations',     'selected' : False, 'label' : True,  'single' : False , 'ccopt' : False, 'cppStd' : False },
 #             {'desc': 'stdinitlist'              , 'flag' : '-show-initlist',           'name' : 'std::initializer_list',    'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
              {'desc': 'all-implicit-casts'       , 'flag' : '-show-all-implicit-casts', 'name' : 'show all implicit casts',  'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
+             {'desc': 'use-libcpp'               , 'flag' : '-use-libc++',              'name' : 'Use libc++',               'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
            ]
 
     return opts
@@ -274,6 +275,18 @@ def getVersionInfo():
     resp['returncode'] = returncode
     resp['stdout']     = stdout
     resp['stderr']     = stderr
+
+    dockerImage = 'insights-test'
+    if app.config['USE_DOCKER']:
+        p = subprocess.Popen(['docker', 'images', '--filter=reference=%s' %(dockerImage), '--format', '{{.ID}} {{.CreatedAt}}'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        stdout, stderr = p.communicate(timeout=20)
+        stdout         = stdout.decode('utf-8')
+        returncode     = p.returncode
+    else:
+        stdout = 'Docker not used'
+
+    resp['stdout'] += '\nDocker image "%s" info: ' %(dockerImage) + stdout + '\n'
 
     return resp
 #------------------------------------------------------------------------------
