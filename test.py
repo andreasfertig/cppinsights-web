@@ -83,9 +83,9 @@ class CppInsightsTestCase(unittest.TestCase):
                  'alt-syntax-for',
                  'alt-syntax-subscription',
                  'More Transformations',
-#                 'stdinitlist',
                  'all-implicit-casts',
                  'use-libcpp',
+                 'edu-show-initlist',
                 ]
 
         regEx = re.compile(r'[value|label]="(.*?)"' )
