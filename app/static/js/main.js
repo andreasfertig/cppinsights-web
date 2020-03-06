@@ -459,6 +459,29 @@ document.querySelector('#button-ce').addEventListener('mousedown', function() {
   updateLinkToCompilerExplorer();
 });
 
+// From: https://github.com/mattgodbolt/compiler-explorer/pull/1823/files
+function asciiEncodeJsonText(json) {
+  return json.replace(/[\u007F-\uFFFF]/g, function(chr) {
+    // json unicode escapes must always be 4 characters long, so pad with leading zeros
+    return '\\u' + ('0000' + chr.charCodeAt(0).toString(16)).substr(-4);
+  });
+}
+
+function updateLinkToQuickBench() {
+  var quickBenchState = {
+    text: cppEditor.getValue()
+  };
+
+  var link = 'http:' /*location.protocol*/ + '//quick-bench.com/#' + b64UTFEncode(asciiEncodeJsonText(JSON.stringify(
+    quickBenchState)));
+  var qbButton = document.getElementById('button-qb');
+  qbButton.href = link;
+}
+
+document.querySelector('#button-qb').addEventListener('mousedown', function() {
+  updateLinkToQuickBench();
+});
+
 function getLongLinkBase() {
   var cppStd = getCppStd();
   var insightsOptions = getInsightsOptions();

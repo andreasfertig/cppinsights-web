@@ -745,7 +745,8 @@ h2 {
   top: 3px;
 }
 
-.cebutton {
+.cebutton,
+.qbbutton {
   position: relative;
   top: -2px;
 }
