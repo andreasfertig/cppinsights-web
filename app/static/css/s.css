@@ -1,5 +1,9 @@
 /* C++ Insights Web, copyright (c) by Andreas Fertig
    Distributed under an MIT license. See /LICENSE */
+html {
+  height: 100%;
+}
+
 body,
 html {
   margin: 0;
@@ -10,6 +14,7 @@ html {
 }
 
 body {
+  min-height: 100%;
   font-size: initial;
   font-weight: 400;
   line-height: 1.5;
@@ -23,6 +28,75 @@ input {}
 
 label {
   margin: 0;
+}
+
+main {
+  display: grid;
+  margin-left: 10px;
+  margin-right: 10px;
+
+  grid-template:
+    "nav nav nav"41px "srcin vdragbar insights"minmax(60vh, auto) "hdragbar hdragbar hdragbar"10px "console console console"minmax(0, 150px) / calc(50% - 5px) 10px calc(50% - 5px);
+  height: 100vh;
+}
+
+#single {
+  grid-template:
+    "nav nav"41px "content content "auto / 100%;
+}
+
+nav {
+  grid-area: nav;
+  display: grid;
+  grid-template:
+    "controls news about"41px / max-content minmax(100px, auto) max-content;
+  align-items: center;
+}
+
+srcin {
+  grid-area: srcin;
+}
+
+vdragbar {
+  grid-area: vdragbar;
+  cursor: col-resize;
+}
+
+hdragbar {
+  grid-area: hdragbar;
+  cursor: row-resize;
+}
+
+vdragbar:hover,
+hdragbar:hover {
+  background: #f4f4f4;
+}
+
+insights {
+  grid-area: insights;
+}
+
+console {
+  grid-area: console;
+}
+
+info {
+  grid-area: info;
+}
+
+controls {
+  grid-area: controls;
+}
+
+news {
+  grid-area: news;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+about {
+  grid-area: about;
+  align-self: baseline;
 }
 
 .icon-run,
@@ -283,55 +357,69 @@ a.close-cookie-banner:hover {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  /* background-color: #eceeef;
-    */
 }
 
 #container>div {
   margin: auto 1em;
 }
 
-.mid {
-  clear: both;
+#stdin,
+#stdout,
+#stderr {
+  height: 100%;
+  display: flex;
+  flex-flow: column;
 }
 
-.code {
-  float: left;
-  width: 49%;
+#stderr-div {
+  display: flex;
+  flex-flow: column;
+  flex-grow: 1;
 }
 
-.html {
-  float: right;
-  width: 49%;
+#stderr button,
+#banner button {
+  border: none;
+  background: inherit;
+  margin: 0;
+  padding: 0;
+  font-size: small;
+  color: inherit;
+  cursor: pointer;
+  vertical-align: super;
 }
 
-.stderr {
-  clear: both;
-  width: 100%;
+
+#stderr button {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  width: 10px;
+  height: 10px;
+  opacity: .5;
 }
 
-.code2 {
-  margin-right: 1em;
+#stderr button:hover {
+  opacity: 1;
 }
 
-#main textarea {
-  width: 100%;
-  height: 50vh;
+#stderr button {
+  background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8' standalone='no'%3F%3E%3Csvg xmlns='http://www.w3.org/2000/svg' version='1.1' width='10' height='10' viewBox='0 0 10 10'%3E%3Cg stroke='%23808080' fill='none'%3E%3Cpath d='m0,0 10,0 0,10 -10,0 0,-10'/%3E%3Cpath d='m0,1 10,0' stroke-width='2'/%3E%3C/g%3E%3C/svg%3E%0A");
+}
+
+#stderr .minimized {
+  background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8' standalone='no'%3F%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cg stroke='%23808080' fill='none'%3E%3Cpath d='m0,10 10,0' stroke-width='3'/%3E%3C/g%3E%3C/svg%3E ");
 }
 
 #lnkdesc {
-
   width: 100%;
   height: 30px;
 
 }
 
 #header {
-  clear: both;
-  padding-top: 10px;
   text-align: left;
   font-size: 70%;
-  float: right;
   border-left: 1px dotted #000;
   padding-left: 10px;
   color: gray;
@@ -387,19 +475,12 @@ a.close-cookie-banner:hover {
   background-position: 16px 0;
 }
 
-.codehl {
-  margin-left: 1em;
-  width: 100%;
-  height: 50vh;
-  float: right;
-}
-
-.codehltable,
 .CodeMirror {
   overflow: hidden;
   width: 100%;
   border: solid #c5c5c5;
   border-width: 1px;
+  flex-grow: 1;
 }
 
 .CodeMirror-gutters {
@@ -480,29 +561,6 @@ div.CodeMirror span.CodeMirror-matchingbracket {
 }
 
 
-.linenos {
-  color: #999;
-  padding-right: 5px;
-  min-width: 20px;
-  padding-left: 10px;
-}
-
-.highlighttable {
-  overflow: auto;
-  border-radius: 3px;
-  border-spacing: 0;
-  border-collapse: separate;
-}
-
-.highlighttable .code {
-  width: 100%;
-  float: none;
-}
-
-.linenodiv pre {
-  margin-top: 0px;
-  margin-bottom: 0px;
-}
 
 .shortlink-entry {
   border: 1px solid #ddd;
@@ -530,23 +588,9 @@ div.CodeMirror span.CodeMirror-matchingbracket {
 }
 
 .stderr .CodeMirror {
-  height: 13vh;
+  height: 100%;
   background: #f4f4f4;
   color: black;
-}
-
-.code .CodeMirror {
-  height: 70vh;
-}
-
-.html .CodeMirror {
-  height: 70vh;
-}
-
-.mainbody {
-  height: 100%;
-  margin-left: 10px;
-  margin-right: 10px;
 }
 
 .logo {
@@ -757,8 +801,25 @@ h2 {
   border-color: rgba(27, 31, 35, 0.35);
 }
 
-.button-more>div {
+.news {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: 5px;
+}
 
+#banner {
+  border: 1px dotted #0275d8;
+  border-radius: 2px;
+  padding: 5px 10px 5px 10px;
+  font-size: small;
+}
+
+.nocommunityevent {
+  display: none !important;
+}
+
+.button-more>div {
   position: absolute;
   top: 0;
   right: 0;
@@ -943,19 +1004,22 @@ h2 {
 
 
 @media screen and (max-width: 750px) {
-  .code {
-    float: none;
-    width: 100%;
+  main {
+    grid-template:
+      "nav nav"max-content "srcin srcin"100% "vdragbar vdragbar"0 "insights insights"100% "hdragbar hdragbar"0 "console console"150px / 100%;
+
+  }
+
+
+  nav {
+    grid-template:
+      "controls controls"
+      "news news"
+      "about about"100% / 100%;
   }
 
   .logo {
     margin-right: 0;
-  }
-
-  .html {
-    float: none;
-    width: 100%;
-    padding-top: .5em;
   }
 
   #header {

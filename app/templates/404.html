@@ -15,20 +15,31 @@
 </head>
 
 <body>
-  <div class="mainbody">
-    <div id="container">
-      <div id="main">
-        <div id="options header">
-          <img class="logo" src="/32.png" />
-          <a class="btn btn-primary btn-lg" href="/">Home</a>
-          <a class="btn btn-primary btn-lg" href="/about.html">About</a>
-          <div id="header">
-            Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a><br />Powered by <a target="_blank"
-                href="http://flask.pocoo.org/">Flask</a> and <a target="_blank" href="https://codemirror.net">CodeMirror</a>
-          </div>
-        </div>
-      </div>
+  <main id="single">
+    <nav id="nav">
+      <controls>
+        <img class="logo" src="32.png" />
+        <a class="btn btn-primary btn-lg" href="/">Home</a>
+        <a class="btn btn-primary btn-lg" href="/about.html">About</a>
+        <a class="btn btn-primary btn-lg" href="/privacy-policy.html" title="Policies">
+          Policies
+        </a>
+        <a class="btn btn-primary btn-lg" href="/examples.html">Examples</a>
+      </controls>
 
+      <news>
+      </news>
+
+      <about>
+        <div id="header">
+          Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a><br />Powered by <a target="_blank"
+              href="http://flask.pocoo.org/">Flask</a> and <a target="_blank" href="https://codemirror.net">CodeMirror</a>
+        </div>
+      </about>
+
+    </nav>
+
+    <content>
       <h1>404 - Page Not Found</h1>
 
       Sorry, the content your are looking for is not there.
@@ -37,8 +48,9 @@
         Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a> &bull; Powered by <a target="_blank"
             href="http://flask.pocoo.org/">Flask</a> and <a target="_blank" href="https://codemirror.net">CodeMirror</a>
       </div>
-    </div>
-  </div>
+    </content>
+
+  </main>
 
   <script src="js/main.js"></script>
 

@@ -69,7 +69,7 @@ $('#insightsOptions').multipleSelect({
 });
 
 function changeFontSize(value) {
-  var elCode = document.getElementById('code2');
+  var elCode = document.getElementById('stdin');
   elCode.style.fontSize = value;
   var elStdOut = document.getElementById('stdout');
   elStdOut.style.fontSize = value;
@@ -204,16 +204,143 @@ function download(filename, text) {
   }
 }
 
-/*
-function toggleConsole() {
-  var element = document.getElementById('stderr-div').style;
+function toggleButton(divId) { // eslint-disable-line no-unused-vars
+  var element = document.getElementById(divId).style;
+
   if ('none' == element.display) {
     element.display = 'initial';
+
   } else {
     element.display = 'none';
+
+  }
+
+  setLocalStorageItem(divId, element.display);
+}
+
+function setElementDisplay(divId, value) {
+  var element = document.getElementById(divId).style;
+
+  element.display = value;
+}
+
+setElementDisplay('banner', getLocalStorageItem('banner', 'initial'));
+showHideConsole(getLocalStorageItem('stderr-div', 'initial'));
+
+/* -- resizing columns and rows -- */
+
+function changeGridConsoleRowHeight(newHeight) {
+  var allm = document.getElementById('allmain');
+  var navHeight = document.getElementById('nav').clientHeight + 'px';
+
+  allm.style.gridTemplateRows = navHeight + ' ' + 'auto' + ' 10px ' + newHeight;
+}
+
+var dragging = false;
+var draggingMode = '';
+var consoleClosed = false;
+
+function showHideConsole(show) {
+  var elem = document.getElementById('stderr-div');
+  var err = document.getElementById('errstd');
+  var oldHeight = err.clientHeight;
+
+  var allm = document.getElementById('allmain');
+
+  var element = elem.style;
+  var minimized = document.getElementById('console-btn');
+
+  if (show) {
+    element.display = 'initial';
+
+    allm.style.removeProperty('grid-template-rows');
+
+    minimized.classList.remove('minimized');
+
+  } else {
+    var height = elem.clientHeight;
+
+    element.display = 'none';
+    var errStyleHeight = 'calc(' + oldHeight + 'px - ' + height + 'px)';
+    changeGridConsoleRowHeight(errStyleHeight);
+
+    minimized.classList.add('minimized');
+  }
+
+  consoleClosed = (element.display == 'none');
+}
+
+function toggleConsole() { // eslint-disable-line no-unused-vars
+  var element = document.getElementById('stderr-div').style;
+
+  showHideConsole('none' == element.display);
+
+  setLocalStorageItem('stderr-div', !consoleClosed);
+}
+
+function dragstart(e, mode) {
+  e.preventDefault();
+  dragging = true;
+  draggingMode = mode;
+}
+
+function dragmove(e) {
+  if (dragging) {
+    var percentage = 0;
+    var mainPercentage = 0;
+
+    if ('v' == draggingMode) {
+      percentage = (e.pageX / window.innerWidth) * 100;
+      if (percentage > 5 && percentage < 98) {
+        mainPercentage = 100 - percentage;
+        var allm = document.getElementById('allmain');
+
+        allm.style.gridTemplateColumns = 'calc(' + percentage + '% - 5px) 10px calc(' + mainPercentage + '% - 5px)';
+      }
+    } else if ('h' == draggingMode) {
+      if (consoleClosed) {
+        return;
+      }
+
+      percentage = (e.pageY / window.innerHeight) * 100;
+
+      if (percentage > 5 && percentage < 94) {
+        mainPercentage = 100 - percentage;
+        changeGridConsoleRowHeight(mainPercentage + '%');
+      }
+    }
+
   }
 }
-*/
+
+function dragend() {
+  dragging = false;
+}
+
+if (window.addEventListener) {
+  document.getElementById('vdragbar').addEventListener('mousedown', function(e) {
+    dragstart(e, 'v');
+  });
+  document.getElementById('vdragbar').addEventListener('touchstart', function(e) {
+    dragstart(e, 'v');
+  });
+  document.getElementById('hdragbar').addEventListener('mousedown', function(e) {
+    dragstart(e, 'h');
+  });
+  document.getElementById('hdragbar').addEventListener('touchstart', function(e) {
+    dragstart(e, 'h');
+  });
+  window.addEventListener('mousemove', function(e) {
+    dragmove(e);
+  });
+  window.addEventListener('touchmove', function(e) {
+    dragmove(e);
+  });
+  window.addEventListener('mouseup', dragend);
+  window.addEventListener('touchend', dragend);
+}
+
+/* -- resizing columns and rows -- */
 
 function getInsightsOptions() {
   return $('#insightsOptions').multipleSelect('getSelects', 'value');
