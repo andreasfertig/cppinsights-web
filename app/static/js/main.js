@@ -256,6 +256,8 @@ function showHideConsole(show) {
     allm.style.removeProperty('grid-template-rows');
 
     minimized.classList.remove('minimized');
+    // refresh codemirror, otherwise the editor contains the old value
+    stdErrEditor.refresh();
 
   } else {
     var height = elem.clientHeight;
