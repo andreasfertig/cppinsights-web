@@ -38,9 +38,21 @@ class CppInsightsTestCase(unittest.TestCase):
         return 'urls_test.db'
     #------------------------------------------------------------------------------
 
+    @staticmethod
+    def removeCommunityEventTestFile(cls):
+        if os.path.exists(cls.getCommunityEventFileNameMock()):
+            os.remove(cls.getCommunityEventFileNameMock())
+    #------------------------------------------------------------------------------
+
+    @staticmethod
+    def getCommunityEventFileNameMock():
+        return 'communityevent_test.txt'
+    #------------------------------------------------------------------------------
+
     @classmethod
     def setUpClass(cls):
         cls.removeDbTestFile(cls)
+        cls.removeCommunityEventTestFile(cls)
     #------------------------------------------------------------------------------
 
     def setUp(self):
@@ -50,6 +62,7 @@ class CppInsightsTestCase(unittest.TestCase):
         self.r.replace('subprocess.Popen', self.Popen)
         self.r.replace('tempfile.mkstemp', self.mock_mkstemp)
         self.r.replace('app.getDbName', self.getDbNameMock)
+        self.r.replace('app.getCommunityEventFileName', self.getCommunityEventFileNameMock)
         self.addCleanup(self.r.restore)
     #------------------------------------------------------------------------------
 
@@ -270,7 +283,7 @@ class CppInsightsTestCase(unittest.TestCase):
     #------------------------------------------------------------------------------
 
     def selectedStandard(self, cppStd, text):
-        return ('<option value="%s" class="single"  selected="selected" >\n                %s</option>' %(cppStd, text)).encode()
+        return ('<option value="%s" class="single"  selected="selected" >\n              %s</option>' %(cppStd, text)).encode()
     #------------------------------------------------------------------------------
 
     def test_link_rev_1_valid(self):
@@ -634,6 +647,43 @@ class CppInsightsTestCase(unittest.TestCase):
         conn.close()
 
         assert 1 == rv[0]
+    #------------------------------------------------------------------------------
+
+    def test_community_event_no_file(self):
+        import app
+        link, title = app.getCommunityEvent()
+
+        assert None == link
+        assert None == title
+    #------------------------------------------------------------------------------
+
+    def test_community_event_empty_file(self):
+        # create empty file
+        with open(self.getCommunityEventFileNameMock(), 'w') as f:
+            pass
+
+        import app
+        link, title = app.getCommunityEvent()
+        self.removeCommunityEventTestFile(self)
+
+        assert None == link
+        assert None == title
+    #------------------------------------------------------------------------------
+
+    def test_community_event_valid_file(self):
+        # create empty file
+        testLink  = 'https://event.com'
+        testTitle = 'Some Event'
+
+        with open(self.getCommunityEventFileNameMock(), 'w') as f:
+            f.write('%s;%s' %(testLink, testTitle))
+
+        import app
+        link, title = app.getCommunityEvent()
+        self.removeCommunityEventTestFile(self)
+
+        assert testLink == link
+        assert testTitle == title
     #------------------------------------------------------------------------------
 
     def test_get_app(self):

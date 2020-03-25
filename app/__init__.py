@@ -32,6 +32,25 @@ def getDefaultStandard():
     return 'cpp17'
 #------------------------------------------------------------------------------
 
+def getCommunityEventFileName():
+    return 'communityevent.txt'
+#------------------------------------------------------------------------------
+
+def getCommunityEvent():
+    fName = getCommunityEventFileName()
+
+    link = None
+    title = None
+
+    if os.path.exists(fName):
+        communityEvents = open(fName, 'r').read()
+
+        if 0 != len(communityEvents):
+            link, title = communityEvents.split(';')
+
+    return link, title
+#------------------------------------------------------------------------------
+
 def runDocker(code, insightsOptions, cppStd, versionOnly=False):
     fd, fileName = tempfile.mkstemp(suffix='.cpp')
     try:
@@ -93,6 +112,12 @@ def buildResponse(code, stdout, stderr, insightsOptions, errCode, twcard=False, 
 
     if desc:
         desc = ' - ' + desc
+
+    communitylink, communitytitle = getCommunityEvent()
+    communityEventHide = ''
+
+    if None == communitylink or None == communitytitle:
+        communityEventHide = 'nocommunityevent'
 
     selectedInsightsOptions = getInsightsSelections(insightsOptions)
     response                = make_response(render_template('index.html', **locals()))
