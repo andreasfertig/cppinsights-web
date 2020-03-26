@@ -40,8 +40,12 @@ function checkCookie(name) {
   return null;
 }
 
-function cookieAccept(b) { // eslint-disable-line no-unused-vars
+function createComplianceCookie(b) {
   createCookie(cookieName, b);
+}
+
+function cookieAccept(b) { // eslint-disable-line no-unused-vars
+  createComplianceCookie(b);
 
   var element = document.getElementById('cookie-law');
   element.parentNode.removeChild(element);
@@ -57,9 +61,23 @@ function onLoad() { // eslint-disable-line no-unused-vars
   }
 }
 
-/*
-module.exports = {
-  storageAllowed,
-  onLoad,
-  cookieAccept
-};*/
+function canUseLocalStorage() {
+  return window.localStorage && storageAllowed();
+}
+
+function setLocalStorageItem(key, data) { // eslint-disable-line no-unused-vars
+  if (canUseLocalStorage()) {
+    window.localStorage.setItem(key, JSON.stringify(data));
+  }
+}
+
+function getLocalStorageItem(key, deflt) { // eslint-disable-line no-unused-vars
+  if (canUseLocalStorage()) {
+    var data = window.localStorage.getItem(key);
+    if (data) {
+      return JSON.parse(data);
+    }
+  }
+
+  return deflt;
+}

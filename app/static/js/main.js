@@ -1,34 +1,13 @@
 /* C++ Insights Web, copyright (c) by Andreas Fertig
    Distributed under an MIT license. See /LICENSE */
 
-/* global CodeMirror, storageAllowed, onLoad */
+/* global CodeMirror, onLoad, getLocalStorageItem, setLocalStorageItem, canUseLocalStorage */
 
 var DEFAULT_CPP_STD = 'cpp17';
 var DEFAULT_REV = '1.0';
 
 // load cookies
 onLoad();
-
-function canUseLocalStorage() {
-  return window.localStorage && storageAllowed();
-}
-
-function setLocalStorageItem(key, data) {
-  if (canUseLocalStorage()) {
-    window.localStorage.setItem(key, JSON.stringify(data));
-  }
-}
-
-function getLocalStorageItem(key, deflt) {
-  if (canUseLocalStorage()) {
-    var data = window.localStorage.getItem(key);
-    if (data) {
-      return JSON.parse(data);
-    }
-  }
-
-  return deflt;
-}
 
 var cppEditor = CodeMirror.fromTextArea(document.getElementById('cpp-code'), {
   lineNumbers: true,

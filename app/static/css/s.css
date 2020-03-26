@@ -1,5 +1,128 @@
 /* C++ Insights Web, copyright (c) by Andreas Fertig
    Distributed under an MIT license. See /LICENSE */
+
+:root {
+  --cl-main-bg: #fff;
+  --cl-text: #000;
+  --cl-text-gray: #333;
+  --cl-text-light-gray: gray;
+  --cl-black: #000;
+  --cl-button: var(--cl-main-bg);
+  --cl-button-hover: #e6ebf1;
+  --cl-button-border: rgba(27, 31, 35, 0.2);
+  --cl-button-border-hover: rgba(27, 31, 35, 0.35);
+  --cl-button-text: #24292e;
+
+  --cl-link: #0275d8;
+  --cl-link-hover: #014c8c;
+
+  --cl-button-header: #545353;
+
+  --cl-in-readonly: var(--cl-text-gray);
+  --cl-in-readonly-selected: var(--cl-in-readonly);
+  --cl-in-readonly-bg: #f2f2f2;
+
+  --cl-code-bg: var(--cl-main-bg);
+  --cl-code-selected-line: #e6e6e6;
+  --cl-code-selection: #a3d0ff;
+  --cl-code-border: #c5c5c5;
+  --cl-console-bg: #f4f4f4;
+  --cl-cursor: var(--cl-text);
+
+  --cl-cm-string: #032f62;
+  --cl-cm-keyword: #d73a49;
+  --cl-cm-definition: #6f42c1;
+  --cl-cm-number: #005cc5;
+
+  --filter-icon-invert: 0%;
+  --filter-icon-grayscale: 0%;
+  --filter-logo-brightness: 100%;
+}
+
+@media (prefers-color-scheme: dark) {
+  /* CSS Code if Dark Mode is active. Keep in sync with "[data-theme="dark"]" */
+
+  :root {
+    --cl-main-bg: #353839;
+    --cl-black: #cdcdce;
+    --cl-text: var(--cl-black);
+    --cl-text-gray: var(--cl-black);
+    --cl-text-light-gray: var(--cl-button-text);
+
+    --cl-button: #515354;
+    --cl-button-hover: var(--cl-main-bg);
+    --cl-button-border: var(--cl-button);
+    --cl-button-border-hover: var(--cl-button);
+    --cl-button-text: #cdcdce;
+
+    --cl-link: #64b2f5;
+    --cl-link-hover: #87b1d5;
+
+    --cl-button-header: inherit;
+
+    --cl-in-readonly: #5a5c62;
+    --cl-in-readonly-selected: white;
+    --cl-in-readonly-bg: #313131;
+
+    --cl-code-bg: #1f1f23;
+    --cl-code-selected-line: #24252c;
+    --cl-code-selection: #515b70;
+    --cl-code-border: #000;
+    --cl-console-bg: var(--cl-code-bg);
+    --cl-cursor: var(--cl-text);
+
+    --cl-cm-string: #569cd6;
+    --cl-cm-keyword: #fb60a2;
+    --cl-cm-definition: #9874d9;
+    --cl-cm-number: #b5cea8;
+
+    --filter-icon-invert: 60%;
+    --filter-icon-grayscale: 100%;
+    --filter-logo-brightness: 130%;
+  }
+}
+
+[data-theme="dark"] {
+  /* copy & paste from above (@media (prefers-color-scheme: dark)) */
+  --cl-main-bg: #353839;
+  --cl-black: #cdcdce;
+  --cl-text: var(--cl-black);
+  --cl-text-gray: var(--cl-black);
+  --cl-text-light-gray: var(--cl-button-text);
+
+  --cl-button: #515354;
+  --cl-button-hover: var(--cl-main-bg);
+  --cl-button-border: var(--cl-button);
+  --cl-button-border-hover: var(--cl-button);
+  --cl-button-text: #cdcdce;
+
+  --cl-link: #64b2f5;
+  --cl-link-hover: #87b1d5;
+
+  --cl-button-header: inherit;
+
+  --cl-in-readonly: #5a5c62;
+  --cl-in-readonly-selected: white;
+  --cl-in-readonly-bg: #313131;
+
+  --cl-code-bg: #1f1f23;
+  --cl-code-selected-line: #24252c;
+  --cl-code-selection: #515b70;
+  --cl-code-border: #000;
+  --cl-console-bg: var(--cl-code-bg);
+  --cl-cursor: var(--cl-text);
+
+  --cl-cm-string: #569cd6;
+  --cl-cm-keyword: #fb60a2;
+  --cl-cm-definition: #9874d9;
+  --cl-cm-number: #b5cea8;
+
+  --filter-icon-invert: 60%;
+  --filter-icon-grayscale: 100%;
+  --filter-logo-brightness: 130%;
+
+}
+
 html {
   height: 100%;
 }
@@ -8,8 +131,8 @@ body,
 html {
   margin: 0;
   padding: 0;
-  color: #333;
-  background: #fff;
+  color: var(--cl-text-gray);
+  background: var(--cl-main-bg);
   font-family: Verdana, Helvetica, Arial, sans-serif;
 }
 
@@ -69,7 +192,7 @@ hdragbar {
 
 vdragbar:hover,
 hdragbar:hover {
-  background: #f4f4f4;
+  background: var(--cl-console-bg);
 }
 
 insights {
@@ -131,12 +254,10 @@ about {
 #active .icon-twitter:before {
   content: "";
   background-image: url("../img/nav.svg");
-  /*background-repeat: no-repeat;*/
-  /*float: center;*/
-  display: inline-block;
   width: 16px;
   height: 16px;
   display: block;
+  filter: invert(var(--filter-icon-invert));
 }
 
 .btn-group-lg>.btn,
@@ -144,19 +265,17 @@ about {
   font-size: .8em;
 }
 
-
-.btn-primary:hover {
-  color: black;
-  background-color: #e6ebf1;
-  border-color: rgba(27, 31, 35, 0.35);
+.btn-primary:hover,
+.ms-choice:hover {
+  color: var(--cl-text);
+  background-color: var(--cl-button-hover);
+  border-color: var(--cl-button-border-hover);
 }
 
 .btn-primary {
-  color: #24292e;
-  background-color: #eff3f6;
-  background-image: linear-gradient(-180deg, #fafbfc 0%, #eff3f6 90%);
-  border-color: initial;
-  border: 1px solid rgba(27, 31, 35, 0.2);
+  color: var(--cl-button-text);
+  background-color: var(--cl-button);
+  border: 1px solid var(--cl-button-border);
 }
 
 
@@ -176,13 +295,6 @@ about {
   transition: initial;
   margin-top: 5px;
   cursor: pointer;
-}
-
-
-.btn-primary:hover {
-  color: black;
-  background-color: #e6ebf1;
-  border-color: rgba(27, 31, 35, 0.35);
 }
 
 
@@ -313,7 +425,7 @@ img {
 
 a:focus,
 a:hover {
-  color: #014c8c;
+  color: var(--cl-link-hover);
   text-decoration: underline;
 }
 
@@ -324,7 +436,7 @@ a:hover {
 
 a {
   background-color: transparent;
-  color: #0275d8;
+  color: var(--cl-link);
   text-decoration: none;
 }
 
@@ -414,15 +526,19 @@ a.close-cookie-banner:hover {
 #lnkdesc {
   width: 100%;
   height: 30px;
-
+  background-color: var(--cl-main-bg);
+  color: var(--cl-text);
+  border: 1px solid #ccc;
+  border-bottom: none;
+  border-top: none;
 }
 
 #header {
   text-align: left;
   font-size: 70%;
-  border-left: 1px dotted #000;
+  border-left: 1px dotted var(--cl-black);
   padding-left: 10px;
-  color: gray;
+  color: var(--cl-text-light-gray);
   padding-top: 5px;
 }
 
@@ -478,9 +594,10 @@ a.close-cookie-banner:hover {
 .CodeMirror {
   overflow: hidden;
   width: 100%;
-  border: solid #c5c5c5;
+  border: solid var(--cl-code-border);
   border-width: 1px;
   flex-grow: 1;
+  background: var(--cl-code-bg);
 }
 
 .CodeMirror-gutters {
@@ -490,7 +607,7 @@ a.close-cookie-banner:hover {
 }
 
 .CodeMirror-selected {
-  background-color: #a3d0ff !important;
+  background-color: var(--cl-code-selection) !important;
 }
 
 .CodeMirror-focused div.CodeMirror-selected {
@@ -501,6 +618,31 @@ a.close-cookie-banner:hover {
   background: #e8e8e8;
 }
 
+.CodeMirror-line::selection,
+.CodeMirror-line>span::selection,
+.CodeMirror-line>span>span::selection,
+.CodeMirror-activeline-background {
+  background: var(--cl-code-selected-line);
+}
+
+.CodeMirror-line::-moz-selection,
+.CodeMirror-line>span::-moz-selection,
+.CodeMirror-line>span>span::-moz-selection {
+  background: var(--cl-code-selected-line);
+}
+
+.CodeMirror,
+.cm-s-default .cm-variable,
+.cm-s-default .cm-punctuation,
+.cm-s-default .cm-property,
+.cm-s-default .cm-operator {
+  color: var(--cl-text);
+}
+
+
+.CodeMirror div.CodeMirror-cursor {
+  border-left: 1px solid var(--cl-cursor);
+}
 
 /*.CodeMirror-selectedtext {
      color: white;
@@ -509,7 +651,7 @@ a.close-cookie-banner:hover {
 
 div.CodeMirror span.CodeMirror-matchingbracket {
   color: inherit;
-  border: gray;
+  border: var(--cl-text-light-gray);
   border-width: thin;
   border-style: solid;
 }
@@ -524,35 +666,29 @@ div.CodeMirror span.CodeMirror-matchingbracket {
   color: #6a737d;
 }
 
-.cm-s-default .cm-meta {
-  color: #d73a49;
-}
-
 .cm-s-default .cm-keyword,
+.cm-s-default .cm-meta,
+.cm-s-default .cm-type,
 .k,
 .kt,
 .cp,
 .cpf {
-  color: #d73a49;
+  color: var(--cl-cm-keyword);
 }
 
 .cm-s-default .cm-def,
 .nf {
-  color: #6f42c1;
-}
-
-.cm-s-default .cm-type {
-  color: #d73a49;
+  color: var(--cl-cm-definition);
 }
 
 .cm-s-default .cm-number {
-  color: #005cc5;
+  color: var(--cl-cm-number);
 }
 
 .cm-s-default .cm-string,
 .s,
 .se {
-  color: #032f62;
+  color: var(--cl-cm-string);
 }
 
 .k,
@@ -589,14 +725,15 @@ div.CodeMirror span.CodeMirror-matchingbracket {
 
 .stderr .CodeMirror {
   height: 100%;
-  background: #f4f4f4;
-  color: black;
+  background: var(--cl-console-bg);
+  color: var(--cl-text);
 }
 
 .logo {
   height: 32px;
   width: auto;
   margin-right: 2em;
+  filter: brightness(var(--filter-logo-brightness));
 }
 
 .h2,
@@ -605,7 +742,7 @@ h2 {
   padding: 0;
   margin: 0;
   font-weight: 600;
-  color: gray;
+  color: var(--cl-text-light-gray);
 }
 
 #file-input {
@@ -634,16 +771,12 @@ h2 {
 .input-group input[type="text"] {
   min-height: 30px;
   padding: 3px 8px;
-  color: #333;
+  color: var(--cl-in-readonly);
   vertical-align: middle;
-  background-color: #f2f2f2;
-  background-repeat: no-repeat;
-  background-position: right 8px center;
+  background-color: inherit;
   border: 1px solid #ccc;
-  border-radius: 3px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
+  border-right: none;
+  border-radius: 3px 0 0 0;
   -webkit-border-top-right-radius: 0;
   -moz-border-top-right-radius: 0;
   -webkit-border-bottom-right-radius: 0;
@@ -652,7 +785,6 @@ h2 {
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, .075);
   width: 100%;
 }
-
 
 .input-group-button:last-child .cpybtn {
   margin-left: -1px;
@@ -691,7 +823,10 @@ h2 {
   white-space: nowrap;
   vertical-align: middle;
   cursor: pointer;
-  background-color: #eee;
+  background-color: inherit;
+  /*#eee;*/
+  /*  background-color: var(--cl-button);
+*/
   border: 1px solid #d5d5d5;
   border-radius: 0;
   border-top-right-radius: 3px;
@@ -707,11 +842,9 @@ h2 {
 .reqslbtn {
   background-color: #0366d6;
   color: white;
-  border-top-left-radius: 3px;
-  border-bottom-left-radius: 3px;
   width: 100%;
   min-height: 42px;
-  border-radius: 0;
+  border-radius: 0 0 3px 3px;
 }
 
 .note-text {
@@ -743,12 +876,19 @@ h2 {
   margin-top: -3px;
   position: relative;
   top: 3px;
+  filter: invert(var(--filter-icon-invert));
 }
 
 .cebutton,
 .qbbutton {
   position: relative;
   top: -2px;
+  height: 20px;
+  filter: grayscale(var(--filter-icon-grayscale)) invert(var(--filter-icon-invert));
+}
+
+.cebutton {
+  height: 23px;
 }
 
 .copyDownDownContent,
@@ -756,7 +896,7 @@ h2 {
   display: none;
   position: absolute;
   left: 0px;
-  background-color: white;
+  background-color: var(--cl-main-bg);
   min-width: 230px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 10;
@@ -767,12 +907,12 @@ h2 {
 
 .moreDownDownContent {
   min-width: 0;
-  background-color: white;
+  background-color: var(--cl-main-bg);
   -webkit-box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
   -moz-box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
   box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
   padding: 10px;
-  color: #000;
+  color: var(--cl-black);
   border: 1px solid #aaa;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -785,8 +925,8 @@ h2 {
 }
 
 .morebtn a {
-  color: black;
-  background-color: white;
+  color: var(--cl-text);
+  background-color: var(--cl-main-bg);
 }
 
 .morebtn a:focus,
@@ -799,7 +939,7 @@ h2 {
 }
 
 .cpybtn:hover {
-  border-color: rgba(27, 31, 35, 0.35);
+  border-color: var(--cl-button-border-hover);
 }
 
 .news {
@@ -831,12 +971,17 @@ h2 {
 /*
 .button-more>div::after {
   content: '▼';
-  color: gray;
+  color: var(--cl-text-light-gray);
 }
 */
 
 #shrtlnkurl {
-  color: gray;
+  color: var(--cl-text-light-gray);
+}
+
+#lnkurl::selection {
+  background: var(--cl-code-selection);
+  color: var(--cl-in-readonly-selected);
 }
 
 .show {
@@ -865,11 +1010,9 @@ h2 {
   -moz-border-radius: 4px;
   border-radius: 4px;
   font-size: 0.8em;
-  color: #24292e;
-  background-color: #eff3f6;
-  background-image: linear-gradient(-180deg, #fafbfc 0%, #eff3f6 90%);
-  border-color: initial;
-  border: 1px solid rgba(27, 31, 35, 0.2);
+  color: var(--cl-button-text);
+  background-color: var(--cl-button);
+  border: 1px solid var(--cl-button-border);
 }
 
 .ms-choice>span {
@@ -895,12 +1038,12 @@ h2 {
 
 .ms-choice>div:after {
   content: '▼';
-  color: gray;
+  color: var(--cl-text-light-gray);
 }
 
 .ms-choice>div.open:after {
   content: '▲';
-  color: gray;
+  color: var(--cl-text-light-gray);
 }
 
 .ms-choice>div.open {}
@@ -913,8 +1056,8 @@ h2 {
   padding: 0;
   position: absolute;
   z-index: 1000;
-  background: #fff;
-  color: #000;
+  background: var(--cl-main-bg);
+  color: var(--cl-text);
   border: 1px solid #aaa;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -974,7 +1117,7 @@ h2 {
 
 .ms-drop ul>li label.optgroup {
   font-weight: bold;
-  color: #545353;
+  color: var(--cl-button-header);
 }
 
 .ms-drop input[type="checkbox"] {
@@ -1003,6 +1146,19 @@ h2 {
   font-weight: bold;
 }
 
+
+/* settings */
+#settings {
+  list-style: none;
+  padding-left: 0;
+
+}
+
+#settings label {
+  margin-left: .8em;
+}
+
+/* settings */
 
 @media screen and (max-width: 750px) {
   main {
@@ -1034,7 +1190,7 @@ h2 {
     font-size: 70%;
     display: initial;
     width: 100%;
-    color: gray;
+    color: var(--cl-text-light-gray);
   }
 
   .btn-group-lg>.btn,
