@@ -45,6 +45,9 @@
 
       {{ version|safe }}
 
+
+      <div id="cm-version">CodeMirror: </div>
+
       <div id="footer">
         Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a> &bull; Powered by <a target="_blank"
             href="http://flask.pocoo.org/">Flask</a> and <a target="_blank" href="https://codemirror.net">CodeMirror</a>
@@ -52,6 +55,13 @@
     </content>
 
   </main>
+
+  <script src="/cm/codemirror.js"></script>
+  <script>
+    var el = document.getElementById('cm-version');
+    el.innerHTML += CodeMirror.version;
+
+  </script>
 
 </body>
 
