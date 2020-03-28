@@ -153,6 +153,8 @@ label {
   margin: 0;
 }
 
+button:focus {outline: none;}
+
 main {
   display: grid;
   margin-left: 10px;
