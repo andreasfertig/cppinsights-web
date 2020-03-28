@@ -41,7 +41,7 @@ var settingsConfiguration = [
     toggleButton('banner', b);
   }, true],
   ['Minimize console', function() {
-    return 'initial' === getLocalStorageItem('stderr-div', 'initial');
+    return getLocalStorageItem('stderr-div', false);
   }, function(b) {
     setLocalStorageItem('stderr-div', !b);
   }, true],
