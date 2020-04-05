@@ -15,10 +15,13 @@ module.exports = function(grunt) {
         ]
       },
       dist: {
-        files: {
-          'dist/app/static/img/clb.svg': 'app/static/img/clb.svg',
-          'dist/app/static/img/nav.svg': 'app/static/img/nav.svg',
-        }
+        files: [{
+          expand: true,
+          cwd: 'app/static/img/',
+          src: ['*.svg'],
+          dest: 'dist/app/static/img',
+          ext: '.svg'
+        }]
       }
     },
 
