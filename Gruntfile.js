@@ -52,6 +52,7 @@ module.exports = function(grunt) {
           ],
           'dist/app/static/js/main.min.js': ['app/static/js/main.js'],
           'dist/app/static/js/cookie.min.js': ['app/static/js/cookie.js'],
+          'dist/app/static/js/settings.min.js': ['app/static/js/settings.js'],
           'dist/app/static/ms/jquery-3.3.1.min.js': ['app/static/ms/jquery-3.3.1.js'],
           'dist/app/static/ms/multiple-select.min.js': ['app/static/ms/multiple-select.js']
         }
@@ -87,6 +88,10 @@ module.exports = function(grunt) {
             {
               pattern: /cookie\.js/ig,
               replacement: 'cookie.min.js'
+            },
+            {
+              pattern: /settings\.js/ig,
+              replacement: 'settings.min.js'
             },
             {
               pattern: /jquery-3.3.1\.js/ig,
