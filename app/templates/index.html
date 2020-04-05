@@ -18,6 +18,9 @@
   <script src="/cm/show-hint.js"></script>
   <script src="/cm/clike.js"></script><!-- codemirror includes end -->
 
+  <meta name="supported-color-schemes" content="light dark">
+  <meta name="color-schemes" content="light dark">
+
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@andreas__fertig" />
   <meta name="twitter:creator" content="@Andreas__Fertig" />
@@ -37,7 +40,7 @@
   <main id="allmain">
     <nav id="nav">
       <controls>
-        <img class="logo" src="/32.png" />
+        <img class="logo" src="/img/logo.svg" />
         <button class="btn btn-primary btn-lg icon-run button-run"></button>
         <button class="btn btn-primary btn-lg icon-save button-download" title="Download source"></button>
         <button class="btn btn-primary btn-lg icon-load button-upload" title="Upload source"></button>
@@ -70,8 +73,12 @@
           </div>
         </span>
         <a class="btn btn-primary btn-lg" id="button-ce" href="https://godbolt.org/" target="_blank" title="Open in Compiler Explorer">
-          <img class="cebutton" src="/img/ce32.png" alt="Compiler Explorer" width="20">
+          <img class="cebutton" src="/img/ce.svg" alt="Compiler Explorer">
         </a>
+        <a class="btn btn-primary btn-lg" id="button-qb" href="http://quick-bench.com/" target="_blank" title="Open in Quick Bench">
+          <img class="qbbutton" src="/img/qb.svg" alt="Quick C++ Benchmark">
+        </a>
+
 
         <select id="insightsOptions" title="C++ Insights Options" multiple="multiple" data-toggle="select">
           {% for value in selectedInsightsOptions %}
@@ -157,6 +164,24 @@
                 </button>
               </span>
             </div>
+            <div class="input-group">
+              <span class="input-group-button">
+                <button class="morebtn" type="button">
+                  <a href="/settings.html" title="C++ Insights local settings">
+                    Settings
+                  </a>
+                </button>
+              </span>
+            </div>
+            <div class="input-group">
+              <span class="input-group-button">
+                <button class="morebtn" type="button">
+                  <a href="/version" title="C++ Insights version information">
+                    Version
+                  </a>
+                </button>
+              </span>
+            </div>
           </div>
         </span>
       </controls>
@@ -215,6 +240,7 @@
   <script src="/ms/jquery-3.3.1.js"></script>
   <script src="/ms/multiple-select.js"></script>
   <script src="/js/cookie.js"></script>
+  <script src="/js/settings.js"></script>
   <script src="/js/main.js"></script>
 
 </body>

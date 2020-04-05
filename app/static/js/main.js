@@ -1,34 +1,13 @@
 /* C++ Insights Web, copyright (c) by Andreas Fertig
    Distributed under an MIT license. See /LICENSE */
 
-/* global CodeMirror, storageAllowed, onLoad */
+/* global CodeMirror, onLoad, getLocalStorageItem, setLocalStorageItem, canUseLocalStorage */
 
 var DEFAULT_CPP_STD = 'cpp17';
 var DEFAULT_REV = '1.0';
 
 // load cookies
 onLoad();
-
-function canUseLocalStorage() {
-  return window.localStorage && storageAllowed();
-}
-
-function setLocalStorageItem(key, data) {
-  if (canUseLocalStorage()) {
-    window.localStorage.setItem(key, JSON.stringify(data));
-  }
-}
-
-function getLocalStorageItem(key, deflt) {
-  if (canUseLocalStorage()) {
-    var data = window.localStorage.getItem(key);
-    if (data) {
-      return JSON.parse(data);
-    }
-  }
-
-  return deflt;
-}
 
 var cppEditor = CodeMirror.fromTextArea(document.getElementById('cpp-code'), {
   lineNumbers: true,
@@ -457,6 +436,29 @@ function updateLinkToCompilerExplorer() {
 
 document.querySelector('#button-ce').addEventListener('mousedown', function() {
   updateLinkToCompilerExplorer();
+});
+
+// From: https://github.com/mattgodbolt/compiler-explorer/pull/1823/files
+function asciiEncodeJsonText(json) {
+  return json.replace(/[\u007F-\uFFFF]/g, function(chr) {
+    // json unicode escapes must always be 4 characters long, so pad with leading zeros
+    return '\\u' + ('0000' + chr.charCodeAt(0).toString(16)).substr(-4);
+  });
+}
+
+function updateLinkToQuickBench() {
+  var quickBenchState = {
+    text: cppEditor.getValue()
+  };
+
+  var link = 'http:' /*location.protocol*/ + '//quick-bench.com/#' + b64UTFEncode(asciiEncodeJsonText(JSON.stringify(
+    quickBenchState)));
+  var qbButton = document.getElementById('button-qb');
+  qbButton.href = link;
+}
+
+document.querySelector('#button-qb').addEventListener('mousedown', function() {
+  updateLinkToQuickBench();
 });
 
 function getLongLinkBase() {

@@ -40,3 +40,9 @@ not loose the database (security breach, misshapening...).
 
 The primary use for short-links should be easy sharing (twitter, stack overflow, etc.). There are some cases of large code samples which do not work
 with long links. This is a secondary issue addressed by short-links.
+
+## Other logos
+
+[Compiler Explorer](https://raw.githubusercontent.com/mattgodbolt/compiler-explorer-image/master/logo/icon/CompilerExplorer%20Logo%20Icon%20SVG.svg)
+[QuickBench](https://github.com/FredTingaud/quick-bench-front-end/blob/master/public/ico/favicon-32x32.png), SVG version
+from [here](https://github.com/mattgodbolt/compiler-explorer/blob/master/views/resources/quickbench.svg)

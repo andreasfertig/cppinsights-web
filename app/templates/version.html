@@ -18,13 +18,14 @@
   <main id="single">
     <nav id="nav">
       <controls>
-        <img class="logo" src="32.png" />
+        <img class="logo" src="/img/logo.svg" />
         <a class="btn btn-primary btn-lg" href="/">Home</a>
         <a class="btn btn-primary btn-lg" href="/about.html">About</a>
         <a class="btn btn-primary btn-lg" href="/privacy-policy.html" title="Policies">
           Policies
         </a>
         <a class="btn btn-primary btn-lg" href="/examples.html">Examples</a>
+        <a class="btn btn-primary btn-lg" href="/settings.html">Settings</a>
       </controls>
 
       <news>
@@ -44,6 +45,9 @@
 
       {{ version|safe }}
 
+
+      <div id="cm-version">CodeMirror: </div>
+
       <div id="footer">
         Made by <a target="_blank" href="https://andreasfertig.info">Andreas Fertig</a> &bull; Powered by <a target="_blank"
             href="http://flask.pocoo.org/">Flask</a> and <a target="_blank" href="https://codemirror.net">CodeMirror</a>
@@ -52,7 +56,12 @@
 
   </main>
 
-  <script src="js/main.js"></script>
+  <script src="/cm/codemirror.js"></script>
+  <script>
+    var el = document.getElementById('cm-version');
+    el.innerHTML += CodeMirror.version;
+
+  </script>
 
 </body>
 
