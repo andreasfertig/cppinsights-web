@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="32" width="32" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 8.4666665 8.4666669">
  <g transform="translate(0 -288.53)">
-  <path stroke-linejoin="round" fill="none" stroke="#2980b9" stroke-linecap="square" stroke-width=".76729" d="m7.7768 292.89a2.5612 2.5612 0 0 1 -2.8442 1.2764 2.5612 2.5612 0 0 1 -1.97 -2.4162 2.5612 2.5612 0 0 1 1.823 -2.5289 2.5612 2.5612 0 0 1 2.915 1.1053"/>
-  <text style="word-spacing:0px;letter-spacing:0px" xml:space="preserve" font-size="3.8669px" y="292.69006" x="3.6068075" font-family="&apos;Bitstream Vera Sans&apos;" line-height="125%" fill="#4d4d4d"><tspan y="292.69006" x="3.6068075" stroke-width=".096671px" fill="#4d4d4d">+</tspan></text>
-  <text style="word-spacing:0px;letter-spacing:0px" xml:space="preserve" font-size="3.8669px" y="292.68042" x="5.606257" font-family="&apos;Bitstream Vera Sans&apos;" line-height="125%" fill="#4d4d4d"><tspan y="292.68042" x="5.606257" stroke-width=".096671px" fill="#4d4d4d">+</tspan></text>
+  <path stroke-linejoin="round" d="m7.7768 292.89a2.5612 2.5612 0 0 1 -2.8442 1.2764 2.5612 2.5612 0 0 1 -1.97 -2.4162 2.5612 2.5612 0 0 1 1.823 -2.5289 2.5612 2.5612 0 0 1 2.915 1.1053" stroke="#2980b9" stroke-linecap="square" stroke-width=".76729" fill="none"/>
+  <g aria-label="+" fill="#4d4d4d">
+   <path stroke-width=".096671px" fill="#4d4d4d" d="m3.7805 291.86v-0.31721h0.82323v-0.82889h0.32287v0.82889h0.82323v0.31721h-0.82323v0.827h-0.32287v-0.827h-0.82323z"/>
+  </g>
+  <g aria-label="+" fill="#4d4d4d">
+   <path stroke-width=".096671px" fill="#4d4d4d" d="m5.78 291.85v-0.31721h0.82323v-0.82889h0.32287v0.82889h0.82323v0.31721h-0.82323v0.827h-0.32287v-0.827h-0.82323z"/>
+  </g>
  </g>
  <g display="none">
-  <rect transform="rotate(45 348.29 -144.27)" ry=".26457" height="3.9688" width=".79375" y="205.45" x="209.69"/>
+  <rect ry=".26457" transform="rotate(45 348.29 -144.27)" height="3.9688" width=".79375" y="205.45" x="209.69"/>
  </g>
- <g>
-  <path d="m3.5622 5.5729-2.6194 2.6194c-0.10364 0.10364-0.27052 0.10364-0.37416 0l-0.18711-0.18711c-0.10364-0.10364-0.10364-0.27052 0-0.37416l2.6194-2.6194c0.18691 0.18726 0.54399 0.544 0.56127 0.56126z" fill="#4d4d4d"/>
- </g>
+ <path d="m3.5622 5.5729-2.6194 2.6194c-0.10364 0.10364-0.27052 0.10364-0.37416 0l-0.18711-0.18711c-0.10364-0.10364-0.10364-0.27052 0-0.37416l2.6194-2.6194c0.18691 0.18726 0.54399 0.544 0.56127 0.56126z" fill="#4d4d4d"/>
 </svg>
