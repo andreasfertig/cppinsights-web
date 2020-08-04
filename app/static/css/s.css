@@ -690,6 +690,7 @@ div.CodeMirror span.CodeMirror-matchingbracket {
 }
 
 .cm-s-default .cm-string,
+.cm-s-default .cm-atom,
 .s,
 .se {
   color: var(--cl-cm-string);
@@ -699,8 +700,6 @@ div.CodeMirror span.CodeMirror-matchingbracket {
 .kt {
   font-weight: normal;
 }
-
-
 
 .shortlink-entry {
   border: 1px solid #ddd;
