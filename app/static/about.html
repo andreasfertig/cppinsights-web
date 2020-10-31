@@ -54,27 +54,30 @@
       <h1>About</h1>
 
       <p><a href="/">C++ Insights</a> is a <a target="_blank" href="https://clang.llvm.org/">clang</a>-based tool which
-        does a source to source transformation. Its goal is to make things visible which normally, and intentionally,
+        does a source to source transformation. Its goal is to make things visible, which normally and intentionally
         happen behind the scenes. It's about the magic the compiler does for us to make things work. Or looking through
         the classes of a compiler.</p>
 
-      <p>Some time ago I started looking into some new things we got with C++11, C++14 and C++17. Amazing things like
-        lambdas, range-based for-loops and structured bindings. I put it together in a talk. You can find the <a target="_blank"
-            href="https://www.andreasfertig.info/talks_dl/afertig-ndcolo-2017-fast-and-small.pdf">slides</a> and a <a
-            target="_blank" href="https://youtu.be/Bt7KzFxcbgc">video</a> online.</p>
+      <p>Some time ago, I started looking into some new things we got with C++11, C++14, C++17 and C++20. Amazing
+        things like
+        lambdas, range-based for-loops, and structured bindings. I put it together in a talk. You can find the <a
+            target="_blank" href="https://www.andreasfertig.info/talks_dl/afertig-ndcolo-2017-fast-and-small.pdf">slides</a>
+        and a <a target="_blank" href="https://youtu.be/Bt7KzFxcbgc">video</a> online.</p>
 
-      <p>However, all that research and some of my training and teaching got me start thinking how it would be, if we
+      <p>However, all that research and some of my training and teaching got me to start thinking about how it would be
+        if we
         could see
-        with the eyes of the compiler. Sure, there is an AST-dump at least for clang. With tools like <a target="_blank"
-            href="https://godbolt.org/#">Compiler Explorer</a> we can see what code the compiler generates from a C++
+        with the eyes of the compiler. Sure, there is an AST-dump, at least for clang. With tools like <a target="_blank"
+            href="https://godbolt.org/#">Compiler Explorer</a>, we can see what code the compiler generates from a C++
         source snippet. However, what we see is assembler. Neither the AST nor the <a target="_blank" href="https://godbolt.org/#">Compiler
-          Explorer</a> output is in the language I write code and therefore I'm most familiar with. Plus when teaching
-        students C++ showing an AST and explaining that it is all there, was not quite satisfying for me.</p>
+          Explorer</a> output is in the language I write code, and therefore I'm most familiar with. Plus, when
+        teaching
+        students C++ showing an AST and explaining that it is all there was not quite satisfying for me.</p>
 
       <p>I started to write a <a target="_blank" href="https://clang.llvm.org/">clang</a>-based tool able to transform
         a
         range-based for-loop into the compiler-internal version. Then, I did the same for structured bindings and
-        lambdas. In the end, I ended up with doing a lot more as initially planned. It shows where operators are
+        lambdas. In the end, I ended up doing a lot more as initially planned. It shows where operators are
         invoked,
         places in which the compiler does some casting. <a href="/">C++ Insights</a> is able to deduce the type behind
         <code>auto</code> or <code>decltype</code>. The goal is to produce compilable code. However, this is not
@@ -87,16 +90,20 @@
         consider good enough to hand
         it to the public. Also, keep in mind that it is solely based on clang and my understanding of C++ and the AST.</p>
 
-      <p>You can see, for example the transformation of a <a href="https://cppinsights.io/s/f7710a4b">lamda</a>,
+      <p>You can see, for example, the transformation of a <a href="https://cppinsights.io/s/f7710a4b">lambda</a>,
         <a href="https://cppinsights.io/s/40f6a267">range-based
-          for-loop</a> or <a href="https://cppinsights.io/s/e1a8cf40">auto</a>.
+          for-loop</a>, or <a href="https://cppinsights.io/s/e1a8cf40">auto</a>.
         Of course, you can transform any other C++ snippet.</p>
 
-      <p>The version information of the C++ Insights version running on this web-site can be found here: <a href="/version">https://cppinsights.io/version</a>.</p>
+      <p>For those who like videos, there is a C++ Insights series on <a href="https://www.youtube.com/watch?v=NhIubRbFfuM&list=PLm0Dc2Lp2ycaFyR2OqPkusuSB8LmifY8D"
+            target="_blank">Youtube</a>. If you have topics you like me to speak
+        about, please reach out to me.</p>
+
+      <p>The version information of the C++ Insights version running on this website can be found here: <a href="/version">https://cppinsights.io/version</a>.</p>
       <p>You can find the <a href="https://github.com/andreasfertig/cppinsights-web">source</a> of the web front-end
         and
         the tool <a href="https://github.com/andreasfertig/cppinsights">C++ Insights</a> on Github.</p>
-      <p>If you like to support the project consider <a href="https://github.com/andreasfertig/cppinsights/blob/master/CONTRIBUTING.md">submitting</a>
+      <p>If you like to support the project, consider <a href="https://github.com/andreasfertig/cppinsights/blob/master/CONTRIBUTING.md">submitting</a>
         a patch. Another alternative is to become a <a href="https://www.patreon.com/cppinsights" target="_blank">Patreon</a>
         supporter.</p>
       <p>Contact: <a href="mailto:andy at cppinsights.io">andy at cppinsights.io</a></p>
