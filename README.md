@@ -1,8 +1,8 @@
 # C++ Insights - Web Front-End
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT) 
-[![download](https://img.shields.io/badge/latest-download-blue.svg)](https://github.com/andreasfertig/cppinsights-web/releases) 
-[![Build Status](https://api.travis-ci.org/andreasfertig/cppinsights-web.svg?branch=master)](https://travis-ci.org/andreasfertig/cppinsights-web) 
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![download](https://img.shields.io/badge/latest-download-blue.svg)](https://github.com/andreasfertig/cppinsights-web/releases)
+[![Build Status](https://github.com/andreasfertig/cppinsights-web/workflows/ci/badge.svg)](https://github.com/andreasfertig/cppinsights-web/actions/)
 [![codecov](https://codecov.io/gh/andreasfertig/cppinsights-web/branch/master/graph/badge.svg)](https://codecov.io/gh/andreasfertig/cppinsights-web)
 [![Try online](https://img.shields.io/badge/try-online-blue.svg)](https://cppinsights.io)
 
@@ -15,7 +15,7 @@
 pip3 install --user virtualenv
 python3 -m virtualenv env
 source env/bin/activate
-pip3 install -r requirements.txt 
+pip3 install -r requirements.txt
 
 python3 -m pytest test.py
 pytest test.py --cov=app
@@ -36,7 +36,7 @@ used during lookup to prevent having the same code multiple times in the databas
 For future use, the link creation time is also stored.
 
 Please be advised to not store any confidential data in a short-link! You have no guarantees that at some point I will
-not loose the database (security breach, misshapening...). 
+not loose the database (security breach, misshapening...).
 
 The primary use for short-links should be easy sharing (twitter, stack overflow, etc.). There are some cases of large code samples which do not work
 with long links. This is a secondary issue addressed by short-links.
