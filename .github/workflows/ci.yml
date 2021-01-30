@@ -1,0 +1,104 @@
+name: Scheduled
+on:
+  push:
+    branches-ignore:
+      - 'continuous'
+
+  pull_request:
+    branches-ignore:
+      - 'continuous'
+
+jobs:
+  build:
+    name: Build C++ Insights Web
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Setup Node.js for use with actions
+      uses: actions/setup-node@v1
+
+    - name: Setup Python environment
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.7' # Server has 3.5
+
+    - name: Install SSH Key
+      uses: shimataro/ssh-key-action@v1.3.0
+      with:
+        private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        public-key: ${{ secrets.SSH_PUBLIC_KEY }}
+        known-hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+
+    - name: Install python
+      run: pip install -r requirements_gh.txt
+
+    - name: Install node modules
+      run: |
+          npm set progress=false
+          npm install -g grunt-cli
+          npm install
+
+    - name: Generate
+      run: grunt
+
+    - name: Run coverage
+      run: coverage run test.py
+
+    - name: Upload code coverage info
+      run: bash <(curl -s https://codecov.io/bash) -cF python
+
+#------------------------------------------------------------------------------
+# DEPLOY
+#------------------------------------------------------------------------------
+  deploy:
+    needs: [build]
+    if: github.ref == 'refs/heads/master'
+    name: Final Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Setup Node.js for use with actions
+      uses: actions/setup-node@v1
+
+    - name: Setup Python environment
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.7' # Server has 3.5
+
+    - name: Install SSH Key
+      uses: shimataro/ssh-key-action@v1.3.0
+      with:
+        private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        public-key: ${{ secrets.SSH_PUBLIC_KEY }}
+        known-hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+
+    - name: Install python
+      run: pip install -r requirements_travis.txt
+
+    - name: Install node modules
+      run: |
+          npm set progress=false
+          npm install -g grunt-cli
+          npm install
+
+    - name: Generate
+      run: grunt
+
+    - name: Update latest tag
+      uses: richardsimko/update-tag@v1
+      with:
+        tag_name: latest
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Publish
+      run: rsync -avcz --delete --exclude=.DS_Store --exclude=__pycache__ --exclude='google*.html' --exclude='urls.db' ${GITHUB_WORKSPACE}/dist/app/ ${SSH_HOST}
+
+    - name: Notify listeners
+      run: |
+          curl -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.GH_TRIGGER }}" https://api.github.com/repos/andreasfertig/cppinsights-webfrontend-container/dispatches -d '{"event_type":"rebuild_trigger"}' &> /dev/null
