@@ -78,7 +78,7 @@ jobs:
         known-hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
 
     - name: Install python
-      run: pip install -r requirements_travis.txt
+      run: pip install -r requirements_gh.txt
 
     - name: Install node modules
       run: |
