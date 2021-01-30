@@ -54,7 +54,7 @@ jobs:
 #------------------------------------------------------------------------------
   deploy:
     needs: [build]
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     name: Final Deploy
     runs-on: ubuntu-latest
 
