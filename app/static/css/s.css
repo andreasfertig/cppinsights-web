@@ -660,6 +660,14 @@ div.CodeMirror span.CodeMirror-matchingbracket {
   border-style: solid;
 }
 
+.CodeMirror-linenumber {
+    background-color: var(--cl-code-bg);
+}
+
+.CodeMirror-activeline-gutter .CodeMirror-linenumber {
+    background: var(--cl-code-selected-line);
+}
+
 /**
  * GitHub Gist Theme from https://github.com/LouisBarranqueiro
  */
