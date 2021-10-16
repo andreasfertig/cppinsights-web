@@ -146,7 +146,7 @@ def getSupportedOptions():
              {'desc': 'all-implicit-casts'       , 'flag' : '-show-all-implicit-casts', 'name' : 'Show all implicit casts',  'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
              {'desc': 'use-libcpp'               , 'flag' : '-use-libc++',              'name' : 'Use libc++',               'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
              {'desc': 'edu-show-initlist'        , 'flag' : '-edu-show-initlist',       'name' : 'std::initializer_list',    'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
-             {'desc': 'edu-show-noexcept'        , 'flag' : '-edu-show-noexcept',       'name' : 'Show noexcept interals',   'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
+             {'desc': 'edu-show-noexcept'        , 'flag' : '-edu-show-noexcept',       'name' : 'Show noexcept internals',  'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
            ]
 
     return opts
