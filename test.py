@@ -99,6 +99,7 @@ class CppInsightsTestCase(unittest.TestCase):
                  'all-implicit-casts',
                  'use-libcpp',
                  'edu-show-initlist',
+                 'edu-show-noexcept',
                 ]
 
         regEx = re.compile(r'[value|label]="(.*?)"' )
