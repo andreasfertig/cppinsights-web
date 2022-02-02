@@ -97,7 +97,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Publish
-      run: rsync -avcz --delete --exclude=.DS_Store --exclude=__pycache__ --exclude='google*.html' --exclude='urls.db' ${GITHUB_WORKSPACE}/dist/app/ ${SSH_HOST}
+      run: rsync -avcz --delete --exclude=.DS_Store --exclude=__pycache__ --exclude='google*.html' --exclude='urls.db' ${GITHUB_WORKSPACE}/dist/app/ ${{ secrets.SSH_HOST_NEW }}
 
     - name: Notify listeners
       run: |
