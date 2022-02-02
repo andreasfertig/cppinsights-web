@@ -92,6 +92,8 @@ class CppInsightsTestCase(unittest.TestCase):
                  'cpp14',
                  'cpp17',
                  'cpp2a',
+                 'cpp20',
+                 'cpp2b',
                  'Alternative Styles',
                  'alt-syntax-for',
                  'alt-syntax-subscription',
@@ -192,7 +194,7 @@ class CppInsightsTestCase(unittest.TestCase):
     #------------------------------------------------------------------------------
 
     def test_request_api_v1_tranform_invalid_std(self):
-        self.Popen.set_command('sudo -u pfes docker run --net=none -v /tmp/pyt.cpp:/home/insights/insights.cpp --rm -i insights-test -- -std=c++17', stdout=b'o', stderr=b'',returncode=0)
+        self.Popen.set_command('sudo -u pfes docker run --net=none -v /tmp/pyt.cpp:/home/insights/insights.cpp --rm -i insights-test -- -std=c++20', stdout=b'o', stderr=b'',returncode=0)
 
         rv = self.app.post('/api/v1/transform',
                        data=json.dumps(dict(insightsOptions=['cpp12'], code='hello')),
@@ -297,26 +299,26 @@ class CppInsightsTestCase(unittest.TestCase):
 
     def test_link_rev_1_invalid_std(self):
         rv = self.app.post('/lnk?code=I2luY2x1ZGUgPGNzdGRpbz4KdGVtcGxhdGU8dHlwZW5hbWUgVT4KY2xhc3MgWAp7CnB1YmxpYzoKICAgIFgoKSAgICAgICAgICAgPSBkZWZhdWx0OwogICAgWChjb25zdCBYJiB4KSA9IGRlZmF1bHQ7CgogICAgdGVtcGxhdGU8dHlwZW5hbWUgVD4KICAgIFgoVCYmIHgpCiAgICA6IG1Ye30KICAgIHsgfQoKcHJpdmF0ZToKICAgIFUgbVg7Cn07CgppbnQgbWFpbigpCnsKICAgIFg8aW50PiBhcnJbMl17fTsKCiAgICBmb3IoY29uc3QgWDxjb25zdCBpbnQ+JiB4IDogYXJyKSB7IH0KfQ==&std=cpp12&rev=1.0',follow_redirects=True)
-        assert self.selectedStandard('cpp17', 'C++ 17') in rv.data
+        assert self.selectedStandard('cpp20', 'C++ 20') in rv.data
         assert 200 == rv.status_code
     #------------------------------------------------------------------------------
 
     def test_link_rev_1_missing_std(self):
         rv = self.app.post('/lnk?code=I2luY2x1ZGUgPGNzdGRpbz4KdGVtcGxhdGU8dHlwZW5hbWUgVT4KY2xhc3MgWAp7CnB1YmxpYzoKICAgIFgoKSAgICAgICAgICAgPSBkZWZhdWx0OwogICAgWChjb25zdCBYJiB4KSA9IGRlZmF1bHQ7CgogICAgdGVtcGxhdGU8dHlwZW5hbWUgVD4KICAgIFgoVCYmIHgpCiAgICA6IG1Ye30KICAgIHsgfQoKcHJpdmF0ZToKICAgIFUgbVg7Cn07CgppbnQgbWFpbigpCnsKICAgIFg8aW50PiBhcnJbMl17fTsKCiAgICBmb3IoY29uc3QgWDxjb25zdCBpbnQ+JiB4IDogYXJyKSB7IH0KfQ==&rev=1.0',follow_redirects=True)
-        assert self.selectedStandard('cpp17', 'C++ 17') in rv.data
+        assert self.selectedStandard('cpp20', 'C++ 20') in rv.data
         assert 200 == rv.status_code
     #------------------------------------------------------------------------------
 
     def test_link_rev_1_missing_rev(self):
         rv = self.app.post('/lnk?code=I2luY2x1ZGUgPGNzdGRpbz4KdGVtcGxhdGU8dHlwZW5hbWUgVT4KY2xhc3MgWAp7CnB1YmxpYzoKICAgIFgoKSAgICAgICAgICAgPSBkZWZhdWx0OwogICAgWChjb25zdCBYJiB4KSA9IGRlZmF1bHQ7CgogICAgdGVtcGxhdGU8dHlwZW5hbWUgVD4KICAgIFgoVCYmIHgpCiAgICA6IG1Ye30KICAgIHsgfQoKcHJpdmF0ZToKICAgIFUgbVg7Cn07CgppbnQgbWFpbigpCnsKICAgIFg8aW50PiBhcnJbMl17fTsKCiAgICBmb3IoY29uc3QgWDxjb25zdCBpbnQ+JiB4IDogYXJyKSB7IH0KfQ==&std=cpp11',follow_redirects=True)
-        assert self.selectedStandard('cpp17', 'C++ 17') in rv.data
+        assert self.selectedStandard('cpp20', 'C++ 20') in rv.data
         assert b'The revision of the link is invalid.' in rv.data
         assert 404 == rv.status_code
     #------------------------------------------------------------------------------
 
     def test_link_rev_1_invalid_rev(self):
         rv = self.app.post('/lnk?code=I2luY2x1ZGUgPGNzdGRpbz4KdGVtcGxhdGU8dHlwZW5hbWUgVT4KY2xhc3MgWAp7CnB1YmxpYzoKICAgIFgoKSAgICAgICAgICAgPSBkZWZhdWx0OwogICAgWChjb25zdCBYJiB4KSA9IGRlZmF1bHQ7CgogICAgdGVtcGxhdGU8dHlwZW5hbWUgVD4KICAgIFgoVCYmIHgpCiAgICA6IG1Ye30KICAgIHsgfQoKcHJpdmF0ZToKICAgIFUgbVg7Cn07CgppbnQgbWFpbigpCnsKICAgIFg8aW50PiBhcnJbMl17fTsKCiAgICBmb3IoY29uc3QgWDxjb25zdCBpbnQ+JiB4IDogYXJyKSB7IH0KfQ==&std=cpp11&rev=22',follow_redirects=True)
-        assert self.selectedStandard('cpp17', 'C++ 17') in rv.data
+        assert self.selectedStandard('cpp20', 'C++ 20') in rv.data
         assert b'The revision of the link is invalid.' in rv.data
         assert 404 == rv.status_code
     #------------------------------------------------------------------------------

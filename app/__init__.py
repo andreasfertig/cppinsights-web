@@ -29,7 +29,7 @@ def favicon():
 #------------------------------------------------------------------------------
 
 def getDefaultStandard():
-    return 'cpp17'
+    return 'cpp20'
 #------------------------------------------------------------------------------
 
 def getCommunityEventFileName():
@@ -133,12 +133,14 @@ def error_handler(errCode, code):
 #------------------------------------------------------------------------------
 
 def getSupportedOptions():
-    opts = [ {'desc': 'C++ Standard'     , 'flag' : '',                         'name' : 'C++ Standard',             'selected' : False, 'label' : True,  'single' : False , 'ccopt' : False, 'cppStd' : False },
+    opts = [ {'desc': 'C++ Standard'             , 'flag' : '',                         'name' : 'C++ Standard',             'selected' : False, 'label' : True,  'single' : False , 'ccopt' : False, 'cppStd' : False },
              {'desc': 'cpp98'                    , 'flag' : '-std=c++98',               'name' : 'C++ 98',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
              {'desc': 'cpp11'                    , 'flag' : '-std=c++11',               'name' : 'C++ 11',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
              {'desc': 'cpp14'                    , 'flag' : '-std=c++14',               'name' : 'C++ 14',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
              {'desc': 'cpp17'                    , 'flag' : '-std=c++17',               'name' : 'C++ 17',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
              {'desc': 'cpp2a'                    , 'flag' : '-std=c++2a',               'name' : 'C++ 2a',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
+             {'desc': 'cpp20'                    , 'flag' : '-std=c++20',               'name' : 'C++ 20',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
+             {'desc': 'cpp2b'                    , 'flag' : '-std=c++2b',               'name' : 'C++ 2b',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
              {'desc': 'Alternative Styles'       , 'flag' : '',                         'name' : 'Alternative Styles',       'selected' : False, 'label' : True,  'single' : False , 'ccopt' : False, 'cppStd' : False },
              {'desc': 'alt-syntax-for'           , 'flag' : '-alt-syntax-for',          'name' : 'for-loops as while-loops', 'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
              {'desc': 'alt-syntax-subscription'  , 'flag' : '-alt-syntax-subscription', 'name' : 'array subscription',       'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
