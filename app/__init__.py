@@ -93,6 +93,7 @@ def runDocker(code, insightsOptions, cppStd, versionOnly=False):
             cmd.append('--')
 
         if None != cppStd:
+            cppStd = cppStd.replace('2a', '20') # for transitioning
             cmd.append(cppStd)
 
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -138,7 +139,6 @@ def getSupportedOptions():
              {'desc': 'cpp11'                    , 'flag' : '-std=c++11',               'name' : 'C++ 11',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
              {'desc': 'cpp14'                    , 'flag' : '-std=c++14',               'name' : 'C++ 14',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
              {'desc': 'cpp17'                    , 'flag' : '-std=c++17',               'name' : 'C++ 17',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
-             {'desc': 'cpp2a'                    , 'flag' : '-std=c++2a',               'name' : 'C++ 2a',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
              {'desc': 'cpp20'                    , 'flag' : '-std=c++20',               'name' : 'C++ 20',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
              {'desc': 'cpp2b'                    , 'flag' : '-std=c++2b',               'name' : 'C++ 2b',                   'selected' : False, 'label' : False, 'single' : True  , 'ccopt' : True,  'cppStd' : True  },
              {'desc': 'Alternative Styles'       , 'flag' : '',                         'name' : 'Alternative Styles',       'selected' : False, 'label' : True,  'single' : False , 'ccopt' : False, 'cppStd' : False },
