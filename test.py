@@ -91,7 +91,6 @@ class CppInsightsTestCase(unittest.TestCase):
                  'cpp11',
                  'cpp14',
                  'cpp17',
-                 'cpp2a',
                  'cpp20',
                  'cpp2b',
                  'Alternative Styles',
