@@ -101,6 +101,7 @@ class CppInsightsTestCase(unittest.TestCase):
                  'use-libcpp',
                  'edu-show-initlist',
                  'edu-show-noexcept',
+                 'edu-show-padding',
                 ]
 
         regEx = re.compile(r'[value|label]="(.*?)"' )
