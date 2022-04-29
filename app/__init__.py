@@ -149,10 +149,12 @@ def getSupportedOptions():
              {'desc': 'all-implicit-casts'       , 'flag' : '-show-all-implicit-casts', 'name' : 'Show all implicit casts',   'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
              {'desc': 'show-all-callexpr-template-parameters'      , 'flag' : '-show-all-callexpr-template-parameters',       'name' : 'Show all template parameters of a CallExpr',    'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
              {'desc': 'use-libcpp'               , 'flag' : '-use-libc++',              'name' : 'Use libc++',                'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
-             {'desc': 'edu-show-initlist'        , 'flag' : '-edu-show-initlist',       'name' : 'std::initializer_list',     'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
+             {'desc': 'edu-show-initlist'        , 'flag' : '-edu-show-initlist',       'name' : 'Transform std::initializer_list',    'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
              {'desc': 'edu-show-noexcept'        , 'flag' : '-edu-show-noexcept',       'name' : 'Show noexcept internals',   'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
              {'desc': 'edu-show-padding'         , 'flag' : '-edu-show-padding',        'name' : 'Show padding information',  'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
              {'desc': 'edu-show-coroutines'      , 'flag' : '-edu-show-coroutine-transformation',       'name' : 'Show coroutine transformation',    'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
+             {'desc': 'edu-show-cfront'          , 'flag' : '-edu-show-cfront',         'name' : 'Show C++ to C transformation',  'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
+             {'desc': 'edu-show-lifetime'        , 'flag' : '-edu-show-lifetime',       'name' : 'Show object lifetime',      'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
            ]
 
     return opts
