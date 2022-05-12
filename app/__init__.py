@@ -150,6 +150,7 @@ def getSupportedOptions():
              {'desc': 'edu-show-initlist'        , 'flag' : '-edu-show-initlist',       'name' : 'std::initializer_list',     'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
              {'desc': 'edu-show-noexcept'        , 'flag' : '-edu-show-noexcept',       'name' : 'Show noexcept internals',   'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
              {'desc': 'edu-show-padding'         , 'flag' : '-edu-show-padding',        'name' : 'Show padding information',  'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
+             {'desc': 'edu-show-coroutines'      , 'flag' : '-edu-show-coroutine-transformation',       'name' : 'Show coroutine transformation',    'selected' : False, 'label' : False, 'single' : False , 'ccopt' : False, 'cppStd' : False },
            ]
 
     return opts
