@@ -335,6 +335,18 @@ function getCppStd() {
   return filtered[0];
 }
 
+function getUseLibStdCpp() {
+  var filtered = getInsightsOptions().filter(function(value, index, arr) { // eslint-disable-line no-unused-vars
+    return value.startsWith('use-libcpp');
+  });
+
+  if(0 == filtered.length) {
+    return null;
+  }
+
+  return filtered[0];
+}
+
 function OnRunKeyDown(e) {
   if (!((e.keyCode == 10 || e.keyCode == 13) && e.ctrlKey)) return;
   Transform();
@@ -417,19 +429,25 @@ function b64UTFEncode(str) {
 
 function updateLinkToCompilerExplorer() {
   var cppstdparam = '-std=' + getCppStd().replace('cpp', 'c++');
+
+  var libCpp = getUseLibStdCpp();
+  if(null != libCpp) {
+    cppstdparam += ' -stdlib=libc++';
+  }
+
   var clientstate = {
     sessions: [{
       id: 1,
       language: 'c++',
       source: cppEditor.getValue(),
       compilers: [{
-        id: 'gsnapshot',
+        id: 'clang_trunk',
         options: cppstdparam
       }]
     }]
   };
 
-  var link = location.protocol + '//godbolt.org/clientstate/' + b64UTFEncode(JSON.stringify(clientstate));
+  var link = location.protocol + '//compiler-explorer.com/clientstate/' + b64UTFEncode(JSON.stringify(clientstate));
   var ceButton = document.getElementById('button-ce');
   ceButton.href = link;
 }
