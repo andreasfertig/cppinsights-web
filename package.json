@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/andreasfertig/cppinsights-web#readme",
   "dependencies": {
-    "grunt": "1.0.4",
+    "grunt": "1.5.3",
     "grunt-cli": "^1.4.3",
     "js-beautify": "^1.8.8",
     "uglify-es": "github:mishoo/UglifyJS2#harmony"
