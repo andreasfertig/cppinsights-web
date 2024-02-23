@@ -163,20 +163,20 @@ main {
   margin-right: 10px;
 
   grid-template:
-    "nav nav nav"41px "srcin vdragbar insights"minmax(60vh, auto) "hdragbar hdragbar hdragbar"10px "console console console"minmax(0, 150px) / calc(50% - 5px) 10px calc(50% - 5px);
+    "nav nav nav" 41px "srcin vdragbar insights" minmax(60vh, auto) "hdragbar hdragbar hdragbar" 10px "console console console" minmax(0, 150px) / calc(50% - 5px) 10px calc(50% - 5px);
   height: 100vh;
 }
 
 #single {
   grid-template:
-    "nav nav"41px "content content "auto / 100%;
+    "nav nav" 41px "content content " auto / 100%;
 }
 
 nav {
   grid-area: nav;
   display: grid;
   grid-template:
-    "controls news about"41px / max-content minmax(100px, auto) max-content;
+    "controls news about" 41px / max-content minmax(100px, auto) max-content;
   align-items: center;
 }
 
@@ -240,7 +240,6 @@ about {
   -webkit-font-smoothing: antialiased;
 }
 
-
 .icon-run:before,
 .icon-run:hover:before,
 #active .icon-run:before,
@@ -282,7 +281,6 @@ about {
   border: 1px solid var(--cl-button-border);
 }
 
-
 .btn-group-lg>.btn,
 .btn-lg {
   height: 32px;
@@ -301,7 +299,6 @@ about {
   cursor: pointer;
 }
 
-
 .btn:focus,
 .btn:hover {
   text-decoration: none;
@@ -312,7 +309,6 @@ about {
 .btn-lg {
   border-radius: .3rem;
 }
-
 
 .btn {
   display: inline-block;
@@ -327,7 +323,6 @@ about {
   -o-transition: all .2s ease-in-out;
   transition: all .2s ease-in-out;
 }
-
 
 /* remove standard-styles */
 select {
@@ -386,12 +381,10 @@ textarea {
   box-sizing: inherit;
 }
 
-
 img {
   vertical-align: middle;
   border-style: none;
 }
-
 
 #cookie-law {
   background-color: lightcyan;
@@ -425,7 +418,6 @@ img {
 .btn-decline {
   float: left;
 }
-
 
 a:focus,
 a:hover {
@@ -467,8 +459,6 @@ a.close-cookie-banner:hover {
   text-decoration: none;
 }
 
-
-
 #container {
   width: 100%;
   margin-left: auto;
@@ -504,7 +494,6 @@ a.close-cookie-banner:hover {
   cursor: pointer;
   vertical-align: super;
 }
-
 
 #stderr button {
   background-position: center center;
@@ -643,7 +632,6 @@ a.close-cookie-banner:hover {
   color: var(--cl-text);
 }
 
-
 .CodeMirror div.CodeMirror-cursor {
   border-left: 1px solid var(--cl-cursor);
 }
@@ -661,11 +649,11 @@ div.CodeMirror span.CodeMirror-matchingbracket {
 }
 
 .CodeMirror-linenumber {
-    background-color: var(--cl-code-bg);
+  background-color: var(--cl-code-bg);
 }
 
 .CodeMirror-activeline-gutter .CodeMirror-linenumber {
-    background: var(--cl-code-selected-line);
+  background: var(--cl-code-selected-line);
 }
 
 /**
@@ -1157,7 +1145,6 @@ h2 {
   font-weight: bold;
 }
 
-
 /* settings */
 #settings {
   list-style: none;
@@ -1174,16 +1161,15 @@ h2 {
 @media screen and (max-width: 750px) {
   main {
     grid-template:
-      "nav nav"max-content "srcin srcin"100% "vdragbar vdragbar"0 "insights insights"100% "hdragbar hdragbar"0 "console console"150px / 100%;
+      "nav nav" max-content "srcin srcin" 100% "vdragbar vdragbar" 0 "insights insights" 100% "hdragbar hdragbar" 0 "console console" 150px / 100%;
 
   }
-
 
   nav {
     grid-template:
       "controls controls"
       "news news"
-      "about about"100% / 100%;
+      "about about" 100% / 100%;
   }
 
   .logo {

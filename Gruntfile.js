@@ -4,15 +4,15 @@ module.exports = function(grunt) {
     svgmin: {
       options: {
         plugins: [{
-            removeViewBox: false
+          name: 'preset-default',
+          params: {
+            overrides: {
+              removeViewBox: false,
+              removeEmptyAttrs: false,
+              removeUselessStrokeAndFill: false,
+            },
           },
-          {
-            removeEmptyAttrs: false
-          },
-          {
-            removeUselessStrokeAndFill: false
-          },
-        ]
+        }]
       },
       dist: {
         files: [{
@@ -155,7 +155,7 @@ module.exports = function(grunt) {
       },
     },
 
-    pngmin: {
+    imagemin: {
       compile: {
         options: {
           ext: '.png',
@@ -208,14 +208,14 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-string-replace');
   grunt.loadNpmTasks('grunt-contrib-htmlmin');
   grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-pngmin');
+  grunt.loadNpmTasks('grunt-contrib-imagemin');
   grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-jsbeautifier');
   grunt.loadNpmTasks('grunt-shell');
 
   grunt.registerTask('default', [ /*'jsbeautifier:dist',*/ 'eslint', /*'shell:npm_test_mocha',*/ 'svgmin', 'cssmin',
     'uglify',
-    'string-replace', 'htmlmin', 'copy', 'pngmin'
+    'string-replace', 'htmlmin', 'copy', 'imagemin'
   ]);
   grunt.registerTask('format', ['jsbeautifier:format']);
 };
