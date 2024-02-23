@@ -340,7 +340,7 @@ function getUseLibStdCpp() {
     return value.startsWith('use-libcpp');
   });
 
-  if(0 == filtered.length) {
+  if (0 == filtered.length) {
     return null;
   }
 
@@ -431,7 +431,7 @@ function updateLinkToCompilerExplorer() {
   var cppstdparam = '-std=' + getCppStd().replace('cpp', 'c++');
 
   var libCpp = getUseLibStdCpp();
-  if(null != libCpp) {
+  if (null != libCpp) {
     cppstdparam += ' -stdlib=libc++';
   }
 
