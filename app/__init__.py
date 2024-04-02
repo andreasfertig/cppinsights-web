@@ -81,7 +81,7 @@ def runDocker(code, insightsOptions, cppStd, versionOnly=False):
 
             cmd.extend([ 'docker', 'run', '--net=none' ])
             cmd.extend(fileParam)
-            cmd.extend(['--rm', '-i', 'insights-test'])
+            cmd.extend(['--rm', '-i', 'cppinsights-container'])
         else:
             cmd = ['insights', fileName]
 
@@ -310,7 +310,7 @@ def getVersionInfo():
     resp['stdout']     = stdout
     resp['stderr']     = stderr
 
-    dockerImage = 'insights-test'
+    dockerImage = 'cppinsights-container'
     if app.config['USE_DOCKER']:
         p = subprocess.Popen(['docker', 'images', '--filter=reference=%s' %(dockerImage), '--format', '{{.ID}} {{.CreatedAt}}'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 

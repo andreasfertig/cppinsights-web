@@ -142,7 +142,7 @@ class CppInsightsTestCase(unittest.TestCase):
     #------------------------------------------------------------------------------
 
     def test_request_api_v1_tranform_valid(self):
-        self.Popen.set_command('sudo -u pfes docker run --net=none -v /tmp/pyt.cpp:/home/insights/insights.cpp --rm -i insights-test -- -std=c++98', stdout=b'o', stderr=b'', returncode=0)
+        self.Popen.set_command('sudo -u pfes docker run --net=none -v /tmp/pyt.cpp:/home/insights/insights.cpp --rm -i cppinsights-container -- -std=c++98', stdout=b'o', stderr=b'', returncode=0)
 
         rv = self.app.post('/api/v1/transform',
                        data=json.dumps(dict(insightsOptions=['cpp98'], code='hello')),
@@ -156,7 +156,7 @@ class CppInsightsTestCase(unittest.TestCase):
     #------------------------------------------------------------------------------
 
     def test_request_api_v1_tranform_valid_with_result_1(self):
-        self.Popen.set_command('sudo -u pfes docker run --net=none -v /tmp/pyt.cpp:/home/insights/insights.cpp --rm -i insights-test -- -std=c++98', stdout=b'o', stderr=b'', returncode=1)
+        self.Popen.set_command('sudo -u pfes docker run --net=none -v /tmp/pyt.cpp:/home/insights/insights.cpp --rm -i cppinsights-container -- -std=c++98', stdout=b'o', stderr=b'', returncode=1)
 
         rv = self.app.post('/api/v1/transform',
                        data=json.dumps(dict(insightsOptions=['cpp98'], code='hello')),
@@ -171,7 +171,7 @@ class CppInsightsTestCase(unittest.TestCase):
     #------------------------------------------------------------------------------
 
     def test_request_api_v1_tranform_valid_with_result_and_insights_args_1(self):
-        self.Popen.set_command('sudo -u pfes docker run --net=none -v /tmp/pyt.cpp:/home/insights/insights.cpp --rm -i insights-test -alt-syntax-for -- -std=c++98', stdout=b'o', stderr=b'', returncode=0)
+        self.Popen.set_command('sudo -u pfes docker run --net=none -v /tmp/pyt.cpp:/home/insights/insights.cpp --rm -i cppinsights-container -alt-syntax-for -- -std=c++98', stdout=b'o', stderr=b'', returncode=0)
 
         rv = self.app.post('/api/v1/transform',
                        data=json.dumps(dict(insightsOptions=['alt-syntax-for','cpp98'], code='hello')),
@@ -185,7 +185,7 @@ class CppInsightsTestCase(unittest.TestCase):
     #------------------------------------------------------------------------------
 
     def test_request_api_v1_tranform_valid_with_warnings(self):
-        self.Popen.set_command('sudo -u pfes docker run --net=none -v /tmp/pyt.cpp:/home/insights/insights.cpp --rm -i insights-test -- -std=c++98', stdout=b'o', stderr=b'Warning: unused var', returncode=0)
+        self.Popen.set_command('sudo -u pfes docker run --net=none -v /tmp/pyt.cpp:/home/insights/insights.cpp --rm -i cppinsights-container -- -std=c++98', stdout=b'o', stderr=b'Warning: unused var', returncode=0)
 
         rv = self.app.post('/api/v1/transform',
                        data=json.dumps(dict(insightsOptions=['cpp98'], code='hello')),
@@ -199,7 +199,7 @@ class CppInsightsTestCase(unittest.TestCase):
     #------------------------------------------------------------------------------
 
     def test_request_api_v1_tranform_invalid_std(self):
-        self.Popen.set_command('sudo -u pfes docker run --net=none -v /tmp/pyt.cpp:/home/insights/insights.cpp --rm -i insights-test -- -std=c++20', stdout=b'o', stderr=b'',returncode=0)
+        self.Popen.set_command('sudo -u pfes docker run --net=none -v /tmp/pyt.cpp:/home/insights/insights.cpp --rm -i cppinsights-container -- -std=c++20', stdout=b'o', stderr=b'',returncode=0)
 
         rv = self.app.post('/api/v1/transform',
                        data=json.dumps(dict(insightsOptions=['cpp12'], code='hello')),
@@ -213,9 +213,9 @@ class CppInsightsTestCase(unittest.TestCase):
     #------------------------------------------------------------------------------
 
     def test_request_api_v1_version(self):
-        self.Popen.set_command('sudo -u pfes docker run --net=none --rm -i insights-test --', stdout=b'o', stderr=b'', returncode=0)
-        self.Popen.set_command('docker images --filter=reference=insights-test --format \'{{.ID}} {{.CreatedAt}}\'', stdout=b'o', stderr=b'', returncode=0)
-        self.Popen.set_command('docker images --filter=reference=insights-test --format {{.ID}} {{.CreatedAt}}', stdout=b'o', stderr=b'', returncode=0)
+        self.Popen.set_command('sudo -u pfes docker run --net=none --rm -i cppinsights-container --', stdout=b'o', stderr=b'', returncode=0)
+        self.Popen.set_command('docker images --filter=reference=cppinsights-container --format \'{{.ID}} {{.CreatedAt}}\'', stdout=b'o', stderr=b'', returncode=0)
+        self.Popen.set_command('docker images --filter=reference=cppinsights-container --format {{.ID}} {{.CreatedAt}}', stdout=b'o', stderr=b'', returncode=0)
 
         rv = self.app.get('/api/v1/version',
                        content_type='application/json')
@@ -223,14 +223,14 @@ class CppInsightsTestCase(unittest.TestCase):
         data = json.loads(rv.data.decode('utf-8'))
         self.assertTrue(data['returncode'] == 0)
         self.assertTrue(data['stderr'] == 'Insights exited with result code: 0')
-        self.assertTrue(data['stdout'] == 'o\nDocker image "insights-test" info: o\n')
+        self.assertTrue(data['stdout'] == 'o\nDocker image "cppinsights-container" info: o\n')
         assert 200 == rv.status_code
     #------------------------------------------------------------------------------
 
     def test_request_api_v1_version_invalid(self):
-        self.Popen.set_command('sudo -u pfes docker run --net=none --rm -i insights-test --', stdout=b'o', stderr=b'', returncode=1)
-        self.Popen.set_command('docker images --filter=reference=insights-test --format \'{{.ID}} {{.CreatedAt}}\'', stdout=b'o', stderr=b'', returncode=0)
-        self.Popen.set_command('docker images --filter=reference=insights-test --format {{.ID}} {{.CreatedAt}}', stdout=b'o', stderr=b'', returncode=0)
+        self.Popen.set_command('sudo -u pfes docker run --net=none --rm -i cppinsights-container --', stdout=b'o', stderr=b'', returncode=1)
+        self.Popen.set_command('docker images --filter=reference=cppinsights-container --format \'{{.ID}} {{.CreatedAt}}\'', stdout=b'o', stderr=b'', returncode=0)
+        self.Popen.set_command('docker images --filter=reference=cppinsights-container --format {{.ID}} {{.CreatedAt}}', stdout=b'o', stderr=b'', returncode=0)
 
         rv = self.app.get('/api/v1/version',
                        content_type='application/json')
@@ -244,9 +244,9 @@ class CppInsightsTestCase(unittest.TestCase):
 
     def test_request_api_v1_version_none_sudo(self):
         app.config['USE_SUDO'] = False
-        self.Popen.set_command('docker run --net=none --rm -i insights-test --', stdout=b'o', stderr=b'', returncode=0)
-        self.Popen.set_command('docker images --filter=reference=insights-test --format \'{{.ID}} {{.CreatedAt}}\'', stdout=b'o', stderr=b'', returncode=0)
-        self.Popen.set_command('docker images --filter=reference=insights-test --format {{.ID}} {{.CreatedAt}}', stdout=b'o', stderr=b'', returncode=0)
+        self.Popen.set_command('docker run --net=none --rm -i cppinsights-container --', stdout=b'o', stderr=b'', returncode=0)
+        self.Popen.set_command('docker images --filter=reference=cppinsights-container --format \'{{.ID}} {{.CreatedAt}}\'', stdout=b'o', stderr=b'', returncode=0)
+        self.Popen.set_command('docker images --filter=reference=cppinsights-container --format {{.ID}} {{.CreatedAt}}', stdout=b'o', stderr=b'', returncode=0)
 
         rv = self.app.get('/api/v1/version',
                        content_type='application/json')
@@ -256,15 +256,15 @@ class CppInsightsTestCase(unittest.TestCase):
         data = json.loads(rv.data.decode('utf-8'))
         self.assertTrue(data['returncode'] == 0)
         self.assertTrue(data['stderr'] == 'Insights exited with result code: 0')
-        self.assertTrue(data['stdout'] == 'o\nDocker image "insights-test" info: o\n')
+        self.assertTrue(data['stdout'] == 'o\nDocker image "cppinsights-container" info: o\n')
         assert 200 == rv.status_code
     #------------------------------------------------------------------------------
 
     def test_request_api_v1_version_none_docker(self):
         app.config['USE_DOCKER'] = False
         self.Popen.set_command('insights /tmp/pyt.cpp --', stdout=b'o', stderr=b'', returncode=0)
-        self.Popen.set_command('docker images --filter=reference=insights-test --format \'{{.ID}} {{.CreatedAt}}\'', stdout=b'o', stderr=b'', returncode=0)
-        self.Popen.set_command('docker images --filter=reference=insights-test --format {{.ID}} {{.CreatedAt}}', stdout=b'o', stderr=b'', returncode=0)
+        self.Popen.set_command('docker images --filter=reference=cppinsights-container --format \'{{.ID}} {{.CreatedAt}}\'', stdout=b'o', stderr=b'', returncode=0)
+        self.Popen.set_command('docker images --filter=reference=cppinsights-container --format {{.ID}} {{.CreatedAt}}', stdout=b'o', stderr=b'', returncode=0)
 
         rv = self.app.get('/api/v1/version',
                        content_type='application/json')
@@ -274,15 +274,15 @@ class CppInsightsTestCase(unittest.TestCase):
         data = json.loads(rv.data.decode('utf-8'))
         self.assertTrue(data['returncode'] == 0)
         self.assertTrue(data['stderr'] == 'Insights exited with result code: 0')
-        self.assertTrue(data['stdout'] == 'o\nDocker image "insights-test" info: Docker not used\n')
+        self.assertTrue(data['stdout'] == 'o\nDocker image "cppinsights-container" info: Docker not used\n')
         assert 200 == rv.status_code
     #------------------------------------------------------------------------------
 
 
     def test_request_version(self):
-        self.Popen.set_command('sudo -u pfes docker run --net=none --rm -i insights-test --', stdout=b'fake version info from docker', stderr=b'', returncode=0)
-        self.Popen.set_command('docker images --filter=reference=insights-test --format \'{{.ID}} {{.CreatedAt}}\'', stdout=b'o', stderr=b'', returncode=0)
-        self.Popen.set_command('docker images --filter=reference=insights-test --format {{.ID}} {{.CreatedAt}}', stdout=b'o', stderr=b'', returncode=0)
+        self.Popen.set_command('sudo -u pfes docker run --net=none --rm -i cppinsights-container --', stdout=b'fake version info from docker', stderr=b'', returncode=0)
+        self.Popen.set_command('docker images --filter=reference=cppinsights-container --format \'{{.ID}} {{.CreatedAt}}\'', stdout=b'o', stderr=b'', returncode=0)
+        self.Popen.set_command('docker images --filter=reference=cppinsights-container --format {{.ID}} {{.CreatedAt}}', stdout=b'o', stderr=b'', returncode=0)
 
         rv = self.app.get('/version')
 
