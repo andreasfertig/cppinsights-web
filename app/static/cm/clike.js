@@ -385,7 +385,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
                     "static_cast typeid catch operator template typename class friend private " +
                     "this using const_cast inline public throw virtual delete mutable protected " +
                     "alignas alignof constexpr decltype nullptr noexcept thread_local final " +
-                    "static_assert override"),
+                    "static_assert override co_return co_yield co_await consteval constinit"),
     types: words(cTypes + " bool wchar_t"),
     blockKeywords: words("catch class do else finally for if struct switch try while"),
     defKeywords: words("class namespace struct enum union"),
