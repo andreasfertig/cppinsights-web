@@ -147,6 +147,10 @@ h1 {
   font-size: larger;
 }
 
+#insightsOptions {
+  width: 180px;
+}
+
 input {}
 
 label {
@@ -176,7 +180,7 @@ nav {
   grid-area: nav;
   display: grid;
   grid-template:
-    "controls news about" 41px / max-content minmax(100px, auto) max-content;
+    "controls news sponsors about" 41px / max-content minmax(340px, 1fr) minmax(230px, 1fr) max-content;
   align-items: center;
 }
 
@@ -221,9 +225,26 @@ news {
   margin-right: auto;
 }
 
+sponsor {
+  grid-area: sponsors;
+  margin-left: auto;
+  margin-right: 10px;
+  white-space: nowrap;
+  border-left: 1px dotted var(--cl-black);
+  height: 41px;
+  align-content: center;
+}
+
+#sponsor {
+  font-size: x-small;
+  padding-left: 10px;
+  padding-top: 5px;
+}
+
 about {
   grid-area: about;
   align-self: baseline;
+  border-left: 1px dotted var(--cl-black);
 }
 
 .icon-run,
@@ -529,7 +550,6 @@ a.close-cookie-banner:hover {
 #header {
   text-align: left;
   font-size: 70%;
-  border-left: 1px dotted var(--cl-black);
   padding-left: 10px;
   color: var(--cl-text-light-gray);
   padding-top: 5px;
@@ -731,7 +751,7 @@ div.CodeMirror span.CodeMirror-matchingbracket {
 .logo {
   height: 32px;
   width: auto;
-  margin-right: 2em;
+  margin-right: 15px;
   filter: brightness(var(--filter-logo-brightness));
 }
 
@@ -890,6 +910,12 @@ h2 {
   height: 23px;
 }
 
+.sponsorlogo {
+  position: relative;
+  max-height: 30px;
+  padding-left: 5px;
+}
+
 .copyDownDownContent,
 .moreDownDownContent {
   display: none;
@@ -948,11 +974,26 @@ h2 {
   margin-top: 5px;
 }
 
+.sponsors {
+  display: block;
+  vertical-align: middle;
+  margin-top: 5px;
+}
+
 #banner {
   border: 1px dotted #0275d8;
-  border-radius: 2px;
+  border-radius: 4px;
   padding: 5px 10px 5px 10px;
   font-size: small;
+}
+
+#banner a {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 300px;
+  display: inline-block;
+  vertical-align: sub;
 }
 
 .nocommunityevent {
@@ -1048,7 +1089,7 @@ h2 {
 .ms-choice>div.open {}
 
 .ms-drop {
-  width: 100%;
+  /*width: 100%;*/
   overflow: hidden;
   display: none;
   margin-top: -1px;
@@ -1156,20 +1197,98 @@ h2 {
   margin-left: .8em;
 }
 
+ul.patreons {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+}
+
+ul.corporate {
+  list-style-type: none;
+}
+
+.corporate img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+div.corporate {
+  padding-left: 50px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  border-bottom: var(--cl-text-light-gray) 1px dotted;
+  display: flex;
+}
+
+logo {
+  width: 300px;
+  display: inline-block;
+  padding-right: 3em;
+  flex: 0 0 auto;
+}
+
 /* settings */
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 1398px) {
   main {
     grid-template:
-      "nav nav" max-content "srcin srcin" 100% "vdragbar vdragbar" 0 "insights insights" 100% "hdragbar hdragbar" 0 "console console" 150px / 100%;
+      "nav nav nav" max-content
+      "srcin vdragbar insights" minmax(60vh, auto) "hdragbar hdragbar hdragbar" 10px
+      "console console console" minmax(0, 150px) / calc(50% - 5px) 10px calc(50% - 5px);
+  }
+
+  nav {
+    grid-template:
+      "controls sponsors sponsors about" auto
+      "news news news news" auto
+      / 1fr 1fr 1fr 100px;
+    row-gap: 0.5rem;
+    align-items: start;
+  }
+
+  controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-self: baseline;
+  }
+
+  sponsor {
+    justify-self: start;
+    margin-right: 0;
+    width: max-content;
+  }
+
+  news {
+    justify-self: start;
+  }
+
+  about {
+    justify-self: end;
+    align-self: center;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  main {
+    grid-template:
+      "nav nav" 100%
+      "srcin srcin" 100%
+      "vdragbar vdragbar" 0
+      "insights insights" 100%
+      "hdragbar hdragbar" 0
+      "console console" 150px / 100%;
 
   }
 
   nav {
     grid-template:
-      "controls controls"
-      "news news"
-      "about about" 100% / 100%;
+      "controls controls" 100%
+      "sponsors sponsors" 100%
+      "news news" 100% / 1fr 1fr;
+
+    height: 41px;
   }
 
   .logo {

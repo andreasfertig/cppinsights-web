@@ -344,6 +344,18 @@ def version():
     return response
 #------------------------------------------------------------------------------
 
+@app.route("/supporters", methods=['GET'])
+def supporters():
+    patreons =''
+
+    if os.path.exists('patreons.txt'):
+        patreons = open('patreons.txt').read()#.splitlines()
+
+    response  = make_response(render_template('supporters.html', **locals()))
+
+    return response
+#------------------------------------------------------------------------------
+
 def getDbName():
     return 'urls.db'
 #------------------------------------------------------------------------------
