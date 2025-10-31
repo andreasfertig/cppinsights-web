@@ -8,6 +8,7 @@
   <meta name="author" content="Andreas Fertig" />
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- codemirror includes -->
   <link rel="stylesheet" href="/cm/codemirror.css">
@@ -124,7 +125,15 @@
             <div class="input-group">
               <span class="input-group-button">
                 <button class="morebtn" type="button">
-                  <a href="https://www.patreon.com/cppinsights" target="_blank" title="Become a patron">
+                  <a href="https://patreon.com/join/cppinsights" target="_blank" title="Become a patron">
+                    Patreon
+                  </a> </button>
+              </span>
+            </div>
+            <div class="input-group">
+              <span class="input-group-button">
+                <button class="morebtn" type="button">
+                  <a href="https://github.com/sponsors/andreasfertig" target="_blank" title="Become a GitHub Sponsor">
                     Patreon
                   </a> </button>
               </span>
@@ -202,10 +211,11 @@
 
       </news>
 
+      {% include 'sponsors.html' %}
+
       <about>
         <div id="header">
-          Made by <a target="_blank" href="https://andreasfertig.com">Andreas Fertig</a><br />Powered by <a target="_blank"
-              href="http://flask.pocoo.org/">Flask</a> and <a target="_blank" href="https://codemirror.net">CodeMirror</a>
+          Made by<br /><a target="_blank" href="https://andreasfertig.com">Andreas Fertig</a>
         </div>
       </about>
     </nav>

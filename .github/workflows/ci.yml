@@ -26,7 +26,7 @@ jobs:
     - name: Setup Python environment
       uses: actions/setup-python@v5
       with:
-        python-version: '3.7' # Server has 3.5
+        python-version: '3.8' # Server has 3.5
 
     - name: Install SSH Key
       uses: shimataro/ssh-key-action@v1.3.0
